@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TARGET_ROOT="/d/Projects/Campus-Community-Compact-Project/data/yearly-data"
+TARGET_ROOT="/d/Projects/Community-Pulse/data/yearly-data"
 
 for sub_dir in "$TARGET_ROOT"/*; do
     [ -d "$sub_dir" ] || continue

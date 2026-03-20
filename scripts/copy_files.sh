@@ -1,7 +1,7 @@
 #!/bin/bash
 
-SOURCE_ROOT="/d/Projects/Campus-Community-Compact-Project/data/raw"
-TARGET_ROOT="/d/Projects/Campus-Community-Compact-Project/data/yearly-data"
+SOURCE_ROOT="/d/Projects/Community-Pulse/data/raw"
+TARGET_ROOT="/d/Projects/Community-Pulse/data/yearly-data"
 
 for src_dir in "$SOURCE_ROOT"/*; do
     [ -d "$src_dir" ] || continue
