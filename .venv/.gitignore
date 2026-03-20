@@ -1,0 +1,36 @@
+# secrets
+.env
+
+# python env
+.venv/
+venv/
+
+# cache
+__pycache__/
+*.py[cod]
+
+# jupyter
+.ipynb_checkpoints/
+
+# editor
+.vscode/
+
+# system
+.DS_Store
+Thumbs.db
+
+# generated data
+data/yearly-data/
+data/combined-data/
+data/processed/
+outputs/
+
+# raw zip files
+data/raw/*.zip
+
+# logs
+*.log
+
+# local db files
+*.sqlite
+*.db
