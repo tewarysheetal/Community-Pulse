@@ -29,11 +29,17 @@ All raw data is sourced from the [US Census Bureau American Community Survey](ht
 ```
 Community-Pulse/
 ├── data/
-│   ├── raw/                    # Original ACS CSV files (per year, per table)
+│   ├── yearly-data/            # Raw ACS CSV files organized by category/year
 │   └── combined-data/          # Merged multi-year CSVs (one file per category)
+├── notebooks/
+│   └── combine_yearly_files.ipynb  # Combines per-year files into single CSVs
 ├── scripts/
 │   ├── load_data_db.py         # Loads combined CSVs into PostgreSQL
+│   ├── copy_files.sh           # Copies raw files into project structure
+│   ├── rename_files.sh         # Renames files to a consistent naming convention
 │   └── postgres-connection.py  # Tests database connectivity
+├── sql/
+│   └── basic_queries.sql       # Sample queries for the loaded tables
 ├── requirements.txt
 └── .env                        # Database credentials (not committed)
 ```
@@ -95,6 +101,35 @@ Each run replaces existing tables (`if_exists="replace"`). Column names are auto
 | `occupation` | occupation_combined.csv |
 | `houseoldcost` | houseoldcost_combined.csv |
 | `economiccharateristic` | economiccharateristic_combined.csv |
+
+## Querying the Data
+
+Connect to your database using `psql` or any SQL client:
+
+```bash
+psql -h localhost -U <DB_USER> -d <DB_NAME>
+```
+
+Sample queries (also available in [sql/basic_queries.sql](sql/basic_queries.sql)):
+
+```sql
+-- Preview rows
+SELECT * FROM age LIMIT 10;
+
+-- Check available years
+SELECT DISTINCT year FROM age ORDER BY year;
+
+-- Filter by year
+SELECT * FROM poverty WHERE year = 2022;
+
+-- List all columns in a table
+SELECT column_name, data_type
+FROM information_schema.columns
+WHERE table_name = 'age'
+ORDER BY ordinal_position;
+```
+
+All tables are loaded into the `public` schema. Column names are cleaned to `snake_case` and truncated to PostgreSQL's 63-character identifier limit with auto-deduplication.
 
 ## Tech Stack
 
