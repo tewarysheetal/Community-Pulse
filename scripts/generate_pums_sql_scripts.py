@@ -1,7 +1,7 @@
 from pathlib import Path
 import textwrap
 
-OUTPUT_DIR = Path("D:\Projects\Community-Pulse\sql")
+OUTPUT_DIR = Path("D:\Projects\Community-Pulse\sql\pums")
 
 YEARS = {
     "2019": {
@@ -185,12 +185,12 @@ def sql_alice_household_profile(cfg):
     """)
 
 TEMPLATES = [
-    ("create_pums_person_{y}_champaign.sql", sql_person_champaign),
-    ("create_pums_housing_{y}_champaign.sql", sql_housing_champaign),
-    ("create_pums_person_student_flags_{y}.sql", sql_person_student_flags),
-    ("create_pums_household_student_agg_{y}.sql", sql_household_student_agg),
-    ("create_pums_household_base_{y}.sql", sql_household_base),
-    ("create_pums_alice_household_profile_{y}.sql", sql_alice_household_profile),
+    ("01_create_pums_person_{y}_champaign.sql", sql_person_champaign),
+    ("02_create_pums_housing_{y}_champaign.sql", sql_housing_champaign),
+    ("03_create_pums_person_student_flags_{y}.sql", sql_person_student_flags),
+    ("04_create_pums_household_student_agg_{y}.sql", sql_household_student_agg),
+    ("05_create_pums_household_base_{y}.sql", sql_household_base),
+    ("06_create_pums_alice_household_profile_{y}.sql", sql_alice_household_profile),
 ]
 
 def main():
