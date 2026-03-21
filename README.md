@@ -75,16 +75,16 @@ Download from the [US Census Bureau ACS](https://www.census.gov/programs-surveys
 
 | Dataset | ACS Table | Years |
 |---|---|---|
-| Age Distribution | S0101 | 2010–2023 |
-| Population & Race | DP05 | 2010–2023 |
-| Household Composition | DP02 | 2010–2023 |
-| Language Spoken at Home | S1601 | 2010–2023 |
-| Poverty Status | S1701 | 2012–2023 |
-| Income Distribution | S1901 | 2010–2023 |
-| Employment Status | S2301 | 2010–2023 |
-| Occupation | S2401 | 2010–2023 |
-| Household Costs | S2503 | 2010–2023 |
-| Economic Characteristics | DP03 | 2010–2023 |
+| Age Distribution | S0101 | 2019–2023 |
+| Population & Race | DP05 | 2019–2023 |
+| Household Composition | DP02 | 2019–2023 |
+| Language Spoken at Home | S1601 | 2019–2023 |
+| Poverty Status | S1701 | 2019–2023 |
+| Income Distribution | S1901 | 2019–2023 |
+| Employment Status | S2301 | 2019–2023 |
+| Occupation | S2401 | 2019–2023 |
+| Household Costs | S2503 | 2019–2023 |
+| Economic Characteristics | DP03 | 2019–2023 |
 
 ### Steps
 
