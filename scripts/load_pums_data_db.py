@@ -37,7 +37,7 @@ def clean_column_name(col):
 for file_path in data_dir.glob("**/*.csv"):
     year = file_path.parent.name
     if "2020" in year:
-        table_name = f"{file_path.stem}_{year}_exp_raw".lower()
+        table_name = f"{file_path.stem}_2020_exp_raw".lower()
     else:
         table_name = f"{file_path.stem}_{year}_raw".lower()
 
