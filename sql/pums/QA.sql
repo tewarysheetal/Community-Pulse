@@ -254,3 +254,236 @@ select
         when below_alice_flag = 1 and student_heavy_flag = 0
         then analysis_weight else 0 end), 0) as alice_nonstudent_households
 from alice_household_final_2023;
+
+select 2019 as year, round(sum(analysis_weight),0) as alice_nonstudent_households from alice_nonstudent_households_2019
+union all
+select 2021, round(sum(analysis_weight),0) from alice_nonstudent_households_2021
+union all
+select 2022, round(sum(analysis_weight),0) from alice_nonstudent_households_2022
+union all
+select 2023, round(sum(analysis_weight),0) from alice_nonstudent_households_2023
+order by year;
+
+select 2019 as year, round(sum(analysis_weight),0) as total_households from alice_household_final_2019
+union all
+select 2021, round(sum(analysis_weight),0) from alice_household_final_2021
+union all
+select 2022, round(sum(analysis_weight),0) from alice_household_final_2022
+union all
+select 2023, round(sum(analysis_weight),0) from alice_household_final_2023
+order by year;
+
+select 2019 as year,
+       round(sum(case when below_alice_flag = 1 then analysis_weight else 0 end),0) as below_alice_households,
+       round(sum(analysis_weight),0) as total_households
+from alice_household_final_2019
+union all
+select 2021,
+       round(sum(case when below_alice_flag = 1 then analysis_weight else 0 end),0),
+       round(sum(analysis_weight),0)
+from alice_household_final_2021
+union all
+select 2022,
+       round(sum(case when below_alice_flag = 1 then analysis_weight else 0 end),0),
+       round(sum(analysis_weight),0)
+from alice_household_final_2022
+union all
+select 2023,
+       round(sum(case when below_alice_flag = 1 then analysis_weight else 0 end),0),
+       round(sum(analysis_weight),0)
+from alice_household_final_2023
+order by year;
+
+select
+    year,
+    hh_comp_key,
+    monthly_survival_budget,
+    annual_alice_threshold
+from alice_thresholds
+order by year, hh_comp_key;
+
+select hh_comp_key, count(*) as rows, round(sum(analysis_weight),0) as households
+from alice_household_final_2019
+group by hh_comp_key
+order by hh_comp_key;
+
+select hh_comp_key, count(*) as rows, round(sum(analysis_weight),0) as households
+from alice_household_final_2021
+group by hh_comp_key
+order by hh_comp_key;
+
+select hh_comp_key, count(*) as rows, round(sum(analysis_weight),0) as households
+from alice_household_final_2022
+group by hh_comp_key
+order by hh_comp_key;
+
+select distinct hh_comp_key
+from alice_thresholds
+order by hh_comp_key;
+
+select
+    count(*) as total_rows,
+    sum(case when hincp_adj_real is null then 1 else 0 end) as null_hincp_adj_real,
+    sum(case when hh_comp_key is null then 1 else 0 end) as null_hh_comp_key,
+    sum(case when below_alice_flag is null then 1 else 0 end) as null_below_alice_flag
+from alice_household_final_2019;
+
+select
+    count(*) as total_rows,
+    sum(case when hincp_adj_real is null then 1 else 0 end) as null_hincp_adj_real,
+    sum(case when hh_comp_key is null then 1 else 0 end) as null_hh_comp_key,
+    sum(case when below_alice_flag is null then 1 else 0 end) as null_below_alice_flag
+from alice_household_final_2021;
+
+select
+    count(*) as total_rows,
+    sum(case when hincp_adj_real is null then 1 else 0 end) as null_hincp_adj_real,
+    sum(case when hh_comp_key is null then 1 else 0 end) as null_hh_comp_key,
+    sum(case when below_alice_flag is null then 1 else 0 end) as null_below_alice_flag
+from alice_household_final_2022;
+
+select
+    count(*) as total_rows,
+    sum(case when hincp_adj_real is null then 1 else 0 end) as null_hincp_adj_real,
+    sum(case when hh_comp_key is null then 1 else 0 end) as null_hh_comp_key,
+    sum(case when below_alice_flag is null then 1 else 0 end) as null_below_alice_flag
+from alice_household_final_2023;
+
+select count(*) as rows_2019 from alice_nonstudent_households_2019;
+select count(*) as rows_2021 from alice_nonstudent_households_2021;
+select count(*) as rows_2022 from alice_nonstudent_households_2022;
+select count(*) as rows_2023 from alice_nonstudent_households_2023;
+
+select
+    2019 as year,
+    round(sum(case when below_alice_flag = 1 then analysis_weight else 0 end), 0) as stored_flag_weighted,
+    round(sum(case when hincp_adj_real < annual_alice_threshold then analysis_weight else 0 end), 0) as direct_compare_weighted
+from alice_household_final_2019
+
+union all
+
+select
+    2021 as year,
+    round(sum(case when below_alice_flag = 1 then analysis_weight else 0 end), 0),
+    round(sum(case when hincp_adj_real < annual_alice_threshold then analysis_weight else 0 end), 0)
+from alice_household_final_2021
+
+union all
+
+select
+    2022 as year,
+    round(sum(case when below_alice_flag = 1 then analysis_weight else 0 end), 0),
+    round(sum(case when hincp_adj_real < annual_alice_threshold then analysis_weight else 0 end), 0)
+from alice_household_final_2022
+
+union all
+
+select
+    2023 as year,
+    round(sum(case when below_alice_flag = 1 then analysis_weight else 0 end), 0),
+    round(sum(case when hincp_adj_real < annual_alice_threshold then analysis_weight else 0 end), 0)
+from alice_household_final_2023
+order by year;
+
+select
+    2019 as year,
+    min(hincp_adj_real) as min_income,
+    percentile_cont(0.25) within group (order by hincp_adj_real) as p25,
+    percentile_cont(0.50) within group (order by hincp_adj_real) as p50,
+    percentile_cont(0.75) within group (order by hincp_adj_real) as p75,
+    max(hincp_adj_real) as max_income
+from alice_household_final_2019
+
+union all
+
+select
+    2021 as year,
+    min(hincp_adj_real),
+    percentile_cont(0.25) within group (order by hincp_adj_real),
+    percentile_cont(0.50) within group (order by hincp_adj_real),
+    percentile_cont(0.75) within group (order by hincp_adj_real),
+    max(hincp_adj_real)
+from alice_household_final_2021
+
+union all
+
+select
+    2022 as year,
+    min(hincp_adj_real),
+    percentile_cont(0.25) within group (order by hincp_adj_real),
+    percentile_cont(0.50) within group (order by hincp_adj_real),
+    percentile_cont(0.75) within group (order by hincp_adj_real),
+    max(hincp_adj_real)
+from alice_household_final_2022
+
+union all
+
+select
+    2023 as year,
+    min(hincp_adj_real),
+    percentile_cont(0.25) within group (order by hincp_adj_real),
+    percentile_cont(0.50) within group (order by hincp_adj_real),
+    percentile_cont(0.75) within group (order by hincp_adj_real),
+    max(hincp_adj_real)
+from alice_household_final_2023
+order by year;
+
+select year, hh_comp_key, monthly_survival_budget, annual_alice_threshold
+from alice_thresholds
+where year in (2019, 2021, 2022, 2023)
+order by year, hh_comp_key;
+
+select
+    2019 as year,
+    round(sum(case when below_alice_flag = 1 then analysis_weight else 0 end), 0) as alice_all,
+    round(sum(case when below_alice_flag = 1 and coalesce(student_heavy_flag,0) = 0 then analysis_weight else 0 end), 0) as alice_nonstudent,
+    round(sum(case when below_alice_flag = 1 and coalesce(student_heavy_flag,0) = 1 then analysis_weight else 0 end), 0) as alice_student_heavy
+from alice_household_final_2019
+
+union all
+
+select
+    2021 as year,
+    round(sum(case when below_alice_flag = 1 then analysis_weight else 0 end), 0),
+    round(sum(case when below_alice_flag = 1 and coalesce(student_heavy_flag,0) = 0 then analysis_weight else 0 end), 0),
+    round(sum(case when below_alice_flag = 1 and coalesce(student_heavy_flag,0) = 1 then analysis_weight else 0 end), 0)
+from alice_household_final_2021
+
+union all
+
+select
+    2022 as year,
+    round(sum(case when below_alice_flag = 1 then analysis_weight else 0 end), 0),
+    round(sum(case when below_alice_flag = 1 and coalesce(student_heavy_flag,0) = 0 then analysis_weight else 0 end), 0),
+    round(sum(case when below_alice_flag = 1 and coalesce(student_heavy_flag,0) = 1 then analysis_weight else 0 end), 0)
+from alice_household_final_2022
+
+union all
+
+select
+    2023 as year,
+    round(sum(case when below_alice_flag = 1 then analysis_weight else 0 end), 0),
+    round(sum(case when below_alice_flag = 1 and coalesce(student_heavy_flag,0) = 0 then analysis_weight else 0 end), 0),
+    round(sum(case when below_alice_flag = 1 and coalesce(student_heavy_flag,0) = 1 then analysis_weight else 0 end), 0)
+from alice_household_final_2023
+order by year;
+
+select
+    2019 as year,
+    round(sum(analysis_weight), 0) as nonstudent_alice_households
+from alice_nonstudent_households_2019
+union all
+select
+    2021 as year,
+    round(sum(analysis_weight), 0) as nonstudent_alice_households
+from alice_nonstudent_households_2021
+union all
+select
+    2022 as year,
+    round(sum(analysis_weight), 0) as nonstudent_alice_households
+from alice_nonstudent_households_2022
+union all
+select
+    2023 as year,
+    round(sum(analysis_weight), 0) as nonstudent_alice_households
+from alice_nonstudent_households_2023;
