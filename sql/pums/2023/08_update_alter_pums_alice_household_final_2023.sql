@@ -1,15 +1,19 @@
-alter table alice_household_final_2021 add column if not exists hincp_adj_real numeric;
-update alice_household_final_2021
+alter table alice_household_final_2023
+add column if not exists hincp_adj_real numeric;
+
+update alice_household_final_2023
 set hincp_adj_real = (hincp::numeric * adjinc::numeric) / 1000000.0;
 
-alter table alice_household_final_2021 add column if not exists student_heavy_flag integer;
-update alice_household_final_2021
+alter table alice_household_final_2023
+add column if not exists student_heavy_flag integer;
+
+update alice_household_final_2023
 set student_heavy_flag = coalesce(student_heavy_flag_rule_b, 0);
 
-alter table alice_household_final_2021
+alter table alice_household_final_2023
 add column if not exists hh_comp_key text;
 
-update alice_household_final_2021
+update alice_household_final_2023
 set hh_comp_key =
     case
         when adult_count = 1 and noc = 0 then '1_adult_0_child'
@@ -22,3 +26,16 @@ set hh_comp_key =
         when adult_count >= 3 and noc >= 1 then '3plus_adult_1plus_child'
         else 'other'
     end;
+
+alter table alice_household_final_2023
+add column if not exists below_alice_flag integer;
+
+update alice_household_final_2023 h
+set below_alice_flag =
+    case
+        when h.hincp_adj_real < t.annual_alice_threshold then 1
+        else 0
+    end
+from alice_thresholds t
+where t.year = 2023
+  and t.hh_comp_key = h.hh_comp_key;

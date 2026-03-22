@@ -239,3 +239,18 @@ select
 from alice_household_final_2023
 order by year;
 
+select *
+from alice_thresholds
+order by year desc, hh_comp_key;
+
+select
+    round(sum(case when below_alice_flag = 1 then analysis_weight else 0 end), 0) as below_alice_households,
+    round(sum(case when below_alice_flag = 0 then analysis_weight else 0 end), 0) as above_alice_households,
+    round(sum(analysis_weight), 0) as total_households
+from alice_household_final_2023;
+
+select
+    round(sum(case
+        when below_alice_flag = 1 and student_heavy_flag = 0
+        then analysis_weight else 0 end), 0) as alice_nonstudent_households
+from alice_household_final_2023;

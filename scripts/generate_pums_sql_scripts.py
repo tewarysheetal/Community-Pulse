@@ -1,7 +1,26 @@
 from pathlib import Path
 import textwrap
+from typing import List
+from dotenv import load_dotenv
+import os
+import re
+
+try:
+    from sqlalchemy import create_engine, text
+except ImportError:
+    create_engine = None
+    text = None
 
 OUTPUT_DIR = Path("D:\Projects\Community-Pulse\sql\pums")
+RUN_SQL = True
+
+load_dotenv()
+
+DB_HOST = os.getenv("DB_HOST")
+DB_PORT = os.getenv("DB_PORT")
+DB_NAME = os.getenv("DB_NAME")
+DB_USER = os.getenv("DB_USER")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
 
 YEARS = {
     "2019": {
@@ -193,15 +212,38 @@ TEMPLATES = [
     ("06_create_pums_alice_household_profile_{y}.sql", sql_alice_household_profile),
 ]
 
+def execute_sql_files(files: List[Path]) -> None:
+    if not RUN_SQL:
+        return
+    if create_engine is None:
+        raise ImportError("sqlalchemy is required when RUN_SQL = True")
+    engine = create_engine(
+        f"postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    )
+    with engine.begin() as conn:
+        for file_path in files:
+            sql_text = file_path.read_text(encoding="utf-8")
+            print(f"Executing: {file_path.name}")
+            conn.execute(text(sql_text))
+
+
 def main():
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
+    generated_files = []
+    
     for key, cfg in YEARS.items():
         year_dir = OUTPUT_DIR / key
         year_dir.mkdir(exist_ok=True)
         for pattern, fn in TEMPLATES:
             filename = pattern.format(y=cfg["suffix"])
             (year_dir / filename).write_text(fn(cfg), encoding="utf-8")
+    
     print(f"Generated SQL files under: {OUTPUT_DIR.resolve()}")
+
+    if RUN_SQL:
+        execute_sql_files(generated_files)
+        print("All SQL files executed successfully.")
 
 if __name__ == "__main__":
     main()
