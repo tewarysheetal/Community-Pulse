@@ -1,0 +1,13 @@
+year,batch_group,expected_table_count,existing_table_count,all_expected_tables_present
+2019,batch_2,4,4,True
+2019,batch_3,5,5,True
+2019,core,4,4,True
+2021,batch_2,4,4,True
+2021,batch_3,5,5,True
+2021,core,4,4,True
+2022,batch_2,4,4,True
+2022,batch_3,5,5,True
+2022,core,4,4,True
+2023,batch_2,4,4,True
+2023,batch_3,5,5,True
+2023,core,4,4,True

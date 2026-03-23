@@ -1,0 +1,3 @@
+table_name,exists
+fact_acs_tract_metric_long,True
+fact_acs_tract_profile,True

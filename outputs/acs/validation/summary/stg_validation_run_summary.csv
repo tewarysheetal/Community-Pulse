@@ -1,0 +1,6 @@
+layer,metric,value
+stg,expected_table_count,52
+stg,discovered_table_count,52
+stg,missing_table_count,0
+stg,tables_with_duplicate_geoids,0
+stg,tables_with_bridge_mismatch,0

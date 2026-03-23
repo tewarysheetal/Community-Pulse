@@ -1,0 +1,6 @@
+layer,metric,value
+int,expected_table_count,52
+int,discovered_table_count,52
+int,missing_table_count,0
+int,tables_with_duplicate_keys,0
+int,tables_with_bridge_mismatch,0

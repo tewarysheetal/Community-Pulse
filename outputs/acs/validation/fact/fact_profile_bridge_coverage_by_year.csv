@@ -1,0 +1,5 @@
+year,src_distinct_geoid_count,bridge_distinct_geoid_count,matched_geoid_count,missing_in_bridge_geoid_count,missing_in_source_geoid_count
+2019,43,43,43,0,0
+2021,48,48,48,0,0
+2022,48,48,48,0,0
+2023,48,48,48,0,0

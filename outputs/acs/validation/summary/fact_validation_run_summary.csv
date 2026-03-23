@@ -1,0 +1,7 @@
+layer,metric,value
+fact,fact_metric_long_exists,1
+fact,fact_metric_long_row_count,457738
+fact,fact_metric_long_duplicate_key_groups,0
+fact,fact_profile_exists,1
+fact,fact_profile_row_count,187
+fact,fact_profile_duplicate_key_groups,0

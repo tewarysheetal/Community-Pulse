@@ -1,0 +1,2 @@
+table_name,row_count,distinct_geoid_count,null_geoid_count,blank_geoid_count,duplicate_key_groups,duplicate_key_excess_rows,year_col,geoid_col,numeric_column_count
+fact_acs_tract_profile,187,53,0,0,0,0,year,tract_geoid,43

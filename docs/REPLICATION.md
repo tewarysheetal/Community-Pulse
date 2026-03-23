@@ -9,6 +9,9 @@ This document provides step-by-step instructions to fully replicate the Communit
 - [Prerequisites](#prerequisites)
 - [Environment Setup](#environment-setup)
 - [Pipeline 1 — ACS Summary Data](#pipeline-1--acs-summary-data)
+  - [Phase A — Dimension Pipeline](#phase-a--dimension-pipeline-scriptsacsdim)
+  - [Phase B — Fact Pipeline](#phase-b--fact-pipeline-scriptsacsfact)
+  - [Phase C — Validation](#phase-c--validation-scriptsacsvalidation)
 - [Pipeline 2 — PUMS Microdata & ALICE Analysis](#pipeline-2--pums-microdata--alice-analysis)
 - [Outputs Reference](#outputs-reference)
 - [Project Structure](#project-structure)
@@ -67,63 +70,229 @@ python scripts/postgres-connection.py
 
 ## Pipeline 1 — ACS Summary Data
 
-This pipeline loads ACS 5-year estimate CSVs (2010–2023) for ten demographic categories into PostgreSQL.
+This pipeline ingests ACS 5-year estimate CSVs (2019–2023) for thirteen demographic and economic tables, builds a star schema with a tract geography dimension and a long-format fact table, and exports Tableau-ready outputs. Scripts are split into three sub-pipelines: **dim** (geography dimension), **fact** (staging → intermediate → fact), and **validation**.
+
+**Years:** 2019, 2021, 2022, 2023
+**Geography:** Champaign County, Illinois (state FIPS 17, county FIPS 019)
 
 ### Data Sources
 
-Download from the [US Census Bureau ACS](https://www.census.gov/programs-surveys/acs) (5-year estimates). Place raw downloaded folders under `data/raw/`.
+Download the following tables from the [US Census Bureau ACS](https://www.census.gov/programs-surveys/acs) (5-year estimates) for each year. Place each downloaded folder under `data/raw/` keeping the original Census folder naming convention (e.g., `MedianHouseholdIncome(B19013)_2023_2019`).
 
-| Dataset | ACS Table | Years |
+| Dataset | ACS Table | Metric Group |
 |---|---|---|
-| Age Distribution | S0101 | 2019–2023 |
-| Population & Race | DP05 | 2019–2023 |
-| Household Composition | DP02 | 2019–2023 |
-| Language Spoken at Home | S1601 | 2019–2023 |
-| Poverty Status | S1701 | 2019–2023 |
-| Income Distribution | S1901 | 2019–2023 |
-| Employment Status | S2301 | 2019–2023 |
-| Occupation | S2401 | 2019–2023 |
-| Household Costs | S2503 | 2019–2023 |
-| Economic Characteristics | DP03 | 2019–2023 |
+| Median Household Income | B19013 | income |
+| Housing Tenure | B25003 | tenure |
+| Gross Rent as % of Income | B25070 | rent_burden |
+| Selected Housing Characteristics | DP04 | housing_profile |
+| Household Composition | S1101 | household_composition |
+| Poverty Status | S1701 | poverty |
+| Income Distribution | S1901 | income_distribution |
+| Employment Status | S2301 | employment |
+| Educational Attainment | S1501 | education |
+| Occupation | S2401 | occupation |
+| Race / Ethnicity | B03002 | race_ethnicity |
+| Age Distribution | S0101 | age |
+| Language Spoken at Home | S1601 | language |
 
-### Steps
+---
 
-**Step 1 — Copy raw files into yearly-data folders**
+### Phase A — Dimension Pipeline (`scripts/acs/dim/`)
 
-```bash
-bash scripts/copy_files_census.sh
-```
+Run scripts in numbered order from the project root.
 
-**Step 2 — Standardize filenames**
+---
 
-```bash
-bash scripts/rename_census_data_files.sh
-```
-
-**Step 3 — Combine yearly files**
-
-Open and run [notebooks/combine_yearly_files.ipynb](../notebooks/combine_yearly_files.ipynb).
-
-**Step 4 — Load into PostgreSQL**
+**Step A1 — Inventory ACS files**
 
 ```bash
-python scripts/load_census_data_db.py
+python scripts/acs/dim/01_inventory_acs_files.py
 ```
 
-### Resulting Tables
+Scans `data/raw/` using regex against Census file naming conventions. Classifies every file by table code, source type (Detail/Subject/Profile), year, and file kind (Data / Column-Metadata / Table-Notes). Produces a missing-file report for the expected year set before any processing begins.
 
-| Table | Source |
+Outputs:
+- `outputs/acs/inventory/acs_file_inventory.csv`
+- `outputs/acs/inventory/acs_folder_year_summary.csv`
+- `outputs/acs/inventory/acs_missing_expected_files.csv`
+
+---
+
+**Step A2 — Extract tract geography rows**
+
+```bash
+python scripts/acs/dim/02_extract_dim_tract_from_acs.py
+```
+
+Reads B19013 files for each year, filters to Champaign County tracts (GEO_ID prefix `1400000US`), and parses the full GEO_ID into `statefp`, `countyfp`, `tractce`, and `tract_geoid` components.
+
+Outputs: `data/processed/acs/tract/dim_tract_{year}.csv` for each year, plus `dim_tract_all_years.csv`.
+
+---
+
+**Step A3 — Build dim_tract**
+
+```bash
+python scripts/acs/dim/03_build_dim_tract.py
+```
+
+Consolidates per-year tract extracts into a single deduplicated dimension table. Detects and reports tract name conflicts across years.
+
+Outputs:
+- `data/acs/processed/acs_tract/dimensions/dim_tract.csv`
+- `outputs/acs/acs_tract/dim_tract_name_conflicts.csv`
+
+---
+
+**Step A4 — Validate dim_tract**
+
+```bash
+python scripts/acs/dim/04_validate_dim_tract.py
+```
+
+Checks for null GEO IDs, duplicate tract keys, and year coverage gaps.
+
+---
+
+**Step A5 — Finalize dim_tract and build bridge**
+
+```bash
+python scripts/acs/dim/05_build_final_dim_tract_and_bridge.py
+```
+
+Writes the final `dim_tract.csv` and creates `bridge_tract_year.csv` — a surrogate-key bridge table linking each tract to the years it appears in. Used for referential integrity checks in the validation suite.
+
+Outputs:
+- `data/acs/processed/acs_tract/dimensions/dim_tract.csv`
+- `data/acs/processed/acs_tract/dimensions/bridge_tract_year.csv`
+
+---
+
+### Phase B — Fact Pipeline (`scripts/acs/fact/`)
+
+Run scripts in numbered order from the project root.
+
+---
+
+**Step B1 — Generate staging files**
+
+```bash
+python scripts/acs/fact/01_generate_acs_staging_files.py
+```
+
+Reads each raw ACS CSV, filters to Champaign County rows, cleans column names to snake_case, and writes standardised staging CSVs. Skips header rows and column-metadata rows that Census includes in raw downloads.
+
+Outputs: `data/acs/processed/acs_tract/staging/stg_acs_{year}_{table_code}.csv` for each year × table combination.
+
+---
+
+**Step B2 — Create staging SQL scripts and load**
+
+```bash
+python scripts/acs/fact/02_create_acs_staging_sql_script.py
+```
+
+Programmatically generates `CREATE TABLE` and `COPY` SQL for each staging CSV, writes scripts to `sql/acs/fact/staging_all/`, and executes them against PostgreSQL.
+
+Creates tables: `stg_acs_{year}_{table_code}_raw` (52 tables: 4 years × 13 tables).
+
+---
+
+**Step B3 — Build intermediate tables: core housing**
+
+```bash
+python scripts/acs/fact/03_create_acs_int_core_housing.py
+```
+
+Builds intermediate tables and all-years views for core housing tables: B19013, B25003, B25070, DP04. Applies column selection, renaming, and type casting. Produces `vw_int_acs_{table_code}_all_years` views used by the fact builder.
+
+Creates tables: `int_acs_{year}_{table_code}` and views: `vw_int_acs_{table_code}_all_years` for each table in this group.
+
+---
+
+**Step B4 — Build intermediate tables: household, poverty, income, employment**
+
+```bash
+python scripts/acs/fact/04_create_acs_int_housing_poverty_emp.py
+```
+
+Same pattern as B3 for: S1101, S1701, S1901, S2301.
+
+---
+
+**Step B5 — Build intermediate tables: demographics, education, language**
+
+```bash
+python scripts/acs/fact/05_create_acs_int_demo_edu.py
+```
+
+Same pattern as B3 for: S1501, S2401, B03002, S0101, S1601.
+
+---
+
+**Step B6 — Build long-format fact table**
+
+```bash
+python scripts/acs/fact/06_create_acs_fact_tract_metric_long.py
+```
+
+Reads all 13 `vw_int_acs_{table_code}_all_years` views and melts them from wide format (one column per metric) into long format — one row per `(year, tract_geoid, metric_name)`. Tags each row with `source_table`, `metric_group`, and `metric_kind` (`estimate`, `moe`, or `derived`). Loads result into PostgreSQL and exports a combined CSV.
+
+Creates table: `fact_acs_tract_metric_long`
+
+| Column | Description |
 |---|---|
-| `age` | age_combined.csv |
-| `populationrace` | populationrace_combined.csv |
-| `householdcompostion` | householdcompostion_combined.csv |
-| `languagespoken` | languagespoken_combined.csv |
-| `poverty` | poverty_combined.csv |
-| `incomedistribution` | incomedistribution_combined.csv |
-| `employmentstatus` | employmentstatus_combined.csv |
-| `occupation` | occupation_combined.csv |
-| `houseoldcost` | houseoldcost_combined.csv |
-| `economiccharateristic` | economiccharateristic_combined.csv |
+| `year` | Survey year |
+| `tract_geoid` | 11-digit Census tract GEO ID |
+| `source_table` | ACS table code (e.g. `S1701`) |
+| `metric_group` | Thematic group (e.g. `poverty`, `employment`) |
+| `metric_name` | Original column name from ACS table |
+| `metric_kind` | `estimate`, `moe`, or `derived` |
+| `metric_value` | Numeric value |
+
+---
+
+**Step B7 — Build wide-format fact profile**
+
+```bash
+python scripts/acs/fact/07_create_acs_facts_tract_profile.py
+```
+
+Builds a wide-format summary table from the intermediate views — one row per `(year, tract_geoid)` with curated columns across all metric groups. Designed for direct Tableau use without requiring unpivot logic.
+
+Creates table: `fact_acs_tract_profile`
+
+---
+
+### Phase C — Validation (`scripts/acs/validation/`)
+
+Run the full validation orchestrator after completing Phases A and B:
+
+```bash
+python scripts/acs/validation/04_run_full_validation.py
+```
+
+Runs three validation passes in sequence:
+
+| Pass | Script | Checks |
+|---|---|---|
+| Staging | `01_validate_stg_tables.py` | Table presence, row counts, expected manifest coverage, null profile |
+| Intermediate | `02_validate_int_tables.py` | Table presence, row counts, key null checks, numeric profile, batch coverage |
+| Fact | `03_validate_fact_tables.py` | Fact table presence, year × source coverage, bridge join completeness, numeric profile, key integrity |
+
+All outputs are saved to `outputs/acs/validation/` with a run summary per pass.
+
+---
+
+### ACS Table Summary
+
+| Layer | Tables Created |
+|---|---|
+| Staging | `stg_acs_{year}_{table_code}_raw` (52 tables) |
+| Intermediate | `int_acs_{year}_{table_code}` (52 tables) + 13 all-years views |
+| Dimension | `dim_tract`, `bridge_tract_year` |
+| Fact (long) | `fact_acs_tract_metric_long` |
+| Fact (wide) | `fact_acs_tract_profile` |
 
 ---
 

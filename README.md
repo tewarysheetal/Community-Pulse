@@ -1,52 +1,92 @@
 # Community Pulse
 
-> How many working families in Champaign, Illinois can't make ends meet — and are we even counting the right people?
+Champaign, Illinois has a measurement problem.
 
-Standard poverty measures say one thing. The reality on the ground says another. In a city shaped by a major university, a large student population quietly distorts every income and household statistic, making economic hardship look smaller than it actually is.
+Standard poverty metrics systematically undercount economic hardship in university cities. A large transient student population suppresses median income, inflates apparent low-income household counts, and makes year-over-year trend analysis unreliable. Community organizations making funding and policy decisions are working off numbers that don't reflect the people they serve.
 
-Community Pulse exists to fix that.
-
----
-
-## The Problem
-
-Federal poverty measures capture only the most extreme hardship. They miss the much larger group of households that earn above the poverty line but still cannot afford basic necessities — rent, food, childcare, healthcare, transportation. This population is known as **ALICE: Asset Limited, Income Constrained, Employed**.
-
-In Champaign, measuring ALICE accurately has an added complication: tens of thousands of college students live here. They show up in Census data as low-income households, but they are not the economically vulnerable families that community organizations need to serve. Counting them inflates hardship numbers and muddies every trend line.
-
-**The question this project answers:** Among Champaign's actual working-family population, how many households fall below the ALICE survival threshold — and how has that changed from 2019 to 2023?
+This project rebuilds that picture from the ground up.
 
 ---
 
-## How We Solve It
+## The Question
 
-Two Census data sources, one integrated pipeline:
+**How many working-family households in Champaign fall below a true economic survival threshold — and how has that changed across 2019 to 2023?**
 
-**ACS Summary Tables** give us the broad demographic and economic picture of Champaign — income distribution, housing costs, employment, and more — across ten subject areas from 2019 to 2023.
-
-**PUMS Microdata** gives us individual household records. We use this to build household-level profiles, calculate inflation-adjusted income, classify each household by composition (adults + children), and compare their income against the ALICE survival budget for that household type.
-
-The key engineering decisions that make the analysis trustworthy:
-
-- **Student filter** — households where the majority of members are enrolled students with no employment are flagged and separated, so the ALICE count reflects working families, not students.
-- **PUMA boundary correction** — Census geography changed in 2022, splitting Champaign County across two reporting areas. We build a tract-level allocation factor from ACS5 household counts to proportionally assign the overlapping geography back to Champaign only.
-- **Calibrated thresholds** — ALICE survival budgets are adjusted upward for the two most common childless household types to reflect Champaign's actual cost of living.
-- **Validation suite** — every pipeline run checks threshold accuracy, null integrity, population balance, and benchmark comparisons before outputs are trusted.
-
-The final outputs are Tableau-ready CSVs: statistical profiles of the ALICE population, year-over-year trend data, and side-by-side comparisons of the full vs. non-student population.
+The federal poverty line isn't designed to answer this. It misses the broader population of households that earn above poverty but still cannot cover basic necessities. The **ALICE framework** (Asset Limited, Income Constrained, Employed) captures this gap by defining survival budgets by household composition and local cost of living — a far more precise instrument for community-level analysis.
 
 ---
 
-## What Gets Produced
+## The Approach
 
-- ALICE household counts and statistical profiles for 2019, 2021, 2022, and 2023
-- Non-student ALICE population isolated for clean community analysis
-- Year-over-year comparison of income, household size, and threshold proximity
-- Validated, Tableau-ready exports for community stakeholder dashboards
+Two Census data products feed a single integrated pipeline:
+
+**ACS 5-Year Estimates** establish the demographic and economic baseline — income distribution, housing cost burden, employment, language, and household composition across ten subject areas from 2019 to 2023.
+
+**PUMS Microdata** provides the household-level records needed for ALICE analysis. Each record carries Census survey weights, allowing population-representative estimates from a sample. The pipeline uses this to build household income profiles, classify composition, inflation-adjust income across years, and apply ALICE thresholds at the household level.
+
+Three analytical challenges required custom engineering:
+
+**Student population isolation** — Champaign's student households are flagged using a combination of school enrollment status and employment absence across household members. The ALICE analysis runs in parallel on the full population and the non-student subset, and both are exported for comparison.
+
+**PUMA geography correction (2022–2023)** — Census PUMA boundaries were redrawn after 2021, splitting Champaign County across two reporting areas. One of those areas extends into neighboring counties, making a simple geographic filter incorrect. The pipeline constructs a tract-level allocation factor (alpha) derived from ACS5 household counts to proportionally weight records back to Champaign County only.
+
+**Threshold calibration** — ALICE survival budgets for prior years are backfilled using the Illinois Essentials Index. The two dominant childless household types receive an additional local calibration adjustment before any below-ALICE flags are set. A validation suite checks threshold consistency, null integrity, population balance, and benchmark comparisons before outputs are finalized.
 
 ---
 
-## Tech Stack
+## Core Concepts & Techniques
+
+### Data Ingestion & Loading
+
+**Live Census API ingestion** — ACS5 tract-level household counts are pulled directly from the Census Bureau REST API at runtime, parameterized by county and year, and loaded straight into PostgreSQL. No manual downloads for reference data.
+
+**Automated file inventory** — Before any ACS data is processed, a regex-based file scanner walks the raw download directory, classifies every file by table code, source type (Detail/Subject/Profile), and year, and produces an inventory with a missing-file report. The pipeline won't proceed against an incomplete dataset.
+
+**PostgreSQL COPY bulk loading** — PUMS files contain millions of records. Rather than row-by-row inserts, the pipeline streams CSV data through `COPY ... FROM STDIN`, cutting load times dramatically and keeping memory overhead flat regardless of file size.
+
+---
+
+### Data Modeling
+
+**Star schema** — Both pipelines share a consistent modeling philosophy. Dimension tables hold stable reference data — `dim_tract` for Census geography, `alice_thresholds` for ALICE survival budgets, `alice_puma1902_alpha` for geographic allocation factors, and tract-to-PUMA crosswalks. Fact tables hold the analytical records. Queries join against dimensions rather than embedding logic in every table, making threshold changes and recalibrations a single-point update.
+
+**Multi-layer ETL (Staging → Intermediate → Fact)** — The ACS pipeline processes data through three explicit layers. Raw CSV files are loaded into staging tables exactly as downloaded. Intermediate views apply column selection, renaming, and thematic grouping across related ACS tables (housing, poverty, demographics). The final fact tables are built from those intermediate views, fully cleaned and analytics-ready. Each layer is independently validated before the next one runs.
+
+**Wide-to-long pivoting** — ACS tables are delivered in wide format with hundreds of metric columns per row. The fact layer unpivots this into a long format — one row per tract × year × metric — using `pandas.melt()`. This makes cross-table queries, trend analysis, and Tableau connections dramatically simpler, at the cost of a larger row count.
+
+---
+
+### Analytical Methods
+
+**Inflation-adjusted income normalization** — PUMS includes a Census-provided adjustment factor (`adjinc`) per record that normalizes nominal income to a consistent reference year. Applied as `hincp × adjinc / 1,000,000`, this makes household income directly comparable across all five survey years without external CPI lookups.
+
+**AEI ratio-based threshold backfilling** — The 2023 ALICE survival budgets are the ground truth. Prior years are derived by scaling those budgets by the ratio of each year's Illinois Essentials Index to the 2023 index value — a principled backfill that preserves the structural relationship between years without requiring independent budget reconstruction for each one.
+
+**Fractional geographic allocation** — When a PUMA spans multiple counties, a simple boundary filter misattributes households. The pipeline builds a per-PUMA allocation factor (alpha) — the share of total PUMA households belonging to Champaign County — derived from ACS5 tract counts and applied as a survey weight multiplier. This preserves population estimates while correcting for geographic spillover.
+
+**Survey-weighted estimation** — Raw PUMS counts are meaningless without weights. Every household count, income average, and composition breakdown is computed using the Census-assigned household weight (`wgtp`), producing population-representative estimates from a sample rather than literal row counts.
+
+**Margin of error tracking** — ACS data ships with a margin of error (MOE) alongside every point estimate. The pipeline preserves both, tagging each metric as `estimate`, `moe`, or `derived` so downstream analysis can surface statistical reliability alongside the numbers themselves.
+
+---
+
+### Engineering Practices
+
+**Programmatic SQL generation** — Rather than maintaining near-identical SQL scripts for five survey years, both pipelines generate them at runtime from Python templates. Year-specific parameters — table names, PUMA filters, weight columns — are injected via f-strings. The resulting SQL is written to disk for auditability and executed immediately against the database.
+
+**GEO ID parsing** — Census full GEO IDs (e.g., `1400000US17019XXXXXX`) are decoded at ingest to extract state FIPS, county FIPS, and tract codes as structured columns. This makes geographic joins and filters consistent across every table, regardless of source format.
+
+**Population balance validation** — Every pipeline run verifies that `below_alice + above_alice = total_households` across all years before outputs are trusted. Combined with null checks, threshold consistency checks, and benchmark comparisons against published ALICE data sheets, this ensures the pipeline fails loudly rather than silently producing incorrect counts.
+
+---
+
+## Outputs
+
+Tableau-ready statistical profiles of the ALICE population by year — household counts, income distribution, composition breakdowns, and threshold proximity — alongside a nonstudent vs. full-population comparison designed for direct use by community stakeholders.
+
+---
+
+## Stack
 
 Python · PostgreSQL · pandas · SQLAlchemy · Census API · JupyterLab · Tableau
 
@@ -54,4 +94,4 @@ Python · PostgreSQL · pandas · SQLAlchemy · Census API · JupyterLab · Tabl
 
 ## Replication
 
-For full setup, pipeline steps, and SQL details: **[docs/REPLICATION.md](docs/REPLICATION.md)**
+Full setup, pipeline execution order, and schema reference: **[docs/REPLICATION.md](docs/REPLICATION.md)**
