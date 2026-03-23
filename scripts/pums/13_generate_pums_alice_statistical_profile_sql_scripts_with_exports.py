@@ -51,8 +51,10 @@ def sql_create_below_alice_dataset(year: int) -> str:
         drop table if exists alice_below_alice_households_{year};
 
         create table alice_below_alice_households_{year} as
-        select *
-        from alice_household_final_{year}
+        select
+            {year}::integer as year,
+            t.*
+        from alice_household_final_{year} t
         where below_alice_flag = 1;
         """
     ).strip() + "\n"
