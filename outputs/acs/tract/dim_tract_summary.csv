@@ -1,0 +1,5 @@
+year,tract_count,min_tractce,max_tractce,output_file
+2019,43,000200,011100,D:\Projects\Community-Pulse\data\acs\processed\tract\dim_tract_2019.csv
+2021,48,000200,011100,D:\Projects\Community-Pulse\data\acs\processed\tract\dim_tract_2021.csv
+2022,48,000200,011100,D:\Projects\Community-Pulse\data\acs\processed\tract\dim_tract_2022.csv
+2023,48,000200,011100,D:\Projects\Community-Pulse\data\acs\processed\tract\dim_tract_2023.csv

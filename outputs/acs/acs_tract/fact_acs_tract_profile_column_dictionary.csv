@@ -1,0 +1,71 @@
+ordinal_position,column_name,data_type
+1,year,integer
+2,tract_geoid,character varying
+3,geo_id,character varying
+4,statefp,character varying
+5,countyfp,character varying
+6,tractce,character varying
+7,tract_number,character varying
+8,tract_name_canonical,character varying
+9,tract_name_latest,character varying
+10,county_name,character varying
+11,state_name,character varying
+12,first_year_seen,integer
+13,last_year_seen,integer
+14,year_count,integer
+15,is_stable_all_4_years,integer
+16,year_label,character varying
+17,acs_dataset,character varying
+18,acs_period,character varying
+19,median_household_income,numeric
+20,median_household_income_moe,numeric
+21,occupied_units,numeric
+22,owner_occupied_units,numeric
+23,renter_occupied_units,numeric
+24,pct_owner_occupied,numeric
+25,pct_renter_occupied,numeric
+26,renter_hh_rent_burden_base,numeric
+27,rent_30_34,numeric
+28,rent_35_39,numeric
+29,rent_40_49,numeric
+30,rent_50_plus,numeric
+31,rent_not_computed,numeric
+32,pct_rent_burden_30_plus,numeric
+33,pct_rent_burden_50_plus,numeric
+34,pct_rent_not_computed,numeric
+35,housing_units_total,numeric
+36,occupied_housing_units_dp04,numeric
+37,vacant_housing_units_dp04,numeric
+38,pct_occupied_housing_units,numeric
+39,pct_vacant_housing_units,numeric
+40,for_rent_units,numeric
+41,rented_not_occupied_units,numeric
+42,for_sale_only_units,numeric
+43,sold_not_occupied_units,numeric
+44,seasonal_recreational_units,numeric
+45,migrant_worker_units,numeric
+46,other_vacant_units,numeric
+47,total_population,numeric
+48,not_hispanic_total,numeric
+49,white_non_hispanic_population,numeric
+50,black_non_hispanic_population,numeric
+51,hispanic_population,numeric
+52,pct_white_non_hispanic,numeric
+53,pct_black_non_hispanic,numeric
+54,pct_hispanic,numeric
+55,has_core_housing_metrics,integer
+56,has_batch2_metrics,integer
+57,has_batch3_metrics,integer
+58,b19013_metrics_json,jsonb
+59,b25003_metrics_json,jsonb
+60,b25070_metrics_json,jsonb
+61,dp04_metrics_json,jsonb
+62,s1101_metrics_json,jsonb
+63,s1701_metrics_json,jsonb
+64,s1901_metrics_json,jsonb
+65,s2301_metrics_json,jsonb
+66,s1501_metrics_json,jsonb
+67,s2401_metrics_json,jsonb
+68,b03002_metrics_json,jsonb
+69,s0101_metrics_json,jsonb
+70,s1601_metrics_json,jsonb

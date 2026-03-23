@@ -1,0 +1,5 @@
+year,row_count,rows_with_core_housing_metrics,rows_with_batch2_metrics,rows_with_batch3_metrics,avg_median_household_income,avg_pct_renter_occupied,avg_pct_rent_burden_30_plus,avg_pct_hispanic
+2019,43,43,43,43,53954.23,50.20,45.57,6.06
+2021,48,47,48,48,60749.47,49.90,44.64,6.21
+2022,48,48,48,48,64875.63,49.72,44.07,6.69
+2023,48,47,48,48,67772.60,49.63,44.13,8.36
