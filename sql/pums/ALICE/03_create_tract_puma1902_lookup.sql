@@ -1,4 +1,6 @@
-create table tract_puma1902_lookup as
+Drop table if exists alice_tract_puma1902_lookup;
+
+create table alice_tract_puma1902_lookup as
 select
     lpad(statefp::text, 2, '0') as statefp,
     lpad(countyfp::text, 3, '0') as countyfp,
@@ -8,5 +10,5 @@ select
     lpad(statefp::text, 2, '0')
       || lpad(countyfp::text, 3, '0')
       || lpad(regexp_replace(tractce::text, '[^0-9]', '', 'g'), 6, '0') as tract_geoid
-from tract_il
+from alice_tract_illinois_raw
 where lpad(puma5ce::text, 5, '0') = '01902';

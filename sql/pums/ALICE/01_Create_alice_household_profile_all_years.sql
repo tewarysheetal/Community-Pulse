@@ -1,3 +1,4 @@
+Drop TABLE IF EXISTS alice_household_profile_all_years;
 CREATE TABLE alice_household_profile_all_years AS
 SELECT
     2019 AS year,

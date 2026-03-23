@@ -1,4 +1,6 @@
-CREATE TABLE household_base_2019 AS
+DROP TABLE IF EXISTS alice_household_base_2019;
+
+CREATE TABLE alice_household_base_2019 AS
 SELECT
     serialno,
     state,
@@ -13,4 +15,4 @@ SELECT
     noc,
     npf,
     fparc
-FROM housing_2019_champaign;
+FROM alice_housing_2019_champaign;

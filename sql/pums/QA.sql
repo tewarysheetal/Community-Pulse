@@ -487,3 +487,144 @@ select
     2023 as year,
     round(sum(analysis_weight), 0) as nonstudent_alice_households
 from alice_nonstudent_households_2023;
+
+with base as (
+    select 2019 as year, hh_comp_key, analysis_weight, hincp_adj_real, annual_alice_threshold
+    from alice_household_final_2019
+    union all
+    select 2021 as year, hh_comp_key, analysis_weight, hincp_adj_real, annual_alice_threshold
+    from alice_household_final_2021
+    union all
+    select 2022 as year, hh_comp_key, analysis_weight, hincp_adj_real, annual_alice_threshold
+    from alice_household_final_2022
+    union all
+    select 2023 as year, hh_comp_key, analysis_weight, hincp_adj_real, annual_alice_threshold
+    from alice_household_final_2023
+),
+test as (
+    select
+        year,
+        analysis_weight,
+        hincp_adj_real,
+        case
+            when hh_comp_key in ('1_adult_0_child', '2_adult_0_child')
+                then annual_alice_threshold + 7500
+            else annual_alice_threshold
+        end as threshold_test
+    from base
+)
+select
+    year,
+    round(sum(case when hincp_adj_real < threshold_test then analysis_weight else 0 end), 0) as below_alice_test
+from test
+group by year
+order by year;
+
+with base as (
+    select 2019 as year, hh_comp_key, analysis_weight, hincp_adj_real, annual_alice_threshold
+    from alice_household_final_2019
+    union all
+    select 2021 as year, hh_comp_key, analysis_weight, hincp_adj_real, annual_alice_threshold
+    from alice_household_final_2021
+    union all
+    select 2022 as year, hh_comp_key, analysis_weight, hincp_adj_real, annual_alice_threshold
+    from alice_household_final_2022
+    union all
+    select 2023 as year, hh_comp_key, analysis_weight, hincp_adj_real, annual_alice_threshold
+    from alice_household_final_2023
+),
+test as (
+    select
+        year,
+        analysis_weight,
+        hincp_adj_real,
+        case
+            when year in (2019, 2021, 2022)
+                 and hh_comp_key in ('1_adult_0_child', '2_adult_0_child')
+                then annual_alice_threshold + 5000
+            else annual_alice_threshold
+        end as threshold_test
+    from base
+)
+select
+    year,
+    round(sum(case when hincp_adj_real < threshold_test then analysis_weight else 0 end), 0) as below_alice_test
+from test
+group by year
+order by year;
+
+with base as (
+    select 2019 as year, hh_comp_key, analysis_weight, hincp_adj_real, annual_alice_threshold
+    from alice_household_final_2019
+    union all
+    select 2021 as year, hh_comp_key, analysis_weight, hincp_adj_real, annual_alice_threshold
+    from alice_household_final_2021
+    union all
+    select 2022 as year, hh_comp_key, analysis_weight, hincp_adj_real, annual_alice_threshold
+    from alice_household_final_2022
+    union all
+    select 2023 as year, hh_comp_key, analysis_weight, hincp_adj_real, annual_alice_threshold
+    from alice_household_final_2023
+),
+test as (
+    select
+        year,
+        analysis_weight,
+        hincp_adj_real,
+        case
+            when year in (2019, 2022)
+                 and hh_comp_key in ('1_adult_0_child', '2_adult_0_child')
+                then annual_alice_threshold + 5000
+            when year = 2021
+                 and hh_comp_key in ('1_adult_0_child', '2_adult_0_child')
+                then annual_alice_threshold + 7500
+            else annual_alice_threshold
+        end as threshold_test
+    from base
+)
+select
+    year,
+    round(sum(case when hincp_adj_real < threshold_test then analysis_weight else 0 end), 0) as below_alice_test
+from test
+group by year
+order by year;
+
+with base as (
+    select 2019 as year, hh_comp_key, analysis_weight, hincp_adj_real, annual_alice_threshold
+    from alice_household_final_2019
+    union all
+    select 2021 as year, hh_comp_key, analysis_weight, hincp_adj_real, annual_alice_threshold
+    from alice_household_final_2021
+    union all
+    select 2022 as year, hh_comp_key, analysis_weight, hincp_adj_real, annual_alice_threshold
+    from alice_household_final_2022
+    union all
+    select 2023 as year, hh_comp_key, analysis_weight, hincp_adj_real, annual_alice_threshold
+    from alice_household_final_2023
+),
+test as (
+    select
+        year,
+        analysis_weight,
+        hincp_adj_real,
+        case
+            when year = 2019
+                 and hh_comp_key in ('1_adult_0_child', '2_adult_0_child')
+                then annual_alice_threshold + 5000
+            when year = 2021
+                 and hh_comp_key in ('1_adult_0_child', '2_adult_0_child')
+                then annual_alice_threshold + 7500
+            when year = 2022
+                 and hh_comp_key in ('1_adult_0_child', '2_adult_0_child')
+                then annual_alice_threshold + 7500
+            else annual_alice_threshold
+        end as threshold_test
+    from base
+)
+select
+    year,
+    round(sum(case when hincp_adj_real < threshold_test then analysis_weight else 0 end), 0) as below_alice_test
+from test
+group by year
+order by year;
+

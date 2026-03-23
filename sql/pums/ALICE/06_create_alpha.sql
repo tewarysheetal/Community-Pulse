@@ -1,4 +1,5 @@
-create table puma1902_alpha as
+drop table if exists alice_puma1902_alpha;
+create table alice_puma1902_alpha as
 select
     2022 as alloc_year,
     13124::numeric as champaign_households,

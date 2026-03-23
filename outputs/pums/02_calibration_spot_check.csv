@@ -1,0 +1,9 @@
+validation_name,year,hh_comp_key,raw_threshold,calibrated_threshold,uplift
+02_calibration_spot_check,2019,1_adult_0_child,28838.68,33838.68,5000.0
+02_calibration_spot_check,2019,2_adult_0_child,40201.89,45201.89,5000.0
+02_calibration_spot_check,2021,1_adult_0_child,29992.23,37492.23,7500.0
+02_calibration_spot_check,2021,2_adult_0_child,41809.96,49309.96,7500.0
+02_calibration_spot_check,2022,1_adult_0_child,31879.85,39379.85,7500.0
+02_calibration_spot_check,2022,2_adult_0_child,44441.36,51941.36,7500.0
+02_calibration_spot_check,2023,1_adult_0_child,33348.0,33348.0,0.0
+02_calibration_spot_check,2023,2_adult_0_child,46488.0,46488.0,0.0

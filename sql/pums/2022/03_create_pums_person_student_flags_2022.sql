@@ -1,4 +1,6 @@
-CREATE TABLE person_student_flags_2022 AS
+DROP TABLE IF EXISTS alice_person_student_flags_2022;
+
+CREATE TABLE alice_person_student_flags_2022 AS
 SELECT
     serialno,
     sporder,
@@ -19,4 +21,4 @@ SELECT
     END AS is_likely_college_student,
     CASE WHEN relshipp = 20 THEN 1 ELSE 0 END AS is_reference_person,
     CASE WHEN esr IN (1, 2) THEN 1 ELSE 0 END AS is_employed
-FROM person_2022_champaign;
+FROM alice_person_2022_champaign;

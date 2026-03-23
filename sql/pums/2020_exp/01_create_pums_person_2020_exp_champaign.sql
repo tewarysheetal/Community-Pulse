@@ -1,6 +1,8 @@
-CREATE TABLE person_2020_exp_champaign AS
+DROP TABLE IF EXISTS alice_person_2020_exp_champaign;
+
+CREATE TABLE alice_person_2020_exp_champaign AS
 SELECT
     *
-FROM "person_2020_exp_raw"
+FROM "alice_person_2020_exp_raw"
 WHERE state = 17
   AND puma = 2100;

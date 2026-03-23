@@ -1,0 +1,5 @@
+validation_name,year,row_count,null_analysis_weight,null_hincp_adj_real,null_hh_comp_key,null_annual_alice_threshold,null_below_alice_flag,null_student_heavy_flag
+03_final_table_null_check,2019,792,0,0,0,0,0,0
+03_final_table_null_check,2021,796,0,0,0,0,0,0
+03_final_table_null_check,2022,1773,0,0,0,0,0,0
+03_final_table_null_check,2023,1814,0,0,0,0,0,0

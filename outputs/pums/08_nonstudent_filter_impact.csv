@@ -1,0 +1,5 @@
+validation_name,year,below_alice_all,below_alice_nonstudent,removed_as_student_heavy,pct_removed_as_student_heavy
+08_nonstudent_filter_impact,2019,35263.0,32848.0,2415.0,6.85
+08_nonstudent_filter_impact,2021,32841.0,29386.0,3455.0,10.52
+08_nonstudent_filter_impact,2022,37610.0,34808.0,2802.0,7.45
+08_nonstudent_filter_impact,2023,38031.0,31918.0,6113.0,16.07

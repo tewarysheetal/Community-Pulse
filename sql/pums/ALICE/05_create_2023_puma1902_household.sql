@@ -1,4 +1,6 @@
-create table acs5_2023_puma1902_households as
+Drop table if exists alice_acs5_2023_puma1902_households;
+
+create table alice_acs5_2023_puma1902_households as
 select
     l.statefp,
     l.countyfp,
@@ -8,6 +10,6 @@ select
     l.tract_geoid,
     a."NAME",
     a.b11001_001e
-from tract_puma1902_lookup l
+from alice_tract_puma1902_lookup l
 left join acs5_2023_b11001_raw a
     on l.tract_geoid = a.tract_geoid;

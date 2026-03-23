@@ -1,0 +1,5 @@
+validation_name,year,total_households,below_alice_households,above_alice_households,balance_check
+04_balance_check,2019,81765.0,35263.0,46502.0,0.0
+04_balance_check,2021,84248.0,32841.0,51407.0,0.0
+04_balance_check,2022,85821.0,37610.0,48210.0,0.0
+04_balance_check,2023,89811.0,38031.0,51780.0,0.0

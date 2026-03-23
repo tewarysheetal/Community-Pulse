@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS alice_household_profile_2021;
+
 CREATE TABLE alice_household_profile_2021 AS
 SELECT
     hb.serialno,
@@ -30,6 +32,6 @@ SELECT
     hsa.college_age_share_of_persons,
     hsa.student_heavy_flag_rule_a,
     hsa.student_heavy_flag_rule_b
-FROM household_base_2021 hb
-LEFT JOIN household_student_agg_2021 hsa
+FROM alice_household_base_2021 hb
+LEFT JOIN alice_household_student_agg_2021 hsa
     ON hb.serialno = hsa.serialno;

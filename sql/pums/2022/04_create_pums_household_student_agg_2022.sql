@@ -1,4 +1,6 @@
-CREATE TABLE household_student_agg_2022 AS
+DROP TABLE IF EXISTS alice_household_student_agg_2022;
+
+CREATE TABLE alice_household_student_agg_2022 AS
 SELECT
     serialno,
     COUNT(*) AS person_count,
@@ -35,5 +37,5 @@ SELECT
          AND SUM(is_employed) = 0
         THEN 1 ELSE 0
     END AS student_heavy_flag_rule_b
-FROM person_student_flags_2022
+FROM alice_person_student_flags_2022
 GROUP BY serialno;
