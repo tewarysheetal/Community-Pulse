@@ -18,19 +18,23 @@ The federal poverty line isn't designed to answer this. It misses the broader po
 
 ## The Approach
 
-Two Census data products feed a single integrated pipeline:
+Three Census data products and a layered analytical pipeline feed the final outputs:
 
 **ACS 5-Year Estimates** establish the demographic and economic baseline — income distribution, housing cost burden, employment, language, and household composition across ten subject areas from 2019 to 2023.
 
 **PUMS Microdata** provides the household-level records needed for ALICE analysis. Each record carries Census survey weights, allowing population-representative estimates from a sample. The pipeline uses this to build household income profiles, classify composition, inflation-adjust income across years, and apply ALICE thresholds at the household level.
 
-Three analytical challenges required custom engineering:
+**ACS Analysis Notebooks** form a downstream analytical layer built on top of the ACS fact tables. They cover exploratory data analysis, tract geography enrichment, K-Means clustering, cluster-to-cluster transitions across years, and a hardship-risk bridge that allocates known county-level ALICE household totals down to individual census tracts.
+
+Four analytical challenges required custom engineering:
 
 **Student population isolation** — Champaign's student households are flagged using a combination of school enrollment status and employment absence across household members. The ALICE analysis runs in parallel on the full population and the non-student subset, and both are exported for comparison.
 
 **PUMA geography correction (2022–2023)** — Census PUMA boundaries were redrawn after 2021, splitting Champaign County across two reporting areas. One of those areas extends into neighboring counties, making a simple geographic filter incorrect. The pipeline constructs a tract-level allocation factor (alpha) derived from ACS5 household counts to proportionally weight records back to Champaign County only.
 
 **Threshold calibration** — ALICE survival budgets for prior years are backfilled using the Illinois Essentials Index. The two dominant childless household types receive an additional local calibration adjustment before any below-ALICE flags are set. A validation suite checks threshold consistency, null integrity, population balance, and benchmark comparisons before outputs are finalized.
+
+**Tract-level ALICE estimation** — County-level ALICE household counts derived from PUMS are disaggregated to individual census tracts using a composite ACS hardship risk score. Each tract receives an allocation weight proportional to its risk score, with an optional student-population dampening factor. Tract estimates are constrained to sum exactly to the known county total for each year.
 
 ---
 
@@ -68,6 +72,10 @@ Three analytical challenges required custom engineering:
 
 **Margin of error tracking** — ACS data ships with a margin of error (MOE) alongside every point estimate. The pipeline preserves both, tagging each metric as `estimate`, `moe`, or `derived` so downstream analysis can surface statistical reliability alongside the numbers themselves.
 
+**K-Means clustering with cross-year alignment** — ACS tract profiles are clustered independently for each survey year using K-Means on a curated set of 21 economic and demographic indicators. Because cluster labels are arbitrary across independent runs, a centroid-distance matching step (Hungarian algorithm via `scipy.optimize.linear_sum_assignment`) aligns cluster identities across years so that `aligned_cluster_0` refers to the same community type in 2019 and 2023. Elbow and silhouette diagnostics guide K selection. PCA projections are exported for visual validation.
+
+**Stable-tract transition analysis** — Census tracts that appear in all four survey years are isolated and their aligned cluster assignments are tracked year-over-year. Transition matrices, Sankey-ready edge tables, and wide-format path tables expose whether tracts have shifted community type over the 2019–2023 period.
+
 ---
 
 ### Engineering Practices
@@ -82,13 +90,15 @@ Three analytical challenges required custom engineering:
 
 ## Outputs
 
-Tableau-ready statistical profiles of the ALICE population by year — household counts, income distribution, composition breakdowns, and threshold proximity — alongside a nonstudent vs. full-population comparison designed for direct use by community stakeholders.
+**PUMS / ALICE pipeline** — Tableau-ready statistical profiles of the ALICE population by year: household counts, income distribution, composition breakdowns, and threshold proximity. Includes a nonstudent vs. full-population comparison designed for direct use by community stakeholders.
+
+**ACS analysis notebooks** — Tract-level outputs covering EDA summaries and visualisations, a client-friendly geography lookup (centroid coordinates, place/ZIP overlays, area-type labels), K-Means cluster assignments and centroid profiles, cross-year cluster transition matrices, and a final tract-level ALICE household estimate table that allocates county ALICE totals proportionally across tracts.
 
 ---
 
 ## Stack
 
-Python · PostgreSQL · pandas · SQLAlchemy · Census API · JupyterLab · Tableau
+Python · PostgreSQL · pandas · SQLAlchemy · Census API · JupyterLab · Tableau · geopandas · scikit-learn · scipy
 
 ---
 
