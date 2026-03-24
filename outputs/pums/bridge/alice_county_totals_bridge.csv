@@ -1,0 +1,9 @@
+year,source_variant,alice_households,county_total_households,alice_rate_pct
+2019,complete_calibrated,35263.0,81765.0,43.1273
+2019,nonstudent_calibrated,32848.0,81765.0,40.1737
+2021,complete_calibrated,32841.0,84248.0,38.9813
+2021,nonstudent_calibrated,29386.0,84248.0,34.8804
+2022,complete_calibrated,37610.178,85820.528264,43.8242
+2022,nonstudent_calibrated,34808.178,85820.528264,40.5593
+2023,complete_calibrated,38030.7353,89810.982224,42.3453
+2023,nonstudent_calibrated,31918.1611,89810.982224,35.5393

@@ -1,0 +1,10 @@
+metric,value
+row_count_acs,187
+years_present_acs,"2019, 2021, 2022, 2023"
+county_years_loaded,4
+used_bridge_metric_count,11
+student_adjustment_mode,dampen
+student_adjustment_strength,0.35
+sum_validation_max_abs_diff,3.637978807091713e-12
+geo_labels_filled,182
+cluster_assignments_joined,187

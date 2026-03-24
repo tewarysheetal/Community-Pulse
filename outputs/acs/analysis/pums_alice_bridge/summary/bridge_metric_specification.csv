@@ -1,0 +1,14 @@
+metric,direction,weight,group,exists_in_acs,used_in_bridge_score
+poverty_rate,1,1.0,economic_stress,True,True
+unemployment_rate,1,0.85,economic_stress,True,True
+pct_rent_burden_30_plus,1,0.9,housing_stress,True,True
+pct_rent_burden_50_plus,1,0.9,housing_stress,True,True
+pct_hh_income_under_25k,1,1.0,income_distribution,True,True
+pct_hh_income_25k_50k,1,0.8,income_distribution,True,True
+median_household_income,-1,1.0,income_distribution,True,True
+pct_hh_income_100k_plus,-1,0.7,income_distribution,True,True
+pct_bachelors_or_higher,-1,0.6,human_capital,True,True
+pct_less_than_high_school,1,0.5,human_capital,True,True
+pct_renter_occupied,1,0.5,housing_context,True,True
+pct_family_households,0,0.0,context,True,False
+pct_age_18_24,0,0.0,student_proxy,True,False

@@ -1,0 +1,8 @@
+metric,value
+row_count,187
+distinct_tracts,53
+years_present,"2019, 2021, 2022, 2023"
+geo_rows_available,48
+geometry_rows_joined,182
+geo_labels_filled,182
+clusters_joined,187
