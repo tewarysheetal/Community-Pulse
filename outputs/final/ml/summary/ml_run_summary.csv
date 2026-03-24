@@ -1,0 +1,11 @@
+metric,value
+row_count_total,187
+train_row_count,139
+test_row_count,48
+feature_count,13
+best_regression_model,ridge
+best_classification_model,random_forest_classifier
+best_regression_rmse,3.337832420535274
+best_regression_r2,0.9744421441465875
+best_classification_f1,0.8695652173913043
+best_classification_roc_auc,0.9907407407407407

@@ -6,12 +6,12 @@ It is organized in the order you should actually execute things:
 
 1. environment setup
 2. source data placement
-3. ACS dimension layer
-4. ACS fact layer
-5. ACS validation
-6. PUMS / ALICE pipeline
-7. notebook layer
-8. optional local extensions
+3. ACS pipeline
+4. PUMS / ALICE pipeline
+5. county totals bridge input
+6. notebook layer
+7. final outputs
+8. ML layer
 
 ---
 
@@ -23,9 +23,9 @@ You need:
 - PostgreSQL running locally or remotely
 - Git Bash or another shell for `.sh` scripts
 - enough disk space for ACS and PUMS raw files
-- `geopandas`, `shapely`, `scikit-learn`, and `scipy` for the later notebook layer
+- `geopandas`, `shapely`, `scikit-learn`, and `scipy` for the geography, bridge, final output, and ML layers
 
-Install base dependencies:
+Install the environment:
 
 ```bash
 python -m venv .venv
@@ -56,9 +56,14 @@ python scripts/postgres-connection.py
 
 ### ACS raw files
 
-Place ACS downloads under `data/raw/` using the original folder naming convention expected by the project. The replication guide already expects 2019, 2021, 2022, and 2023 ACS 5-year folders for the tracked tables.
+Place ACS downloads under the expected raw folders under `data/raw/`. The project currently expects the four ACS years used throughout the analysis:
 
-The documented ACS tables are:
+- 2019
+- 2021
+- 2022
+- 2023
+
+Tracked ACS tables:
 
 - B19013 — Median Household Income
 - B25003 — Housing Tenure
@@ -76,14 +81,27 @@ The documented ACS tables are:
 
 ### PUMS raw files
 
-Place Illinois housing and person folders under `data/raw/`. The project expects housing (`csv_hil_*`) and person (`csv_pil_*`) source files there.
+Place Illinois housing and person folders under the expected raw directory. The project expects:
+
+- housing files like `csv_hil_*`
+- person files like `csv_pil_*`
 
 ### Additional geography files
 
-These are needed later, not for the base pipelines:
+These are needed later for geography lookup and final maps:
 
 - `data/pums/Tract-Illinois.csv` for the PUMA 1902 crosswalk step
-- TIGER/Line tract, place, and optionally ZCTA shapefiles under `data/geo/` for the geography lookup notebook
+- TIGER/Line tract shapefile
+- TIGER/Line place shapefile
+- optional ZCTA shapefile
+
+A practical local location is:
+
+```text
+data/geo/tl_2023_17_tract/
+data/geo/tl_2023_17_place/
+data/geo/tl_2020_us_zcta520/
+```
 
 ---
 
@@ -109,16 +127,15 @@ python scripts/acs/dim/04_validate_dim_tract.py
 python scripts/acs/dim/05_build_final_dim_tract_and_bridge.py
 ```
 
-What this creates:
+Expected core outputs:
 
-- file inventory outputs under `outputs/acs/inventory/`
 - `dim_tract`
 - `bridge_tract_year`
-- the final tract-year bridge used by the fact layer
+- file inventory outputs under `outputs/acs/inventory/`
 
 ### 3B. Fact layer
 
-Run these Python scripts in order:
+Run these in order:
 
 ```bash
 python scripts/acs/fact/01_generate_acs_staging_files.py
@@ -130,21 +147,21 @@ python scripts/acs/fact/06_create_acs_fact_tract_metric_long.py
 python scripts/acs/fact/07_create_acs_facts_tract_profile.py
 ```
 
-What this creates:
+Expected core outputs:
 
-- staging SQL / staging tables
-- intermediate ACS views
+- staging tables
+- intermediate ACS tables / views
 - `fact_acs_tract_metric_long`
 - `fact_acs_tract_profile`
 
-### 3C. ACS SQL objects that downstream notebooks depend on
+### 3C. ACS SQL objects required by downstream notebooks
 
-The repo’s existing documentation shows that the downstream notebooks depend on the revised ACS profile and frozen metric sheet. At minimum, make sure these SQL objects exist before running the notebook layer:
+Before the notebook layer, make sure these objects exist:
 
 - `fact_acs_tract_profile_v2`
 - `acs_frozen_metric_sheet_v2`
 
-The documented SQL files involved are:
+Relevant SQL files:
 
 - `sql/acs/fact/07a_create_fact_acs_tract_profile.sql`
 - `sql/acs/fact/07b_create_fact_acs_tract_profile_v2.sql`
@@ -155,12 +172,10 @@ The documented SQL files involved are:
 
 Recommended order:
 
-1. create or refresh `fact_acs_tract_profile`
-2. create or refresh `fact_acs_tract_profile_v2`
+1. refresh `fact_acs_tract_profile`
+2. refresh `fact_acs_tract_profile_v2`
 3. create the frozen metric sheet
-4. apply any documented fixes / updates
-
-If you are working only from the notebook layer, the repo documentation already treats `notebooks/01_build_acs_profile_v2_from_int_tables.ipynb` as a valid way to rebuild `fact_acs_tract_profile_v2`.
+4. apply any documented fixes or updates
 
 ### 3D. ACS validation
 
@@ -182,7 +197,7 @@ python scripts/acs/validation/03_validate_fact_tables.py
 
 ## 4. PUMS / ALICE pipeline — exact execution order
 
-All PUMS pipeline scripts live under `scripts/pums/` and are already numbered in execution order.
+All PUMS scripts live under `scripts/pums/`.
 
 ### Step 1 — copy and rename raw PUMS files
 
@@ -202,11 +217,9 @@ python scripts/pums/02_load_pums_data_db.py
 python scripts/pums/03_generate_pums_sql_scripts.py
 ```
 
-This generates and executes SQL scripts under `sql/pums/<year>/` for each year.
-
 ### Step 4 — load tract-to-PUMA crosswalk
 
-First place `Tract-Illinois.csv` under `data/pums/`, then run:
+Place `Tract-Illinois.csv` under `data/pums/`, then run:
 
 ```bash
 python scripts/pums/04_load_tract_il.py
@@ -214,7 +227,7 @@ python scripts/pums/04_load_tract_il.py
 
 ### Step 5 — create PUMA 1902 lookup and alpha prerequisites
 
-Before the Python pull step, run this SQL manually:
+Run this SQL manually first:
 
 ```sql
 \i sql/pums/ALICE/03_create_tract_puma1902_lookup.sql
@@ -226,7 +239,7 @@ Then run:
 python scripts/pums/05_pull_acs_tract_households.py
 ```
 
-Then execute the remaining documented SQL helpers in order:
+Then execute the remaining SQL helpers in order:
 
 - `sql/pums/ALICE/04_create_2022_puma1902_household.sql`
 - `sql/pums/ALICE/05_create_2023_puma1902_household.sql`
@@ -292,127 +305,189 @@ python scripts/pums/13_generate_pums_alice_statistical_profile_sql_scripts_with_
 python scripts/pums/14_generate_pums_alice_profile_comparison_sql_scripts_with_exports.py
 ```
 
-At this point, the repo’s committed PUMS export layer under `outputs/pums/` and `outputs/pums/tableau-data/` should be reproducible.
+### Step 15 — create county-level ALICE totals bridge input
+
+Run the bridge-input helper after the PUMS statistical profile exports exist:
+
+```bash
+python scripts/pums/15_generate_alice_county_totals_bridge_sql_with_exports.py
+```
+
+Expected outputs:
+
+- `outputs/pums/bridge/alice_county_totals_bridge.csv`
+- `outputs/pums/bridge/alice_county_totals_complete_calibrated.csv`
+- `outputs/pums/bridge/alice_county_totals_nonstudent_calibrated.csv`
+
+This is the standard input used by the ACS ↔ PUMS / ALICE bridge notebook.
 
 ---
 
 ## 5. Notebook layer — exact dependency-aware order
 
-The repo documentation already lists the notebook layer and its dependencies. The safest execution order is:
+The notebook layer is downstream of both the ACS and PUMS pipelines.
 
-### Notebook 01 — build ACS profile v2
+Use this functional order even if local filenames differ slightly.
 
-```text
-notebooks/01_build_acs_profile_v2_from_int_tables.ipynb
-```
+### Notebook 1 — rebuild ACS profile v2
 
-Run this if you want to rebuild `fact_acs_tract_profile_v2` directly from the intermediate views before the rest of the notebook layer.
+Suggested file:
+- `notebooks/01_build_acs_profile_v2_from_int_tables.ipynb`
 
-**Dependency:** ACS dimension + fact layers complete.
+Dependency:
+- ACS dimension and fact layers complete
 
-### Notebook 00 — tract geography lookup
+Purpose:
+- rebuild `fact_acs_tract_profile_v2` from the ACS intermediate layer if needed
 
-```text
-notebooks/00_acs_tract_geography_lookup.ipynb
-```
+### Notebook 2 — tract geography lookup
 
-Run this after `fact_acs_tract_profile_v2` exists.
+Suggested file:
+- `notebooks/00_acs_tract_geography_lookup.ipynb`
+- or local renamed equivalent such as `notebooks/04_acs_tract_geography_lookup.ipynb`
 
-**Dependency:** notebook 01 or SQL-generated `fact_acs_tract_profile_v2`, plus local tract/place/ZCTA shapefiles.
+Dependencies:
+- `fact_acs_tract_profile_v2`
+- local tract / place / optional ZCTA shapefiles
 
-### Notebook 02 — ACS EDA on original fact table
+Purpose:
+- create the tract geography lookup and map-ready geography layer
 
-```text
-notebooks/02_acs_eda_all_years.ipynb
-```
+### Notebook 3 — ACS EDA with geography labels
 
-Optional if you want the original fact table EDA.
+Suggested file:
+- `notebooks/02b_acs_eda_all_years.ipynb`
+- or local geography-updated equivalent
 
-### Notebook 02b — ACS EDA with geography labels
+Dependencies:
+- notebook 1
+- notebook 2
 
-```text
-notebooks/02b_acs_eda_all_years.ipynb
-```
+Purpose:
+- produce geography-aware EDA summaries and tract-level descriptive outputs
 
-**Dependency:** notebook 00 and `fact_acs_tract_profile_v2`
+### Notebook 4 — ACS visuals with geography labels
 
-### Notebook 03 — ACS visuals on original fact table
+Suggested file:
+- `notebooks/03b_acs_visuals_geo.ipynb`
+- or local geography-updated equivalent
 
-```text
-notebooks/03_acs_visuals.ipynb
-```
+Dependencies:
+- notebook 1
+- notebook 2
 
-Optional if you want the original visuals layer.
+Purpose:
+- produce heatmaps, rankings, change tables, and choropleth-ready ACS exports
 
-### Notebook 03b — ACS visuals with geography labels
+### Notebook 5 — ACS clustering with geography labels
 
-```text
-notebooks/03b_acs_visuals_geo.ipynb
-```
+Suggested file:
+- `notebooks/04_acs_clustering_geo.ipynb`
+- or local equivalent such as `03_acs_clustering_geo.ipynb`
 
-**Dependency:** notebook 00 and `fact_acs_tract_profile_v2`
+Dependencies:
+- notebook 1
+- notebook 2
+- `acs_frozen_metric_sheet_v2`
 
-### Notebook 04 — ACS clustering with geography labels
+Purpose:
+- build yearly clustering outputs and cluster assignments
 
-```text
-notebooks/04_acs_clustering_geo.ipynb
-```
+### Notebook 6 — ACS cluster transitions
 
-**Dependency:** notebook 00, `fact_acs_tract_profile_v2`, and `acs_frozen_metric_sheet_v2`
+Suggested file:
+- `notebooks/05_acs_cluster_transitions.ipynb`
 
-### Notebook 05 — ACS cluster transitions
+Dependencies:
+- notebook 5
 
-```text
-notebooks/05_acs_cluster_transitions.ipynb
-```
+Purpose:
+- align clusters across years and build stable-tract transition outputs
 
-**Dependency:** notebook 04 because it needs `cluster_assignments_all_years.csv`
+### Notebook 7 — ACS ↔ PUMS / ALICE bridge
 
-### Notebook 06 — ACS ↔ PUMS / ALICE bridge
+Suggested file:
+- `notebooks/06_acs_pums_alice_bridge.ipynb`
 
-```text
-notebooks/06_acs_pums_alice_bridge.ipynb
-```
+Dependencies:
+- notebook 2
+- notebook 5 if cluster labels are joined
+- PUMS step 15 if using standardized county ALICE totals
 
-**Dependencies:**
+Purpose:
+- allocate county ALICE totals across tracts using ACS tract hardship
 
-- notebook 00 for geography labels
-- notebook 04 if you want cluster labels joined
-- year-level county ALICE totals from the PUMS layer
+### Notebook 8 — capacity-adjusted bridge
 
-The existing repo documentation treats the county totals file as an input requirement for notebook 06. If you standardize that input later, do it after PUMS step 14 and before notebook 06.
+Suggested file:
+- `notebooks/07_acs_pums_alice_bridge_capacity_adjusted.ipynb`
+- or local equivalent such as `acs_pums_alice_bridge_capacity_adjusted.ipynb`
+
+Dependencies:
+- notebook 7
+- or direct access to `outputs/pums/bridge/alice_county_totals_nonstudent_calibrated.csv`
+
+Purpose:
+- produce the capacity-aware tract ALICE estimates used for final outputs
+
+### Notebook 9 — final ALICE outputs
+
+Suggested file:
+- `notebooks/08_final_alice_maps_and_summary_outputs.ipynb`
+- or local equivalent such as `final_alice_maps_and_summary_outputs_outputs_final.ipynb`
+
+Dependencies:
+- notebook 2
+- notebook 8
+
+Purpose:
+- create final integrated outputs under `outputs/final/`
+
+### Notebook 10 — ML modeling
+
+Suggested file:
+- `notebooks/09_acs_alice_ml_modeling.ipynb`
+- or local equivalent such as `acs_alice_ml_modeling_fixed.ipynb`
+
+Dependencies:
+- notebook 9
+
+Purpose:
+- build regression and classification models on the final integrated tract output
 
 ---
 
 ## 6. Dependency summary
 
-If you only want the base tables:
+### Base tables only
 
 1. ACS dimension layer
 2. ACS fact layer
-3. PUMS pipeline 01–14
+3. ACS validation
+4. PUMS pipeline steps 1–14
 
-If you want the tract analytics layer:
+### Standardized bridge-ready project
 
-4. ACS validation
-5. notebook 01
-6. notebook 00
-7. notebook 02b
-8. notebook 03b
-9. notebook 04
-10. notebook 05
-11. notebook 06
+5. PUMS step 15
+6. notebook 1
+7. notebook 2
+8. notebook 3
+9. notebook 4
+10. notebook 5
+11. notebook 6
+12. notebook 7
 
-Optional original-table notebooks:
+### Final integrated and ML project
 
-- notebook 02
-- notebook 03
+13. notebook 8
+14. notebook 9
+15. notebook 10
 
 ---
 
 ## 7. Expected outputs by layer
 
-### ACS output areas
+### ACS outputs
 
 - `outputs/acs/inventory/`
 - `outputs/acs/validation/`
@@ -422,34 +497,45 @@ Optional original-table notebooks:
 - `outputs/acs/analysis/clustering/`
 - `outputs/acs/analysis/transitions/`
 - `outputs/acs/analysis/pums_alice_bridge/`
-- `outputs/acs/analysis/pums_alice_bridge_capacity_adjusted/` if you are using the extended bridge layer already present in the repo outputs
+- `outputs/acs/analysis/pums_alice_bridge_capacity_adjusted/`
 
-### PUMS output areas
+### PUMS outputs
 
 - `outputs/pums/`
 - `outputs/pums/tableau-data/`
+- `outputs/pums/bridge/`
 
-Important committed all-years PUMS outputs include:
+Important all-years PUMS outputs include:
 
 - `below_alice_households_all_years.csv`
 - `below_alice_stat_profile_all_years.csv`
 - `nonstudent_stat_profile_all_years.csv`
 - `alice_nonstudent_vs_complete_profile_compare_all_years.csv`
 
+### Final integrated outputs
+
+- `outputs/final/data/`
+- `outputs/final/summary/`
+- `outputs/final/maps/`
+- `outputs/final/plots/`
+- `outputs/final/ml/`
+
 ---
 
-## 8. Recommended replication checkpoints
+## 8. Recommended checkpoints
 
-Use these checkpoints instead of trying to diagnose everything at the end.
+Use these checkpoints to avoid finding issues only at the end.
 
 ### After ACS dimension layer
-Confirm these exist:
+
+Confirm:
 
 - `dim_tract`
 - `bridge_tract_year`
 
 ### After ACS fact layer
-Confirm these exist:
+
+Confirm:
 
 - `fact_acs_tract_metric_long`
 - `fact_acs_tract_profile`
@@ -457,39 +543,74 @@ Confirm these exist:
 - `acs_frozen_metric_sheet_v2`
 
 ### After ACS validation
-Confirm `outputs/acs/validation/` has fresh run artifacts.
+
+Confirm fresh validation files exist under `outputs/acs/validation/`.
 
 ### After PUMS step 12
+
 Confirm:
 
 - `outputs/pums/04_balance_check.csv`
 - `outputs/pums/08_nonstudent_filter_impact.csv`
-- the validation output produced by step 12
 
 ### After PUMS step 14
+
 Confirm:
 
 - `outputs/pums/tableau-data/below_alice_stat_profile_all_years.csv`
 - `outputs/pums/tableau-data/nonstudent_stat_profile_all_years.csv`
 - `outputs/pums/tableau-data/alice_nonstudent_vs_complete_profile_compare_all_years.csv`
 
-### After notebook layer
-Confirm at minimum:
+### After PUMS step 15
+
+Confirm:
+
+- `outputs/pums/bridge/alice_county_totals_bridge.csv`
+- `outputs/pums/bridge/alice_county_totals_nonstudent_calibrated.csv`
+
+### After notebook 2
+
+Confirm:
 
 - `outputs/acs/analysis/geography_lookup/data/dim_tract_geography_lookup.csv`
+
+### After notebook 5
+
+Confirm:
+
 - `outputs/acs/analysis/clustering/assignments/cluster_assignments_all_years.csv`
+
+### After notebook 6
+
+Confirm:
+
 - `outputs/acs/analysis/transitions/data/aligned_cluster_assignments_all_years.csv`
-- `outputs/acs/analysis/pums_alice_bridge/data/tract_alice_estimates_<label>.csv`
+
+### After notebook 8
+
+Confirm:
+
+- `outputs/acs/analysis/pums_alice_bridge_capacity_adjusted/data/tract_alice_estimates_nonstudent_calibrated_capacity_adjusted.csv`
+
+### After notebook 9
+
+Confirm:
+
+- `outputs/final/data/final_tract_alice_outputs_nonstudent_calibrated_capacity_adjusted.csv`
+- `outputs/final/summary/top_bottom_alice_areas_nonstudent_calibrated_capacity_adjusted.csv`
+
+### After notebook 10
+
+Confirm:
+
+- `outputs/final/ml/summary/ml_run_summary.csv`
+- `outputs/final/ml/summary/regression_model_results.csv`
+- `outputs/final/ml/summary/classification_model_results.csv`
+- `outputs/final/ml/feature_importance/feature_importance_all_models.csv`
 
 ---
 
-## 9. Optional local extension layer
-
-If you also keep the extended local notebook layer that produced the already-committed `outputs/acs/analysis/pums_alice_bridge_capacity_adjusted/` outputs, run it **after notebook 06**. That extension is logically downstream of the base bridge and should never be run before the ACS notebook and PUMS profile layers are complete.
-
----
-
-## 10. One-line replication order
+## 9. One-line execution order
 
 If you want the shortest possible version, this is the exact order:
 
@@ -499,8 +620,17 @@ If you want the shortest possible version, this is the exact order:
 4. ACS SQL for `fact_acs_tract_profile_v2` and `acs_frozen_metric_sheet_v2`
 5. ACS validation `04_run_full_validation.py`
 6. PUMS `01` → `14`, including the documented manual SQL steps at steps 5 and 8
-7. notebooks `01` → `00` → `02b` → `03b` → `04` → `05` → `06`
-8. optional original notebooks `02`, `03`
-9. optional local extension notebooks after notebook 06
+7. PUMS county totals bridge step `15`
+8. ACS notebook layer in this order:
+   - profile v2 rebuild
+   - tract geography lookup
+   - EDA
+   - visuals
+   - clustering
+   - transitions
+   - ACS ↔ PUMS / ALICE bridge
+   - capacity-adjusted bridge
+   - final outputs
+   - ML modeling
 
-That order respects the layer dependencies across the whole project.
+That order respects the dependencies across the whole project and reproduces the current end-to-end workflow.

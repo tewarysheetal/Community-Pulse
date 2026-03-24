@@ -1,0 +1,14 @@
+feature
+median_household_income
+pct_age_18_24
+pct_age_65_plus
+pct_bachelors_or_higher
+pct_family_households
+pct_hh_income_100k_plus
+pct_hh_income_25k_50k
+pct_hh_income_under_25k
+pct_rent_burden_30_plus
+pct_rent_burden_50_plus
+pct_renter_occupied
+poverty_rate
+unemployment_rate

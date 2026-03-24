@@ -1,0 +1,14 @@
+feature,importance,signed_value,model_type,model
+pct_hh_income_100k_plus,5.261896577503899,-5.261896577503899,regression,ridge
+pct_rent_burden_50_plus,4.974025313632722,4.974025313632722,regression,ridge
+pct_hh_income_25k_50k,4.62006186856422,4.62006186856422,regression,ridge
+pct_age_18_24,4.458021052494861,-4.458021052494861,regression,ridge
+poverty_rate,4.38578535841397,4.38578535841397,regression,ridge
+unemployment_rate,3.7696311666873257,3.7696311666873257,regression,ridge
+pct_renter_occupied,3.339267822820901,3.339267822820901,regression,ridge
+pct_bachelors_or_higher,3.204095701188666,-3.204095701188666,regression,ridge
+pct_rent_burden_30_plus,3.1769637486180122,3.1769637486180122,regression,ridge
+median_household_income,2.9502283955743427,-2.9502283955743427,regression,ridge
+pct_hh_income_under_25k,0.7129023407587843,-0.7129023407587843,regression,ridge
+pct_family_households,0.413864458290847,0.413864458290847,regression,ridge
+pct_age_65_plus,0.2897078341765511,0.2897078341765511,regression,ridge
