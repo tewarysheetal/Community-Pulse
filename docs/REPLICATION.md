@@ -1,57 +1,40 @@
-# Community Pulse — Pipeline Replication Guide
+# Community Pulse — Replication Guide
 
-This document provides step-by-step instructions to fully replicate the Community Pulse data pipelines: ACS Summary Data (Pipeline 1) and PUMS Microdata + ALICE Analysis (Pipeline 2).
+This guide gives the exact dependency-aware execution order for the Community Pulse repo so the project can be cloned and rerun with minimal guesswork.
 
----
+It is organized in the order you should actually execute things:
 
-## Table of Contents
-
-- [Prerequisites](#prerequisites)
-- [Environment Setup](#environment-setup)
-- [Pipeline 1 — ACS Summary Data](#pipeline-1--acs-summary-data)
-  - [Phase A — Dimension Pipeline](#phase-a--dimension-pipeline-scriptsacsdim)
-  - [Phase B — Fact Pipeline](#phase-b--fact-pipeline-scriptsacsfact)
-  - [Phase C — Validation](#phase-c--validation-scriptsacsvalidation)
-  - [Phase D — ACS Analysis Notebooks](#phase-d--acs-analysis-notebooks-notebooks)
-- [Pipeline 2 — PUMS Microdata & ALICE Analysis](#pipeline-2--pums-microdata--alice-analysis)
-- [Outputs Reference](#outputs-reference)
-- [Project Structure](#project-structure)
+1. environment setup
+2. source data placement
+3. ACS dimension layer
+4. ACS fact layer
+5. ACS validation
+6. PUMS / ALICE pipeline
+7. notebook layer
+8. optional local extensions
 
 ---
 
-## Prerequisites
+## 1. Prerequisites
+
+You need:
 
 - Python 3.10+
-- PostgreSQL (running and accessible)
-- Git Bash or any bash shell (for `.sh` scripts on Windows)
+- PostgreSQL running locally or remotely
+- Git Bash or another shell for `.sh` scripts
+- enough disk space for ACS and PUMS raw files
+- `geopandas`, `shapely`, `scikit-learn`, and `scipy` for the later notebook layer
 
----
-
-## Environment Setup
-
-**1. Clone the repo**
-
-```bash
-git clone <repo-url>
-cd Community-Pulse
-```
-
-**2. Create and activate a virtual environment**
+Install base dependencies:
 
 ```bash
 python -m venv .venv
-source .venv/Scripts/activate     # Windows Git Bash
-# source .venv/bin/activate       # macOS/Linux
-```
-
-**3. Install dependencies**
-
-```bash
+source .venv/Scripts/activate
 pip install -r requirements.txt
-pip install psycopg2-binary
+pip install psycopg2-binary geopandas shapely scikit-learn scipy
 ```
 
-**4. Create a `.env` file** in the project root:
+Create `.env` in the project root:
 
 ```env
 DB_HOST=localhost
@@ -61,7 +44,7 @@ DB_USER=your_username
 DB_PASSWORD=your_password
 ```
 
-**5. Test your database connection**
+Verify the DB connection:
 
 ```bash
 python scripts/postgres-connection.py
@@ -69,818 +52,455 @@ python scripts/postgres-connection.py
 
 ---
 
-## Pipeline 1 — ACS Summary Data
+## 2. Source data placement
 
-This pipeline ingests ACS 5-year estimate CSVs (2019–2023) for thirteen demographic and economic tables, builds a star schema with a tract geography dimension and a long-format fact table, and exports Tableau-ready outputs. Scripts are split into three sub-pipelines: **dim** (geography dimension), **fact** (staging → intermediate → fact), and **validation**.
+### ACS raw files
 
-**Years:** 2019, 2021, 2022, 2023
-**Geography:** Champaign County, Illinois (state FIPS 17, county FIPS 019)
+Place ACS downloads under `data/raw/` using the original folder naming convention expected by the project. The replication guide already expects 2019, 2021, 2022, and 2023 ACS 5-year folders for the tracked tables.
 
-### Data Sources
+The documented ACS tables are:
 
-Download the following tables from the [US Census Bureau ACS](https://www.census.gov/programs-surveys/acs) (5-year estimates) for each year. Place each downloaded folder under `data/raw/` keeping the original Census folder naming convention (e.g., `MedianHouseholdIncome(B19013)_2023_2019`).
+- B19013 — Median Household Income
+- B25003 — Housing Tenure
+- B25070 — Gross Rent as % of Income
+- DP04 — Selected Housing Characteristics
+- S1101 — Household Composition
+- S1701 — Poverty Status
+- S1901 — Income Distribution
+- S2301 — Employment Status
+- S1501 — Educational Attainment
+- S2401 — Occupation
+- B03002 — Race / Ethnicity
+- S0101 — Age Distribution
+- S1601 — Language Spoken at Home
 
-| Dataset | ACS Table | Metric Group |
-|---|---|---|
-| Median Household Income | B19013 | income |
-| Housing Tenure | B25003 | tenure |
-| Gross Rent as % of Income | B25070 | rent_burden |
-| Selected Housing Characteristics | DP04 | housing_profile |
-| Household Composition | S1101 | household_composition |
-| Poverty Status | S1701 | poverty |
-| Income Distribution | S1901 | income_distribution |
-| Employment Status | S2301 | employment |
-| Educational Attainment | S1501 | education |
-| Occupation | S2401 | occupation |
-| Race / Ethnicity | B03002 | race_ethnicity |
-| Age Distribution | S0101 | age |
-| Language Spoken at Home | S1601 | language |
+### PUMS raw files
+
+Place Illinois housing and person folders under `data/raw/`. The project expects housing (`csv_hil_*`) and person (`csv_pil_*`) source files there.
+
+### Additional geography files
+
+These are needed later, not for the base pipelines:
+
+- `data/pums/Tract-Illinois.csv` for the PUMA 1902 crosswalk step
+- TIGER/Line tract, place, and optionally ZCTA shapefiles under `data/geo/` for the geography lookup notebook
 
 ---
 
-### Phase A — Dimension Pipeline (`scripts/acs/dim/`)
+## 3. ACS pipeline — exact execution order
 
-Run scripts in numbered order from the project root.
+The ACS scripts are split into:
 
----
+- `scripts/acs/dim/`
+- `scripts/acs/fact/`
+- `scripts/acs/validation/`
 
-**Step A1 — Inventory ACS files**
+Run all ACS scripts from the repo root.
+
+### 3A. Dimension layer
+
+Run these in order:
 
 ```bash
 python scripts/acs/dim/01_inventory_acs_files.py
-```
-
-Scans `data/raw/` using regex against Census file naming conventions. Classifies every file by table code, source type (Detail/Subject/Profile), year, and file kind (Data / Column-Metadata / Table-Notes). Produces a missing-file report for the expected year set before any processing begins.
-
-Outputs:
-- `outputs/acs/inventory/acs_file_inventory.csv`
-- `outputs/acs/inventory/acs_folder_year_summary.csv`
-- `outputs/acs/inventory/acs_missing_expected_files.csv`
-
----
-
-**Step A2 — Extract tract geography rows**
-
-```bash
 python scripts/acs/dim/02_extract_dim_tract_from_acs.py
-```
-
-Reads B19013 files for each year, filters to Champaign County tracts (GEO_ID prefix `1400000US`), and parses the full GEO_ID into `statefp`, `countyfp`, `tractce`, and `tract_geoid` components.
-
-Outputs: `data/processed/acs/tract/dim_tract_{year}.csv` for each year, plus `dim_tract_all_years.csv`.
-
----
-
-**Step A3 — Build dim_tract**
-
-```bash
 python scripts/acs/dim/03_build_dim_tract.py
-```
-
-Consolidates per-year tract extracts into a single deduplicated dimension table. Detects and reports tract name conflicts across years.
-
-Outputs:
-- `data/acs/processed/acs_tract/dimensions/dim_tract.csv`
-- `outputs/acs/acs_tract/dim_tract_name_conflicts.csv`
-
----
-
-**Step A4 — Validate dim_tract**
-
-```bash
 python scripts/acs/dim/04_validate_dim_tract.py
-```
-
-Checks for null GEO IDs, duplicate tract keys, and year coverage gaps.
-
----
-
-**Step A5 — Finalize dim_tract and build bridge**
-
-```bash
 python scripts/acs/dim/05_build_final_dim_tract_and_bridge.py
 ```
 
-Writes the final `dim_tract.csv` and creates `bridge_tract_year.csv` — a surrogate-key bridge table linking each tract to the years it appears in. Used for referential integrity checks in the validation suite.
+What this creates:
 
-Outputs:
-- `data/acs/processed/acs_tract/dimensions/dim_tract.csv`
-- `data/acs/processed/acs_tract/dimensions/bridge_tract_year.csv`
+- file inventory outputs under `outputs/acs/inventory/`
+- `dim_tract`
+- `bridge_tract_year`
+- the final tract-year bridge used by the fact layer
 
----
+### 3B. Fact layer
 
-### Phase B — Fact Pipeline (`scripts/acs/fact/`)
-
-Run scripts in numbered order from the project root.
-
----
-
-**Step B1 — Generate staging files**
+Run these Python scripts in order:
 
 ```bash
 python scripts/acs/fact/01_generate_acs_staging_files.py
-```
-
-Reads each raw ACS CSV, filters to Champaign County rows, cleans column names to snake_case, and writes standardised staging CSVs. Skips header rows and column-metadata rows that Census includes in raw downloads.
-
-Outputs: `data/acs/processed/acs_tract/staging/stg_acs_{year}_{table_code}.csv` for each year × table combination.
-
----
-
-**Step B2 — Create staging SQL scripts and load**
-
-```bash
 python scripts/acs/fact/02_create_acs_staging_sql_script.py
-```
-
-Programmatically generates `CREATE TABLE` and `COPY` SQL for each staging CSV, writes scripts to `sql/acs/fact/staging_all/`, and executes them against PostgreSQL.
-
-Creates tables: `stg_acs_{year}_{table_code}_raw` (52 tables: 4 years × 13 tables).
-
----
-
-**Step B3 — Build intermediate tables: core housing**
-
-```bash
 python scripts/acs/fact/03_create_acs_int_core_housing.py
-```
-
-Builds intermediate tables and all-years views for core housing tables: B19013, B25003, B25070, DP04. Applies column selection, renaming, and type casting. Produces `vw_int_acs_{table_code}_all_years` views used by the fact builder.
-
-Creates tables: `int_acs_{year}_{table_code}` and views: `vw_int_acs_{table_code}_all_years` for each table in this group.
-
----
-
-**Step B4 — Build intermediate tables: household, poverty, income, employment**
-
-```bash
 python scripts/acs/fact/04_create_acs_int_housing_poverty_emp.py
-```
-
-Same pattern as B3 for: S1101, S1701, S1901, S2301.
-
----
-
-**Step B5 — Build intermediate tables: demographics, education, language**
-
-```bash
 python scripts/acs/fact/05_create_acs_int_demo_edu.py
-```
-
-Same pattern as B3 for: S1501, S2401, B03002, S0101, S1601.
-
----
-
-**Step B6 — Build long-format fact table**
-
-```bash
 python scripts/acs/fact/06_create_acs_fact_tract_metric_long.py
+python scripts/acs/fact/07_create_acs_facts_tract_profile.py
 ```
 
-Reads all 13 `vw_int_acs_{table_code}_all_years` views and melts them from wide format (one column per metric) into long format — one row per `(year, tract_geoid, metric_name)`. Tags each row with `source_table`, `metric_group`, and `metric_kind` (`estimate`, `moe`, or `derived`). Loads result into PostgreSQL and exports a combined CSV.
+What this creates:
 
-Creates table: `fact_acs_tract_metric_long`
+- staging SQL / staging tables
+- intermediate ACS views
+- `fact_acs_tract_metric_long`
+- `fact_acs_tract_profile`
 
-| Column | Description |
-|---|---|
-| `year` | Survey year |
-| `tract_geoid` | 11-digit Census tract GEO ID |
-| `source_table` | ACS table code (e.g. `S1701`) |
-| `metric_group` | Thematic group (e.g. `poverty`, `employment`) |
-| `metric_name` | Original column name from ACS table |
-| `metric_kind` | `estimate`, `moe`, or `derived` |
-| `metric_value` | Numeric value |
+### 3C. ACS SQL objects that downstream notebooks depend on
 
----
+The repo’s existing documentation shows that the downstream notebooks depend on the revised ACS profile and frozen metric sheet. At minimum, make sure these SQL objects exist before running the notebook layer:
 
-**Step B7 — Build wide-format fact profiles**
+- `fact_acs_tract_profile_v2`
+- `acs_frozen_metric_sheet_v2`
 
-Two versions of the wide-format fact profile are produced. Run the SQL scripts directly in your SQL client in the order below, or execute them via `psql`:
+The documented SQL files involved are:
 
-| Script | Creates Table | Description |
-|---|---|---|
-| `sql/acs/fact/07a_create_fact_acs_tract_profile.sql` | `fact_acs_tract_profile` | Original wide profile — one row per `(year, tract_geoid)` with all curated columns |
-| `sql/acs/fact/07b_create_fact_acs_tract_profile_v2.sql` | `fact_acs_tract_profile_v2` | Revised profile built from `01_build_acs_profile_v2_from_int_tables.ipynb` — uses official ACS fields directly with consistent metric naming |
-| `sql/acs/fact/07c_rebuild_fact_acs_tract_profile_v2_audited.sql` | `fact_acs_tract_profile_v2` | Audited rebuild of v2; run this if you need to refresh v2 from scratch |
-| `sql/acs/fact/08_create_metric_sheet.sql` | `acs_frozen_metric_sheet_v2` | Frozen metric inventory for v2 — defines display labels and clustering eligibility for each column |
-| `sql/acs/fact/09_create_acs_fact_tract_profile_v2_21101_fix.sql` | — | Applies a data correction for tract 211.01 (2019) in `fact_acs_tract_profile_v2` |
-| `sql/acs/fact/10_update_metric_sheet.sql` | — | Incremental updates to `acs_frozen_metric_sheet_v2` |
+- `sql/acs/fact/07a_create_fact_acs_tract_profile.sql`
+- `sql/acs/fact/07b_create_fact_acs_tract_profile_v2.sql`
+- `sql/acs/fact/07c_rebuild_fact_acs_tract_profile_v2_audited.sql`
+- `sql/acs/fact/08_create_metric_sheet.sql`
+- `sql/acs/fact/09_create_acs_fact_tract_profile_v2_21101_fix.sql`
+- `sql/acs/fact/10_update_metric_sheet.sql`
 
-> **Note:** All downstream analysis notebooks (`02b`, `04`, `05`, `06`) read from `fact_acs_tract_profile_v2`. Run through 07b and 08 at minimum before running the analysis notebooks.
+Recommended order:
 
----
+1. create or refresh `fact_acs_tract_profile`
+2. create or refresh `fact_acs_tract_profile_v2`
+3. create the frozen metric sheet
+4. apply any documented fixes / updates
 
-### Phase C — Validation (`scripts/acs/validation/`)
+If you are working only from the notebook layer, the repo documentation already treats `notebooks/01_build_acs_profile_v2_from_int_tables.ipynb` as a valid way to rebuild `fact_acs_tract_profile_v2`.
 
-Run the full validation orchestrator after completing Phases A and B:
+### 3D. ACS validation
+
+Run the orchestrator after the dimension and fact layers are complete:
 
 ```bash
 python scripts/acs/validation/04_run_full_validation.py
 ```
 
-Runs three validation passes in sequence:
-
-| Pass | Script | Checks |
-|---|---|---|
-| Staging | `01_validate_stg_tables.py` | Table presence, row counts, expected manifest coverage, null profile |
-| Intermediate | `02_validate_int_tables.py` | Table presence, row counts, key null checks, numeric profile, batch coverage |
-| Fact | `03_validate_fact_tables.py` | Fact table presence, year × source coverage, bridge join completeness, numeric profile, key integrity |
-
-All outputs are saved to `outputs/acs/validation/` with a run summary per pass.
-
----
-
-### ACS Table Summary
-
-| Layer | Tables Created |
-|---|---|
-| Staging | `stg_acs_{year}_{table_code}_raw` (52 tables) |
-| Intermediate | `int_acs_{year}_{table_code}` (52 tables) + 13 all-years views |
-| Dimension | `dim_tract`, `bridge_tract_year` |
-| Fact (long) | `fact_acs_tract_metric_long` |
-| Fact (wide, original) | `fact_acs_tract_profile` |
-| Fact (wide, v2) | `fact_acs_tract_profile_v2` |
-| Metric inventory | `acs_frozen_metric_sheet_v2` |
-
----
-
-### Phase D — ACS Analysis Notebooks (`notebooks/`)
-
-Run notebooks in numbered order after completing Phases A–C and generating `fact_acs_tract_profile_v2` and `acs_frozen_metric_sheet_v2`.
-
-**Additional dependencies for Phase D:**
+Or run the three passes individually:
 
 ```bash
-pip install geopandas shapely scikit-learn scipy
+python scripts/acs/validation/01_validate_stg_tables.py
+python scripts/acs/validation/02_validate_int_tables.py
+python scripts/acs/validation/03_validate_fact_tables.py
 ```
 
 ---
 
-**Notebook 01 — Build ACS profile v2 from intermediate tables**
+## 4. PUMS / ALICE pipeline — exact execution order
 
-```
-notebooks/01_build_acs_profile_v2_from_int_tables.ipynb
-```
+All PUMS pipeline scripts live under `scripts/pums/` and are already numbered in execution order.
 
-Rebuilds `fact_acs_tract_profile_v2` directly from the intermediate views using a consistent metric policy: use official ACS fields as-is, avoid derived duplicates, and standardise column naming. Run this if you need to inspect or modify the column selection before applying the SQL scripts.
-
-Outputs: produces the same `fact_acs_tract_profile_v2` table that `07b` creates; also validates column coverage across years.
-
----
-
-**Notebook 00 — Tract geography lookup**
-
-```
-notebooks/00_acs_tract_geography_lookup.ipynb
-```
-
-Builds a client-friendly geography layer for all Champaign County tracts. Requires local Census TIGER/Line shapefiles (tract boundaries, place boundaries, and ZIP Code Tabulation Area boundaries).
-
-Configuration — set these paths in the notebook before running:
-
-| Variable | Description |
-|---|---|
-| `TRACT_GEO_FILE` | Path to Illinois tract shapefile (e.g. `tl_2023_17_tract.shp`) |
-| `PLACE_GEO_FILE` | Path to Illinois place shapefile (optional but recommended) |
-| `ZIP_GEO_FILE` | Path to ZCTA shapefile (optional) |
-
-Downloads the required shapefiles from the [Census TIGER/Line page](https://www.census.gov/cgi-bin/geo/shapefiles/index.php). Place them under `data/geo/` before running.
-
-Outputs:
-- `outputs/acs/analysis/geography_lookup/data/dim_tract_geography_lookup.csv` — flat lookup with centroid coordinates, place/ZIP overlays, area-type labels, and context notes
-- `outputs/acs/analysis/geography_lookup/data/dim_tract_geography_lookup.geojson` — map-ready GeoJSON
-- `outputs/acs/analysis/geography_lookup/data/dim_tract_geography_lookup.gpkg` — GeoPackage (if GPKG driver available)
-
-> **Note:** All downstream notebooks (`02b`, `03b`, `04`, `05`, `06`) load this CSV automatically. Run this notebook before the rest of Phase D.
-
----
-
-**Notebook 02 — ACS EDA (original fact table)**
-
-```
-notebooks/02_acs_eda_all_years.ipynb
-```
-
-Exploratory data analysis against `fact_acs_tract_profile`. Produces distribution plots, trend charts, correlation heatmaps, metric rankings, and standardised tract heatmaps.
-
-Outputs: `outputs/acs/analysis/eda/`
-
----
-
-**Notebook 02b — ACS EDA with geography labels**
-
-```
-notebooks/02b_acs_eda_all_years.ipynb
-```
-
-Same EDA as notebook 02 but reads from `fact_acs_tract_profile_v2` and joins the geography lookup so all outputs use client-friendly area labels.
-
-Outputs: `outputs/acs/analysis/eda/` (parallel set with geo-enriched labels)
-
----
-
-**Notebook 03 — ACS visuals**
-
-```
-notebooks/03_acs_visuals.ipynb
-```
-
-Generates heatmaps, ranked bar charts, year-over-year change tables, and map-ready exports from `fact_acs_tract_profile`.
-
-Outputs: `outputs/acs/analysis/visuals/`
-
----
-
-**Notebook 03b — ACS visuals with geography labels**
-
-```
-notebooks/03b_acs_visuals_geo.ipynb
-```
-
-Same visuals as notebook 03 using `fact_acs_tract_profile_v2` and client-friendly geography labels.
-
-Outputs: `outputs/acs/analysis/visuals/` (geo-labelled versions)
-
----
-
-**Notebook 04 — ACS clustering with geography labels**
-
-```
-notebooks/04_acs_clustering_geo.ipynb
-```
-
-Runs K-Means clustering independently for each survey year using 21 economic and demographic indicators drawn from `acs_frozen_metric_sheet_v2`. Elbow and silhouette diagnostics guide K selection (tested 2–6). Each tract receives a `cluster_id` and `cluster_label` per year.
-
-Outputs:
-- `outputs/acs/analysis/clustering/assignments/cluster_assignments_all_years.csv` — tract × year cluster assignments (required by notebooks 05 and 06)
-- `outputs/acs/analysis/clustering/centroids/` — scaled and original-scale centroid tables
-- `outputs/acs/analysis/clustering/profiles/` — mean metric profiles per cluster per year
-- `outputs/acs/analysis/clustering/diagnostics/` — elbow plots, silhouette plots
-- `outputs/acs/analysis/clustering/pca/` — PCA point tables and scatter plots
-
----
-
-**Notebook 05 — ACS cluster transitions**
-
-```
-notebooks/05_acs_cluster_transitions.ipynb
-```
-
-Aligns yearly cluster labels across the four survey years using centroid-distance matching (Hungarian algorithm). Builds stable-tract transition paths, year-pair transition matrices, Sankey-ready edge tables, and a first-to-last cluster-change summary.
-
-Requires: `cluster_assignments_all_years.csv` from notebook 04.
-
-Outputs:
-- `outputs/acs/analysis/transitions/data/aligned_cluster_assignments_all_years.csv`
-- `outputs/acs/analysis/transitions/data/stable_tract_cluster_paths_wide.csv`
-- `outputs/acs/analysis/transitions/matrices/transition_matrix_{y0}_{y1}.csv`
-- `outputs/acs/analysis/transitions/data/transition_edges_all_pairs.csv`
-
----
-
-**Notebook 06 — ACS ↔ PUMS / ALICE bridge**
-
-```
-notebooks/06_acs_pums_alice_bridge.ipynb
-```
-
-Estimates tract-level ALICE household counts by combining tract-level ACS hardship risk scores with county-level ALICE totals from the PUMS pipeline. Tract weights are derived from a composite of 11 ACS indicators (poverty rate, rent burden, income distribution, unemployment, and education). An optional student-population dampening factor reduces weights for tracts with unusually high `pct_age_18_24`.
-
-**Required configuration before running** (set in the configuration cell):
-
-| Variable | Description |
-|---|---|
-| `ALICE_TOTALS_SOURCE` | `'csv'` to load from a file, `'sql'` to pull from Postgres |
-| `ALICE_TOTALS_CSV_PATH` | Path to the county ALICE totals CSV (required when `ALICE_TOTALS_SOURCE = 'csv'`) |
-| `YEARS_TO_USE` | List of survey years to include (default: `[2019, 2021, 2022, 2023]`) |
-| `ESTIMATION_LABEL` | Label appended to output filenames (e.g. `'nonstudent_calibrated'`) |
-
-The county ALICE totals CSV must contain at minimum: `year`, `alice_households`. Optional columns: `county_total_households`, `source_variant`.
-
-Outputs:
-- `outputs/acs/analysis/pums_alice_bridge/data/tract_alice_estimates_{label}.csv` — final tract-level ALICE estimates
-- `outputs/acs/analysis/pums_alice_bridge/summary/county_allocation_validation_{label}.csv` — validation that tract estimates sum to county totals
-- `outputs/acs/analysis/pums_alice_bridge/plots/` — county vs. allocated total plots and top-tract bar charts
-
----
-
-## Pipeline 2 — PUMS Microdata & ALICE Analysis
-
-This pipeline loads Census PUMS person and housing microdata for Illinois, filters to Champaign County, builds household-level ALICE profiles, and produces Tableau-ready statistical exports.
-
-**Supported years:** 2019, 2020 (experimental), 2021, 2022, 2023
-**ALICE analysis years:** 2019, 2021, 2022, 2023 *(2020 experimental excluded from ALICE steps)*
-
-> **Note on 2022/2023 PUMA boundaries:** PUMA definitions changed after 2021. For 2019–2021, Champaign County maps to PUMA 2100. For 2022–2023 it maps to PUMAs 1901 and 1902, but PUMA 1902 extends beyond Champaign County. Steps 4–6 build an ACS5-based allocation factor (alpha) to weight PUMA 1902 households to the Champaign-only portion.
-
-All PUMS pipeline scripts live in `scripts/pums/` and are numbered in execution order.
-
-### Data Sources
-
-Download PUMS CSV files from the [Census PUMS Access page](https://www.census.gov/programs-surveys/acs/microdata/access.html) for Illinois. Place housing (`csv_hil_*`) and person (`csv_pil_*`) folders under `data/raw/`.
-
----
-
-### Step 1 — Copy and rename PUMS files
+### Step 1 — copy and rename raw PUMS files
 
 ```bash
 bash scripts/pums/01_copy_files_pums.sh
 ```
 
-Copies files from `data/raw/` into `data/pums/<year>/housing.csv` and `data/pums/<year>/person.csv`.
-
----
-
-### Step 2 — Load PUMS data into PostgreSQL
+### Step 2 — bulk load PUMS housing and person files
 
 ```bash
 python scripts/pums/02_load_pums_data_db.py
 ```
 
-Loads each file using PostgreSQL `COPY` for fast bulk ingestion. Column names are cleaned to snake_case with these standardizations:
-
-| Original | Loaded as |
-|---|---|
-| `ST` | `state` |
-| `TYPE` | `typehugq` |
-| `ACCESS` | `accessinet` |
-| `YBL` | `yrblt` |
-
-Creates tables: `alice_housing_{y}_raw`, `alice_person_{y}_raw` for each year.
-
----
-
-### Step 3 — Generate Champaign filter and household profile SQL
+### Step 3 — build Champaign-filtered person, housing, and household profile tables
 
 ```bash
 python scripts/pums/03_generate_pums_sql_scripts.py
 ```
 
-Generates and executes SQL scripts 01–06 under `sql/pums/<year>/` for each year:
+This generates and executes SQL scripts under `sql/pums/<year>/` for each year.
 
-| Script | Creates Table | Description |
-|---|---|---|
-| `01_create_pums_person_{y}_champaign.sql` | `alice_person_{y}_champaign` | Filters person records to Champaign PUMA(s) |
-| `02_create_pums_housing_{y}_champaign.sql` | `alice_housing_{y}_champaign` | Filters housing records to Champaign PUMA(s) |
-| `03_create_pums_person_student_flags_{y}.sql` | `alice_person_student_flags_{y}` | Per-person student and employment flags |
-| `04_create_pums_household_student_agg_{y}.sql` | `alice_household_student_agg_{y}` | Household-level student aggregations |
-| `05_create_pums_household_base_{y}.sql` | `alice_household_base_{y}` | Core housing unit fields |
-| `06_create_pums_alice_household_profile_{y}.sql` | `alice_household_profile_{y}` | Joins base housing with student aggregation |
+### Step 4 — load tract-to-PUMA crosswalk
 
-> **Optional** — after Step 3, run from `sql/pums/ALICE/`:
-> - `01_create_alice_household_profile_all_years.sql` → `alice_household_profile_all_years`
-> - `02_create_alice_household_profile_all_years_clean.sql` → `alice_household_profile_all_years_clean`
-
----
-
-### Step 4 — Load Illinois tract-to-PUMA crosswalk
-
-Place `Tract-Illinois.csv` in `data/pums/`, then run:
+First place `Tract-Illinois.csv` under `data/pums/`, then run:
 
 ```bash
 python scripts/pums/04_load_tract_il.py
 ```
 
-Creates table: `tract_il`
+### Step 5 — create PUMA 1902 lookup and alpha prerequisites
 
----
-
-### Step 5 — Build PUMA 1902 lookup and household counts
-
-Run this SQL script first in your SQL client:
+Before the Python pull step, run this SQL manually:
 
 ```sql
 \i sql/pums/ALICE/03_create_tract_puma1902_lookup.sql
 ```
 
-Creates `tract_puma1902_lookup`. Then pull ACS5 household counts from the Census API:
+Then run:
 
 ```bash
 python scripts/pums/05_pull_acs_tract_households.py
 ```
 
-Creates: `acs5_2022_b11001_raw`, `acs5_2023_b11001_raw`
+Then execute the remaining documented SQL helpers in order:
 
-Then run the remaining ALICE setup scripts in order:
+- `sql/pums/ALICE/04_create_2022_puma1902_household.sql`
+- `sql/pums/ALICE/05_create_2023_puma1902_household.sql`
+- `sql/pums/ALICE/06_create_alpha.sql`
 
-| Script | Creates Table | Description |
-|---|---|---|
-| `ALICE/04_create_2022_puma1902_household.sql` | `acs5_2022_puma1902_households` | Joins tract lookup with 2022 ACS5 counts |
-| `ALICE/05_create_2023_puma1902_household.sql` | `acs5_2023_puma1902_households` | Joins tract lookup with 2023 ACS5 counts |
-| `ALICE/06_create_alpha.sql` | `alice_puma1902_alpha` | Champaign allocation factors (alpha) for PUMA 1902 |
-
----
-
-### Step 6 — Generate adjusted profile tables (2022 and 2023 only)
+### Step 6 — create adjusted 2022 / 2023 household profile tables
 
 ```bash
 python scripts/pums/06_generate_pums_household_profile_adj_sql_scripts.py
 ```
 
-Generates and executes `06b_create_pums_alice_household_profile_{y}_adj.sql` for 2022 and 2023. Applies the PUMA 1902 alpha — PUMA 1901 households keep `wgtp` unchanged; PUMA 1902 households are scaled by `wgtp × alpha`.
-
-Creates tables: `alice_household_profile_2022_adj`, `alice_household_profile_2023_adj`
-
----
-
-### Step 7 — Create household final tables
+### Step 7 — create final household tables
 
 ```bash
 python scripts/pums/07_generate_pums_household_final_sql_scripts.py
 ```
 
-Generates and executes `07_create_pums_alice_household_final_{y}.sql`. Applies population filters (occupied units, non-zero person count, non-null income) and sets `analysis_weight`. Uses `wgtp_adj` for 2022/2023 and raw `wgtp` for 2019/2021.
-
-Creates tables: `alice_household_final_{y}`
-
----
-
-### Step 8 — Create ALICE threshold tables
+### Step 8 — create threshold tables and calibrated thresholds
 
 ```bash
 python scripts/pums/08_generate_pums_threshold_sql_scripts.py
 ```
 
-Generates and executes:
-
-| Script | Action |
-|---|---|
-| `ALICE/07_create_pums_alice_threshold_tables.sql` | Creates `illinois_essentials_index` and `alice_thresholds` |
-| `2023/08_load_pums_alice_thresholds_2023_exact.sql` | Loads 2023 United For ALICE monthly survival budgets |
-| `{y}/08_backfill_pums_alice_thresholds_{y}.sql` | Backfills 2019/2021/2022 thresholds using Illinois AEI ratios |
-
-Then run the calibration script manually in your SQL client:
+Then run the calibration SQL manually:
 
 ```sql
 \i sql/pums/ALICE/08_create_alice_thresholds_calibrated.sql
 ```
 
-Creates `alice_thresholds_calibrated` — a copy of `alice_thresholds` with upward adjustments to dominant childless household buckets (`1_adult_0_child`, `2_adult_0_child`) to account for local cost of living. All downstream ALICE flag calculations use this calibrated table.
-
----
-
-### Step 9 — Add derived columns to household final tables
+### Step 9 — add derived columns to final household tables
 
 ```bash
 python scripts/pums/09_generate_pums_household_final_updates_sql_scripts.py
 ```
 
-Generates and executes `09_update_alter_pums_alice_household_final_{y}.sql`, adding:
-
-| Column | Description |
-|---|---|
-| `hincp_adj_real` | Inflation-adjusted household income (`hincp × adjinc / 1,000,000`) |
-| `hh_comp_key` | Household composition category (e.g. `2_adult_1_child`) |
-| `student_heavy_flag` | 1 if majority of household members are likely college students with no employment |
-| `below_alice_flag` | 1 if `hincp_adj_real` is below the ALICE threshold for the household's composition type |
-
----
-
-### Step 10 — Refresh below_alice_flag using calibrated thresholds
+### Step 10 — refresh below-ALICE flags using calibrated thresholds
 
 ```bash
 python scripts/pums/10_generate_pums_below_alice_flag_sql_scripts.py
 ```
 
-Generates and executes `10_update_pums_below_alice_flag_calibrated_{y}.sql`. Refreshes `annual_alice_threshold` on each `alice_household_final_{y}` from `alice_thresholds_calibrated` and recalculates `below_alice_flag`.
-
----
-
-### Step 11 — Create non-student ALICE household tables
+### Step 11 — create nonstudent ALICE household tables
 
 ```bash
 python scripts/pums/11_generate_pums_nonstudent_sql_scripts.py
 ```
 
-Generates and executes `11_create_pums_alice_nonstudent_households_{y}.sql`.
-
-Creates tables: `alice_nonstudent_households_{y}` — ALICE households (`below_alice_flag = 1`) that are not student-heavy (`student_heavy_flag = 0`).
-
----
-
-### Step 12 — Run final validation
+### Step 12 — run final PUMS validation
 
 ```bash
 python scripts/pums/12_run_pums_final_validation.py
 ```
 
-Executes all queries in `sql/pums/Final_Validation_Check.sql` and saves results to `outputs/pums/`. Checks:
-
-| Check | Pass Condition |
-|---|---|
-| `01_calibrated_threshold_match` | `threshold_mismatch_rows = 0` for all years |
-| `02_calibration_spot_check` | Expected uplift amounts per year/bucket |
-| `03_final_table_null_check` | All null columns = 0 |
-| `04_balance_check` | `below + above = total` (balance_check = 0) |
-| `05–07_sheet_compare` | Actuals within expected range of benchmark targets |
-| `08_nonstudent_filter_impact` | `nonstudent_below <= all_below` |
-
----
-
-### Step 13 — Generate statistical profiles and export CSVs
+### Step 13 — generate ALICE statistical profiles and export CSVs
 
 ```bash
 python scripts/pums/13_generate_pums_alice_statistical_profile_sql_scripts_with_exports.py
 ```
 
-Generates and executes SQL scripts 12a–12c per year, then exports CSVs to `outputs/pums/tableau-data/`:
-
-| Script | Creates Table | Description |
-|---|---|---|
-| `12a_create_pums_below_alice_households_{y}.sql` | `alice_below_alice_households_{y}` | All ALICE households (below_alice_flag = 1) |
-| `12b_create_pums_below_alice_stat_profile_{y}.sql` | `alice_below_alice_stat_profile_{y}` | Statistical profile of complete ALICE population |
-| `12c_create_pums_nonstudent_stat_profile_{y}.sql` | `alice_nonstudent_stat_profile_{y}` | Statistical profile of non-student ALICE population |
-
-Profile metrics include: weighted household counts, average household size, average adult/child count, average and median real income, average ALICE threshold, and student/employment composition breakdowns by household type.
-
-Combined all-years CSVs are also saved to `outputs/pums/tableau-data/`.
-
----
-
-### Step 14 — Generate nonstudent vs. complete profile comparison
+### Step 14 — generate nonstudent vs complete profile comparison
 
 ```bash
 python scripts/pums/14_generate_pums_alice_profile_comparison_sql_scripts_with_exports.py
 ```
 
-Generates and executes `13_create_pums_nonstudent_vs_complete_profile_compare_{y}.sql`, joining the two stat profile tables to produce side-by-side metric comparisons with absolute and percentage-point differences.
-
-Creates tables: `alice_nonstudent_vs_complete_profile_compare_{y}`
-Exports CSVs to `outputs/pums/tableau-data/{year}/` and combined `alice_nonstudent_vs_complete_profile_compare_all_years.csv`.
+At this point, the repo’s committed PUMS export layer under `outputs/pums/` and `outputs/pums/tableau-data/` should be reproducible.
 
 ---
 
-### Final ALICE Tables Summary
+## 5. Notebook layer — exact dependency-aware order
 
-| Table | Description |
-|---|---|
-| `alice_household_final_{y}` | Analysis-ready households with income, composition key, weight, and ALICE flag |
-| `alice_nonstudent_households_{y}` | ALICE households excluding student-heavy households |
-| `alice_below_alice_households_{y}` | All below-ALICE households (full record set for Tableau) |
-| `alice_below_alice_stat_profile_{y}` | Statistical profile of the complete below-ALICE population |
-| `alice_nonstudent_stat_profile_{y}` | Statistical profile of the non-student below-ALICE population |
-| `alice_nonstudent_vs_complete_profile_compare_{y}` | Side-by-side comparison of nonstudent vs. complete ALICE profiles |
-| `alice_thresholds` | Raw ALICE annual thresholds by year and household composition |
-| `alice_thresholds_calibrated` | Calibrated thresholds with upward adjustments for dominant childless buckets |
-| `illinois_essentials_index` | Illinois AEI values used for threshold backfilling |
-| `alice_puma1902_alpha` | Champaign County allocation factors for PUMA 1902 (2022 and 2023) |
-| `alice_household_profile_all_years` | Union of `alice_household_profile_{y}` across all years |
-| `alice_household_profile_all_years_clean` | Filtered version (non-null person count, income, and household size) |
+The repo documentation already lists the notebook layer and its dependencies. The safest execution order is:
+
+### Notebook 01 — build ACS profile v2
+
+```text
+notebooks/01_build_acs_profile_v2_from_int_tables.ipynb
+```
+
+Run this if you want to rebuild `fact_acs_tract_profile_v2` directly from the intermediate views before the rest of the notebook layer.
+
+**Dependency:** ACS dimension + fact layers complete.
+
+### Notebook 00 — tract geography lookup
+
+```text
+notebooks/00_acs_tract_geography_lookup.ipynb
+```
+
+Run this after `fact_acs_tract_profile_v2` exists.
+
+**Dependency:** notebook 01 or SQL-generated `fact_acs_tract_profile_v2`, plus local tract/place/ZCTA shapefiles.
+
+### Notebook 02 — ACS EDA on original fact table
+
+```text
+notebooks/02_acs_eda_all_years.ipynb
+```
+
+Optional if you want the original fact table EDA.
+
+### Notebook 02b — ACS EDA with geography labels
+
+```text
+notebooks/02b_acs_eda_all_years.ipynb
+```
+
+**Dependency:** notebook 00 and `fact_acs_tract_profile_v2`
+
+### Notebook 03 — ACS visuals on original fact table
+
+```text
+notebooks/03_acs_visuals.ipynb
+```
+
+Optional if you want the original visuals layer.
+
+### Notebook 03b — ACS visuals with geography labels
+
+```text
+notebooks/03b_acs_visuals_geo.ipynb
+```
+
+**Dependency:** notebook 00 and `fact_acs_tract_profile_v2`
+
+### Notebook 04 — ACS clustering with geography labels
+
+```text
+notebooks/04_acs_clustering_geo.ipynb
+```
+
+**Dependency:** notebook 00, `fact_acs_tract_profile_v2`, and `acs_frozen_metric_sheet_v2`
+
+### Notebook 05 — ACS cluster transitions
+
+```text
+notebooks/05_acs_cluster_transitions.ipynb
+```
+
+**Dependency:** notebook 04 because it needs `cluster_assignments_all_years.csv`
+
+### Notebook 06 — ACS ↔ PUMS / ALICE bridge
+
+```text
+notebooks/06_acs_pums_alice_bridge.ipynb
+```
+
+**Dependencies:**
+
+- notebook 00 for geography labels
+- notebook 04 if you want cluster labels joined
+- year-level county ALICE totals from the PUMS layer
+
+The existing repo documentation treats the county totals file as an input requirement for notebook 06. If you standardize that input later, do it after PUMS step 14 and before notebook 06.
 
 ---
 
-## Outputs Reference
+## 6. Dependency summary
 
-```
-outputs/
-├── acs/
-│   ├── inventory/
-│   │   ├── acs_file_inventory.csv
-│   │   ├── acs_folder_year_summary.csv
-│   │   └── acs_missing_expected_files.csv
-│   ├── validation/                       # ACS pipeline validation results
-│   └── analysis/
-│       ├── eda/                          # Notebooks 02 and 02b
-│       │   ├── data/
-│       │   ├── summary/
-│       │   ├── correlation/
-│       │   ├── rankings/
-│       │   └── plots/
-│       ├── geography_lookup/             # Notebook 00
-│       │   ├── data/
-│       │   │   ├── dim_tract_geography_lookup.csv
-│       │   │   ├── dim_tract_geography_lookup.geojson
-│       │   │   └── dim_tract_geography_lookup.gpkg
-│       │   ├── maps/
-│       │   └── summary/
-│       ├── visuals/                      # Notebooks 03 and 03b
-│       ├── clustering/                   # Notebook 04
-│       │   ├── assignments/
-│       │   │   └── cluster_assignments_all_years.csv
-│       │   ├── centroids/
-│       │   ├── profiles/
-│       │   ├── diagnostics/
-│       │   └── pca/
-│       ├── transitions/                  # Notebook 05
-│       │   ├── data/
-│       │   │   ├── aligned_cluster_assignments_all_years.csv
-│       │   │   ├── stable_tract_cluster_paths_wide.csv
-│       │   │   └── transition_edges_all_pairs.csv
-│       │   ├── matrices/
-│       │   ├── plots/
-│       │   └── summary/
-│       └── pums_alice_bridge/            # Notebook 06
-│           ├── data/
-│           │   ├── tract_alice_estimates_{label}.csv
-│           │   └── county_alice_totals_{label}.csv
-│           ├── summary/
-│           │   ├── county_allocation_validation_{label}.csv
-│           │   └── bridge_run_summary_{label}.csv
-│           └── plots/
-└── pums/
-    ├── 01_calibrated_threshold_match.csv
-    ├── 02_calibration_spot_check.csv
-    ├── 03_final_table_null_check.csv
-    ├── 04_balance_check.csv
-    ├── 05_sheet_compare_total.csv
-    ├── 08_nonstudent_filter_impact.csv
-    ├── final_validation_combined_<timestamp>.csv
-    └── tableau-data/
-        ├── {year}/
-        │   ├── alice_below_alice_households_{year}.csv
-        │   ├── alice_below_alice_stat_profile_{year}.csv
-        │   ├── alice_nonstudent_stat_profile_{year}.csv
-        │   └── alice_nonstudent_vs_complete_profile_compare_{year}.csv
-        ├── below_alice_households_all_years.csv
-        ├── below_alice_stat_profile_all_years.csv
-        ├── nonstudent_stat_profile_all_years.csv
-        └── alice_nonstudent_vs_complete_profile_compare_all_years.csv
-```
+If you only want the base tables:
+
+1. ACS dimension layer
+2. ACS fact layer
+3. PUMS pipeline 01–14
+
+If you want the tract analytics layer:
+
+4. ACS validation
+5. notebook 01
+6. notebook 00
+7. notebook 02b
+8. notebook 03b
+9. notebook 04
+10. notebook 05
+11. notebook 06
+
+Optional original-table notebooks:
+
+- notebook 02
+- notebook 03
 
 ---
 
-## Project Structure
+## 7. Expected outputs by layer
 
-```
-Community-Pulse/
-├── data/
-│   ├── raw/                          # Downloaded ACS and PUMS source files
-│   ├── yearly-data/                  # ACS CSVs organized by category
-│   ├── combined-data/                # Merged multi-year ACS CSVs
-│   ├── geo/                          # Census TIGER/Line shapefiles (tracts, places, ZCTAs)
-│   └── pums/                         # Processed PUMS files and crosswalk data
-│       └── Tract-Illinois.csv        # Illinois tract-to-PUMA crosswalk (Census)
-├── docs/
-│   └── REPLICATION.md                # This file — full pipeline replication guide
-├── notebooks/
-│   ├── 01_build_acs_profile_v2_from_int_tables.ipynb  # Builds fact_acs_tract_profile_v2
-│   ├── 00_acs_tract_geography_lookup.ipynb            # Tract geography enrichment (run before 02b+)
-│   ├── 02_acs_eda_all_years.ipynb                     # EDA on original fact table
-│   ├── 02b_acs_eda_all_years.ipynb                    # EDA on v2 with geography labels
-│   ├── 03_acs_visuals.ipynb                           # Heatmaps, rankings, change tables
-│   ├── 03b_acs_visuals_geo.ipynb                      # Visuals with geography labels
-│   ├── 04_acs_clustering_geo.ipynb                    # K-Means clustering with geo labels
-│   ├── 05_acs_cluster_transitions.ipynb               # Cross-year cluster alignment and transitions
-│   ├── 06_acs_pums_alice_bridge.ipynb                 # Tract-level ALICE estimation bridge
-│   └── pums_files.ipynb                               # Exploratory analysis of PUMS data
-├── outputs/
-│   ├── acs/
-│   │   ├── inventory/                # ACS file inventory outputs (script A1)
-│   │   ├── validation/               # ACS validation outputs (Phase C)
-│   │   └── analysis/                 # Analysis notebook outputs (Phase D)
-│   └── pums/
-│       ├── *.csv                     # Final validation outputs (script 12)
-│       └── tableau-data/             # Tableau-ready CSVs (scripts 13 and 14)
-├── scripts/
-│   ├── copy_files_census.sh          # Copies ACS raw files into yearly-data/
-│   ├── rename_census_data_files.sh   # Standardizes ACS filenames
-│   ├── load_census_data_db.py        # Loads combined ACS CSVs into PostgreSQL
-│   ├── postgres-connection.py        # Tests database connectivity
-│   ├── acs/
-│   │   ├── dim/                      # ACS dimension pipeline scripts (A1–A5)
-│   │   ├── fact/                     # ACS fact pipeline scripts (B1–B6)
-│   │   └── validation/               # ACS validation scripts (C)
-│   └── pums/                         # PUMS pipeline scripts (run in numbered order)
-│       ├── 01_copy_files_pums.sh
-│       ├── 02_load_pums_data_db.py
-│       ├── 03_generate_pums_sql_scripts.py
-│       ├── 04_load_tract_il.py
-│       ├── 05_pull_acs_tract_households.py
-│       ├── 06_generate_pums_household_profile_adj_sql_scripts.py
-│       ├── 07_generate_pums_household_final_sql_scripts.py
-│       ├── 08_generate_pums_threshold_sql_scripts.py
-│       ├── 09_generate_pums_household_final_updates_sql_scripts.py
-│       ├── 10_generate_pums_below_alice_flag_sql_scripts.py
-│       ├── 11_generate_pums_nonstudent_sql_scripts.py
-│       ├── 12_run_pums_final_validation.py
-│       ├── 13_generate_pums_alice_statistical_profile_sql_scripts_with_exports.py
-│       └── 14_generate_pums_alice_profile_comparison_sql_scripts_with_exports.py
-├── sql/
-│   ├── acs/
-│   │   └── fact/
-│   │       ├── 06_create_fact_acs_tract_metric_long.sql
-│   │       ├── 07a_create_fact_acs_tract_profile.sql        # Original wide fact table
-│   │       ├── 07b_create_fact_acs_tract_profile_v2.sql     # Revised v2 fact table
-│   │       ├── 07c_rebuild_fact_acs_tract_profile_v2_audited.sql
-│   │       ├── 08_create_metric_sheet.sql                   # acs_frozen_metric_sheet_v2
-│   │       ├── 09_create_acs_fact_tract_profile_v2_21101_fix.sql
-│   │       └── 10_update_metric_sheet.sql
-│   └── pums/
-│       ├── ALICE/                    # Shared/cross-year SQL (run manually)
-│       │   ├── 01_create_alice_household_profile_all_years.sql
-│       │   ├── 02_create_alice_household_profile_all_years_clean.sql
-│       │   ├── 03_create_tract_puma1902_lookup.sql
-│       │   ├── 04_create_2022_puma1902_household.sql
-│       │   ├── 05_create_2023_puma1902_household.sql
-│       │   ├── 06_create_alpha.sql
-│       │   ├── 07_create_pums_alice_threshold_tables.sql
-│       │   └── 08_create_alice_thresholds_calibrated.sql
-│       ├── 2019/                     # Per-year generated SQL (scripts 01–13)
-│       ├── 2020_exp/                 # Per-year generated SQL (scripts 01–06)
-│       ├── 2021/                     # Per-year generated SQL (scripts 01–13)
-│       ├── 2022/                     # Per-year generated SQL (scripts 01–13)
-│       ├── 2023/                     # Per-year generated SQL (scripts 01–13)
-│       └── Final_Validation_Check.sql
-├── requirements.txt
-└── .env                              # Database credentials (not committed)
-```
+### ACS output areas
+
+- `outputs/acs/inventory/`
+- `outputs/acs/validation/`
+- `outputs/acs/analysis/eda/`
+- `outputs/acs/analysis/geography_lookup/`
+- `outputs/acs/analysis/visuals/`
+- `outputs/acs/analysis/clustering/`
+- `outputs/acs/analysis/transitions/`
+- `outputs/acs/analysis/pums_alice_bridge/`
+- `outputs/acs/analysis/pums_alice_bridge_capacity_adjusted/` if you are using the extended bridge layer already present in the repo outputs
+
+### PUMS output areas
+
+- `outputs/pums/`
+- `outputs/pums/tableau-data/`
+
+Important committed all-years PUMS outputs include:
+
+- `below_alice_households_all_years.csv`
+- `below_alice_stat_profile_all_years.csv`
+- `nonstudent_stat_profile_all_years.csv`
+- `alice_nonstudent_vs_complete_profile_compare_all_years.csv`
+
+---
+
+## 8. Recommended replication checkpoints
+
+Use these checkpoints instead of trying to diagnose everything at the end.
+
+### After ACS dimension layer
+Confirm these exist:
+
+- `dim_tract`
+- `bridge_tract_year`
+
+### After ACS fact layer
+Confirm these exist:
+
+- `fact_acs_tract_metric_long`
+- `fact_acs_tract_profile`
+- `fact_acs_tract_profile_v2`
+- `acs_frozen_metric_sheet_v2`
+
+### After ACS validation
+Confirm `outputs/acs/validation/` has fresh run artifacts.
+
+### After PUMS step 12
+Confirm:
+
+- `outputs/pums/04_balance_check.csv`
+- `outputs/pums/08_nonstudent_filter_impact.csv`
+- the validation output produced by step 12
+
+### After PUMS step 14
+Confirm:
+
+- `outputs/pums/tableau-data/below_alice_stat_profile_all_years.csv`
+- `outputs/pums/tableau-data/nonstudent_stat_profile_all_years.csv`
+- `outputs/pums/tableau-data/alice_nonstudent_vs_complete_profile_compare_all_years.csv`
+
+### After notebook layer
+Confirm at minimum:
+
+- `outputs/acs/analysis/geography_lookup/data/dim_tract_geography_lookup.csv`
+- `outputs/acs/analysis/clustering/assignments/cluster_assignments_all_years.csv`
+- `outputs/acs/analysis/transitions/data/aligned_cluster_assignments_all_years.csv`
+- `outputs/acs/analysis/pums_alice_bridge/data/tract_alice_estimates_<label>.csv`
+
+---
+
+## 9. Optional local extension layer
+
+If you also keep the extended local notebook layer that produced the already-committed `outputs/acs/analysis/pums_alice_bridge_capacity_adjusted/` outputs, run it **after notebook 06**. That extension is logically downstream of the base bridge and should never be run before the ACS notebook and PUMS profile layers are complete.
+
+---
+
+## 10. One-line replication order
+
+If you want the shortest possible version, this is the exact order:
+
+1. `python scripts/postgres-connection.py`
+2. ACS dim `01` → `05`
+3. ACS fact `01` → `07`
+4. ACS SQL for `fact_acs_tract_profile_v2` and `acs_frozen_metric_sheet_v2`
+5. ACS validation `04_run_full_validation.py`
+6. PUMS `01` → `14`, including the documented manual SQL steps at steps 5 and 8
+7. notebooks `01` → `00` → `02b` → `03b` → `04` → `05` → `06`
+8. optional original notebooks `02`, `03`
+9. optional local extension notebooks after notebook 06
+
+That order respects the layer dependencies across the whole project.
