@@ -1,0 +1,7 @@
+cluster_2019,cluster_2021,tract_count,from_year,to_year,cluster_2022,cluster_2023
+aligned_cluster_0,aligned_cluster_0,31,2019,2021,,
+aligned_cluster_1,aligned_cluster_1,7,2019,2021,,
+,aligned_cluster_0,31,2021,2022,aligned_cluster_0,
+,aligned_cluster_1,7,2021,2022,aligned_cluster_1,
+,,31,2022,2023,aligned_cluster_0,aligned_cluster_0
+,,7,2022,2023,aligned_cluster_1,aligned_cluster_1

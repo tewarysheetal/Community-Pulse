@@ -1,0 +1,34 @@
+final_column_name,display_label,use_for_clustering_yes_no
+median_household_income,Median household income,Yes
+poverty_rate,Poverty rate,Yes
+unemployment_rate,Unemployment rate,Yes
+pct_rent_burden_30_plus,Rent burden 30%+,Yes
+pct_rent_burden_50_plus,Rent burden 50%+,Yes
+pct_renter_occupied,Renter-occupied housing share,Yes
+pct_owner_occupied,Owner-occupied housing share,No
+pct_vacant_housing_units,Vacant housing units share,Yes
+pct_hh_income_under_25k,Households income under $25k,Yes
+pct_hh_income_25k_50k,Households income $25k-$50k,Yes
+pct_hh_income_50k_100k,Households income $50k-$100k,Yes
+pct_hh_income_100k_plus,Households income $100k+,Yes
+pct_less_than_high_school,Less than high school,Yes
+pct_high_school_grad,High school graduate,No
+pct_some_college_or_associate,Some college or associate,Yes
+pct_bachelors_or_higher,Bachelor's or higher,Yes
+pct_age_under_18,Population under 18,No
+pct_age_18_24,Population age 18-24,Yes
+pct_age_65_plus,Population age 65+,Yes
+pct_family_households,Family households,Yes
+pct_nonfamily_households,Nonfamily households,No
+pct_households_with_own_children_under_18,Households with own children under 18,Yes
+pct_one_person_households,One-person households,Yes
+pct_senior_living_alone_households,Senior living alone households,Yes
+avg_household_size_v2,Average household size,Yes
+labor_force_participation_rate,Labor force participation rate,No
+employment_population_ratio,Employment-population ratio,No
+pct_speak_language_other_than_english_at_home,Speak language other than English at home,No
+total_population,Total population,No
+pct_white_non_hispanic,White non-Hispanic,No
+pct_black_non_hispanic,Black non-Hispanic,No
+pct_hispanic,Hispanic,No
+pct_households_with_65_plus,Households with age 65+,No

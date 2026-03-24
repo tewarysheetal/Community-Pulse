@@ -1,0 +1,10 @@
+metric,value
+row_count_full,187
+row_count_stable,152
+distinct_tracts_full,53
+distinct_tracts_stable,38
+available_metrics,33
+cluster_metrics,21
+visual_metrics,16
+years_present,"2019, 2021, 2022, 2023"
+geo_labels_filled,182

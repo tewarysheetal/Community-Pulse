@@ -1,0 +1,5 @@
+year,row_count,rows_with_v2_core_metrics,avg_poverty_rate,avg_unemployment_rate,avg_pct_hh_income_under_25k,avg_pct_bachelors_or_higher,avg_pct_age_18_24,avg_pct_family_households
+2019,43,43,24.38,5.07,30.09,47.59,24.04,48.96
+2021,48,48,22.75,5.01,27.49,49.38,23.95,49.05
+2022,48,48,22.9,4.71,25.4,49.98,24.6,48.86
+2023,48,48,22.27,4.4,24.74,49.82,23.93,48.83

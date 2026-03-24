@@ -1,0 +1,7 @@
+metric,value
+tract_count_lookup,48
+tract_count_dim,53
+primary_place_filled,32
+primary_zip_filled,48
+stable_tract_count,38
+geojson_written,True

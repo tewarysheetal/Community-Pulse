@@ -1,0 +1,9 @@
+year,raw_cluster_id,aligned_cluster_id,match_type,distance_to_previous,aligned_cluster_label
+2019,0,0,anchor,0.0,aligned_cluster_0
+2019,1,1,anchor,0.0,aligned_cluster_1
+2021,0,0,matched_to_previous,0.24063609231397085,aligned_cluster_0
+2021,1,1,matched_to_previous,1.0391833004776676,aligned_cluster_1
+2022,0,0,matched_to_previous,0.13136022831881852,aligned_cluster_0
+2022,1,1,matched_to_previous,0.5692276560482157,aligned_cluster_1
+2023,0,0,matched_to_previous,0.1475592414429487,aligned_cluster_0
+2023,1,1,matched_to_previous,0.6394233795861115,aligned_cluster_1

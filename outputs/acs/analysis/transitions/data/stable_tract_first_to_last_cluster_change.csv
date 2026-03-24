@@ -1,0 +1,39 @@
+tract_geoid,start_cluster,end_cluster,changed_cluster,display_area_label,primary_place,primary_zip,landmark_context_note
+17019000200,aligned_cluster_0,aligned_cluster_0,False,Champaign — Higher economic stress area,Champaign,61820.0,Higher poverty rate; more very-low-income households.
+17019000301,aligned_cluster_1,aligned_cluster_1,False,Champaign — Student-dense area,Champaign,61820.0,Higher student concentration; renter-heavy housing profile; higher poverty rate; more very-low-income households.
+17019000302,aligned_cluster_1,aligned_cluster_1,False,Champaign — Student-dense area,Champaign,61820.0,Higher student concentration; renter-heavy housing profile; higher poverty rate; more very-low-income households.
+17019000401,aligned_cluster_1,aligned_cluster_1,False,Champaign — Student-dense area,Champaign,61820.0,Higher student concentration; renter-heavy housing profile; higher poverty rate; more very-low-income households.
+17019000402,aligned_cluster_1,aligned_cluster_1,False,Champaign — Student-dense area,Champaign,61820.0,Higher student concentration; renter-heavy housing profile; higher poverty rate; more very-low-income households.
+17019000500,aligned_cluster_0,aligned_cluster_0,False,Champaign — Mixed residential area,Champaign,61820.0,More households with children.
+17019000700,aligned_cluster_0,aligned_cluster_0,False,Champaign — Mixed residential area,Champaign,61820.0,General tract context note not flagged by the current rule set.
+17019000800,aligned_cluster_0,aligned_cluster_0,False,Champaign — Mixed residential area,Champaign,61822.0,Renter-heavy housing profile.
+17019000901,aligned_cluster_0,aligned_cluster_0,False,Champaign — Family-oriented residential area,Champaign,61821.0,More very-low-income households; more households with children.
+17019000902,aligned_cluster_0,aligned_cluster_0,False,Census Tract 9.02 — Family-oriented residential area,,61822.0,More households with children.
+17019001000,aligned_cluster_0,aligned_cluster_0,False,Champaign — Mixed residential area,Champaign,61821.0,General tract context note not flagged by the current rule set.
+17019001100,aligned_cluster_0,aligned_cluster_0,False,Champaign — Senior-heavy residential area,Champaign,61821.0,Older age profile.
+17019001201,aligned_cluster_0,aligned_cluster_0,False,Champaign — Mixed residential area,Champaign,61821.0,General tract context note not flagged by the current rule set.
+17019001203,aligned_cluster_0,aligned_cluster_0,False,Champaign — Senior-heavy residential area,Champaign,61821.0,Older age profile.
+17019001204,aligned_cluster_0,aligned_cluster_0,False,Champaign — Family-oriented residential area,Champaign,61822.0,More households with children; older age profile.
+17019001205,aligned_cluster_0,aligned_cluster_0,False,Champaign — Family-oriented residential area,Champaign,61822.0,More households with children.
+17019001206,aligned_cluster_0,aligned_cluster_0,False,Census Tract 12.06 — Senior-heavy residential area,,61822.0,Older age profile.
+17019001301,aligned_cluster_0,aligned_cluster_0,False,Champaign — Senior-heavy residential area,Champaign,61821.0,Older age profile.
+17019001302,aligned_cluster_0,aligned_cluster_0,False,Savoy — Senior-heavy residential area,Savoy,61822.0,Older age profile.
+17019001400,aligned_cluster_0,aligned_cluster_0,False,Census Tract 14 — Family-oriented residential area,,61874.0,Higher student concentration; more households with children.
+17019005300,aligned_cluster_1,aligned_cluster_1,False,Urbana — Student-dense area,Urbana,61801.0,Higher student concentration; renter-heavy housing profile; higher poverty rate; more very-low-income households.
+17019005401,aligned_cluster_0,aligned_cluster_0,False,Census Tract 54.01 — Mixed residential area,,61802.0,Renter-heavy housing profile; more very-low-income households.
+17019005402,aligned_cluster_0,aligned_cluster_0,False,Census Tract 54.02 — Senior-heavy residential area,,61802.0,Older age profile.
+17019005500,aligned_cluster_0,aligned_cluster_0,False,Urbana — Senior-heavy residential area,Urbana,61802.0,Older age profile.
+17019005701,aligned_cluster_0,aligned_cluster_0,False,Urbana — Senior-heavy residential area,Urbana,61801.0,Older age profile.
+17019005702,aligned_cluster_0,aligned_cluster_0,False,Census Tract 57.02 — Senior-heavy residential area,,61802.0,Older age profile.
+17019005800,aligned_cluster_0,aligned_cluster_0,False,Urbana — Higher economic stress area,Urbana,61801.0,Higher poverty rate; more very-low-income households.
+17019006000,aligned_cluster_1,aligned_cluster_1,False,Census Tract 60 — Student-dense area,,61802.0,Higher student concentration; renter-heavy housing profile; higher poverty rate; more very-low-income households.
+17019010100,aligned_cluster_0,aligned_cluster_0,False,Census Tract 101 — Mixed residential area,,61866.0,General tract context note not flagged by the current rule set.
+17019010204,aligned_cluster_0,aligned_cluster_0,False,Rantoul — Mixed residential area,Rantoul,61866.0,General tract context note not flagged by the current rule set.
+17019010300,aligned_cluster_0,aligned_cluster_0,False,Rantoul — Family-oriented residential area,Rantoul,61866.0,Renter-heavy housing profile; higher poverty rate; more households with children.
+17019010400,aligned_cluster_0,aligned_cluster_0,False,Census Tract 104 — Senior-heavy residential area,,61866.0,Older age profile.
+17019010500,aligned_cluster_0,aligned_cluster_0,False,Fisher — Family-oriented residential area,Fisher,61843.0,More households with children; older age profile.
+17019010601,aligned_cluster_0,aligned_cluster_0,False,Census Tract 106.01 — Family-oriented residential area,,61853.0,More households with children.
+17019010603,aligned_cluster_0,aligned_cluster_0,False,Mahomet — Family-oriented residential area,Mahomet,61853.0,More households with children.
+17019010604,aligned_cluster_0,aligned_cluster_0,False,Census Tract 106.04 — Senior-heavy residential area,,61822.0,Older age profile.
+17019010800,aligned_cluster_0,aligned_cluster_0,False,Census Tract 108 — Senior-heavy residential area,,61877.0,More households with children; older age profile.
+17019011100,aligned_cluster_1,aligned_cluster_1,False,Urbana — Student-dense area,Urbana,61801.0,Higher student concentration; renter-heavy housing profile; higher poverty rate; more very-low-income households.
