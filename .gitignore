@@ -29,3 +29,6 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
+
+# Large geo zip files (exceed GitHub 100MB limit)
+data/geo/*.zip

@@ -8,20 +8,32 @@ tract_geoid,display_area_label,primary_place,primary_zip,landmark_context_note,2
 17019000700,Champaign — Mixed residential area,Champaign,61820.0,General tract context note not flagged by the current rule set.,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0
 17019000800,Champaign — Mixed residential area,Champaign,61822.0,Renter-heavy housing profile.,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0
 17019000901,Champaign — Family-oriented residential area,Champaign,61821.0,More very-low-income households; more households with children.,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0
+17019000902,Champaign — Family-oriented residential area,Champaign,61822.0,More households with children.,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0
 17019001000,Champaign — Mixed residential area,Champaign,61821.0,General tract context note not flagged by the current rule set.,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0
 17019001100,Champaign — Senior-heavy residential area,Champaign,61821.0,Older age profile.,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0
 17019001201,Champaign — Mixed residential area,Champaign,61821.0,General tract context note not flagged by the current rule set.,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0
 17019001203,Champaign — Senior-heavy residential area,Champaign,61821.0,Older age profile.,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0
 17019001204,Champaign — Family-oriented residential area,Champaign,61822.0,More households with children; older age profile.,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0
 17019001205,Champaign — Family-oriented residential area,Champaign,61822.0,More households with children.,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0
+17019001206,Champaign — Senior-heavy residential area,Champaign,61822.0,Older age profile.,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0
 17019001301,Champaign — Senior-heavy residential area,Champaign,61821.0,Older age profile.,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0
 17019001302,Savoy — Senior-heavy residential area,Savoy,61822.0,Older age profile.,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0
+17019001400,Champaign — Family-oriented residential area,Champaign,61874.0,Higher student concentration; more households with children.,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0
 17019005300,Urbana — Student-dense area,Urbana,61801.0,Higher student concentration; renter-heavy housing profile; higher poverty rate; more very-low-income households.,aligned_cluster_1,aligned_cluster_1,aligned_cluster_1,aligned_cluster_1
+17019005401,Urbana — Mixed residential area,Urbana,61802.0,Renter-heavy housing profile; more very-low-income households.,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0
+17019005402,Urbana — Senior-heavy residential area,Urbana,61802.0,Older age profile.,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0
 17019005500,Urbana — Senior-heavy residential area,Urbana,61802.0,Older age profile.,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0
 17019005701,Urbana — Senior-heavy residential area,Urbana,61801.0,Older age profile.,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0
+17019005702,Urbana — Senior-heavy residential area,Urbana,61802.0,Older age profile.,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0
 17019005800,Urbana — Higher economic stress area,Urbana,61801.0,Higher poverty rate; more very-low-income households.,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0
+17019006000,Urbana — Student-dense area,Urbana,61802.0,Higher student concentration; renter-heavy housing profile; higher poverty rate; more very-low-income households.,aligned_cluster_1,aligned_cluster_1,aligned_cluster_1,aligned_cluster_1
+17019010100,Rantoul — Mixed residential area,Rantoul,61866.0,General tract context note not flagged by the current rule set.,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0
 17019010204,Rantoul — Mixed residential area,Rantoul,61866.0,General tract context note not flagged by the current rule set.,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0
 17019010300,Rantoul — Family-oriented residential area,Rantoul,61866.0,Renter-heavy housing profile; higher poverty rate; more households with children.,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0
+17019010400,Rantoul — Senior-heavy residential area,Rantoul,61866.0,Older age profile.,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0
 17019010500,Fisher — Family-oriented residential area,Fisher,61843.0,More households with children; older age profile.,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0
+17019010601,Mahomet — Family-oriented residential area,Mahomet,61853.0,More households with children.,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0
 17019010603,Mahomet — Family-oriented residential area,Mahomet,61853.0,More households with children.,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0
+17019010604,Champaign — Senior-heavy residential area,Champaign,61822.0,Older age profile.,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0
+17019010800,Sidney — Senior-heavy residential area,Sidney,61877.0,More households with children; older age profile.,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0,aligned_cluster_0
 17019011100,Urbana — Student-dense area,Urbana,61801.0,Higher student concentration; renter-heavy housing profile; higher poverty rate; more very-low-income households.,aligned_cluster_1,aligned_cluster_1,aligned_cluster_1,aligned_cluster_1

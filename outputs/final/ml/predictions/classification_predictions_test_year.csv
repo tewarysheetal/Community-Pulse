@@ -3,143 +3,143 @@ year,tract_geoid,display_area_label,high_alice_risk_flag,model,predicted_class,p
 2023,17019001201,Champaign — Mixed residential area,0,logistic_regression,0,0.15233865333424867
 2023,17019005300,Urbana — Student-dense area,1,logistic_regression,1,0.9737135299310063
 2023,17019005701,Urbana — Senior-heavy residential area,0,logistic_regression,0,0.10058690050117518
-2023,17019005401,Census Tract 54.01 — Mixed residential area,1,logistic_regression,0,0.3659565485891993
+2023,17019005401,Urbana — Mixed residential area,1,logistic_regression,0,0.3659565485891993
 2023,17019000901,Champaign — Family-oriented residential area,1,logistic_regression,0,0.24355662547006562
 2023,17019000302,Champaign — Student-dense area,1,logistic_regression,0,0.4652342354762583
 2023,17019005601,Urbana — Mixed residential area,0,logistic_regression,0,0.005843231655207094
 2023,17019005500,Urbana — Senior-heavy residential area,0,logistic_regression,0,0.004444522304607368
 2023,17019000800,Champaign — Mixed residential area,0,logistic_regression,0,0.0011637679628672454
-2023,17019000902,Census Tract 9.02 — Family-oriented residential area,0,logistic_regression,0,0.0011087658166186805
+2023,17019000902,Champaign — Family-oriented residential area,0,logistic_regression,0,0.0011087658166186805
 2023,17019000700,Champaign — Mixed residential area,1,logistic_regression,0,0.4563972640837818
 2023,17019010300,Rantoul — Family-oriented residential area,1,logistic_regression,1,0.9858235068571186
-2023,17019010100,Census Tract 101 — Mixed residential area,0,logistic_regression,0,0.038588387994576444
+2023,17019010100,Rantoul — Mixed residential area,0,logistic_regression,0,0.038588387994576444
 2023,17019001205,Champaign — Family-oriented residential area,0,logistic_regression,0,8.512863139927498e-05
 2023,17019010204,Rantoul — Mixed residential area,0,logistic_regression,0,0.005904847642262068
 2023,17019001301,Champaign — Senior-heavy residential area,0,logistic_regression,0,0.0004584967191335944
 2023,17019001000,Champaign — Mixed residential area,0,logistic_regression,0,0.0021688737079570194
 2023,17019000500,Champaign — Mixed residential area,0,logistic_regression,0,0.00309163240569449
-2023,17019005402,Census Tract 54.02 — Senior-heavy residential area,0,logistic_regression,0,0.0047018438290283284
+2023,17019005402,Urbana — Senior-heavy residential area,0,logistic_regression,0,0.0047018438290283284
 2023,17019010603,Mahomet — Family-oriented residential area,0,logistic_regression,0,0.00016364410929187883
 2023,17019000200,Champaign — Higher economic stress area,1,logistic_regression,1,0.9551756379227652
 2023,17019000402,Champaign — Student-dense area,1,logistic_regression,1,0.5602236946673795
 2023,17019011100,Urbana — Student-dense area,1,logistic_regression,1,0.5197087462764274
 2023,17019005800,Urbana — Higher economic stress area,0,logistic_regression,0,0.001973772375629923
-2023,17019010902,Census Tract 109.02 — Family-oriented residential area,0,logistic_regression,0,0.008013806828326801
-2023,17019010901,Census Tract 109.01 — Family-oriented residential area,0,logistic_regression,0,0.0002654492393636441
+2023,17019010902,Sadorus — Family-oriented residential area,0,logistic_regression,0,0.008013806828326801
+2023,17019010901,Philo — Family-oriented residential area,0,logistic_regression,0,0.0002654492393636441
 2023,17019011001,Champaign — Mixed residential area,0,logistic_regression,0,0.006181420058537744
-2023,17019005602,Census Tract 56.02 — Senior-heavy residential area,0,logistic_regression,0,0.0018680396610866606
+2023,17019005602,Urbana — Senior-heavy residential area,0,logistic_regression,0,0.0018680396610866606
 2023,17019005902,Urbana — Student-dense area,1,logistic_regression,1,0.89376974233771
-2023,17019010800,Census Tract 108 — Senior-heavy residential area,0,logistic_regression,0,0.0006415064504436055
+2023,17019010800,Sidney — Senior-heavy residential area,0,logistic_regression,0,0.0006415064504436055
 2023,17019001100,Champaign — Senior-heavy residential area,0,logistic_regression,0,8.062878439266237e-05
 2023,17019000401,Champaign — Student-dense area,0,logistic_regression,1,0.5622945297648059
-2023,17019001400,Census Tract 14 — Family-oriented residential area,0,logistic_regression,0,6.33651846006421e-05
-2023,17019010400,Census Tract 104 — Senior-heavy residential area,0,logistic_regression,0,7.693671485642306e-05
-2023,17019010702,Census Tract 107.02 — Family-oriented residential area,0,logistic_regression,0,0.0004006555383959321
+2023,17019001400,Champaign — Family-oriented residential area,0,logistic_regression,0,6.33651846006421e-05
+2023,17019010400,Rantoul — Senior-heavy residential area,0,logistic_regression,0,7.693671485642306e-05
+2023,17019010702,St. Joseph — Family-oriented residential area,0,logistic_regression,0,0.0004006555383959321
 2023,17019011002,Champaign — Higher-income residential area,0,logistic_regression,0,0.0001379341807846387
-2023,17019006000,Census Tract 60 — Student-dense area,0,logistic_regression,0,0.09788782958207766
-2023,17019010601,Census Tract 106.01 — Family-oriented residential area,0,logistic_regression,0,1.8372931026702988e-05
+2023,17019006000,Urbana — Student-dense area,0,logistic_regression,0,0.09788782958207766
+2023,17019010601,Mahomet — Family-oriented residential area,0,logistic_regression,0,1.8372931026702988e-05
 2023,17019005901,Urbana — Student-dense area,1,logistic_regression,1,0.7157288553545867
 2023,17019001203,Champaign — Senior-heavy residential area,0,logistic_regression,0,5.773129444739517e-06
 2023,17019001302,Savoy — Senior-heavy residential area,0,logistic_regression,0,2.6434692904282213e-06
-2023,17019010604,Census Tract 106.04 — Senior-heavy residential area,0,logistic_regression,0,1.7213779184356504e-05
+2023,17019010604,Champaign — Senior-heavy residential area,0,logistic_regression,0,1.7213779184356504e-05
 2023,17019001204,Champaign — Family-oriented residential area,0,logistic_regression,0,1.224285184137737e-06
 2023,17019010701,St. Joseph — Family-oriented residential area,0,logistic_regression,0,2.455058984830324e-06
-2023,17019001206,Census Tract 12.06 — Senior-heavy residential area,0,logistic_regression,0,9.721232018809708e-07
-2023,17019005702,Census Tract 57.02 — Senior-heavy residential area,0,logistic_regression,0,4.6146290934089113e-07
+2023,17019001206,Champaign — Senior-heavy residential area,0,logistic_regression,0,9.721232018809708e-07
+2023,17019005702,Urbana — Senior-heavy residential area,0,logistic_regression,0,4.6146290934089113e-07
 2023,17019010500,Fisher — Family-oriented residential area,0,logistic_regression,0,6.879324906952506e-07
 2023,17019000301,Champaign — Student-dense area,1,random_forest_classifier,1,0.8938095238095236
 2023,17019001201,Champaign — Mixed residential area,0,random_forest_classifier,0,0.07933333333333334
 2023,17019005300,Urbana — Student-dense area,1,random_forest_classifier,1,0.9211607142857143
 2023,17019005701,Urbana — Senior-heavy residential area,0,random_forest_classifier,0,0.06945238095238096
-2023,17019005401,Census Tract 54.01 — Mixed residential area,1,random_forest_classifier,1,0.6465416666666668
+2023,17019005401,Urbana — Mixed residential area,1,random_forest_classifier,1,0.6465416666666668
 2023,17019000901,Champaign — Family-oriented residential area,1,random_forest_classifier,0,0.41336904761904764
 2023,17019000302,Champaign — Student-dense area,1,random_forest_classifier,1,0.6987916666666669
 2023,17019005601,Urbana — Mixed residential area,0,random_forest_classifier,0,0.00375
 2023,17019005500,Urbana — Senior-heavy residential area,0,random_forest_classifier,0,0.0015
 2023,17019000800,Champaign — Mixed residential area,0,random_forest_classifier,0,0.010208333333333335
-2023,17019000902,Census Tract 9.02 — Family-oriented residential area,0,random_forest_classifier,0,0.01125
+2023,17019000902,Champaign — Family-oriented residential area,0,random_forest_classifier,0,0.01125
 2023,17019000700,Champaign — Mixed residential area,1,random_forest_classifier,0,0.49801190476190477
 2023,17019010300,Rantoul — Family-oriented residential area,1,random_forest_classifier,1,0.638125
-2023,17019010100,Census Tract 101 — Mixed residential area,0,random_forest_classifier,0,0.1973690476190476
+2023,17019010100,Rantoul — Mixed residential area,0,random_forest_classifier,0,0.1973690476190476
 2023,17019001205,Champaign — Family-oriented residential area,0,random_forest_classifier,0,0.00125
 2023,17019010204,Rantoul — Mixed residential area,0,random_forest_classifier,0,0.054369047619047615
 2023,17019001301,Champaign — Senior-heavy residential area,0,random_forest_classifier,0,0.0027976190476190475
 2023,17019001000,Champaign — Mixed residential area,0,random_forest_classifier,0,0.008333333333333333
 2023,17019000500,Champaign — Mixed residential area,0,random_forest_classifier,0,0.06461904761904762
-2023,17019005402,Census Tract 54.02 — Senior-heavy residential area,0,random_forest_classifier,0,0.0035833333333333333
+2023,17019005402,Urbana — Senior-heavy residential area,0,random_forest_classifier,0,0.0035833333333333333
 2023,17019010603,Mahomet — Family-oriented residential area,0,random_forest_classifier,0,0.0
 2023,17019000200,Champaign — Higher economic stress area,1,random_forest_classifier,1,0.8306250000000002
 2023,17019000402,Champaign — Student-dense area,1,random_forest_classifier,1,0.8377142857142856
 2023,17019011100,Urbana — Student-dense area,1,random_forest_classifier,1,0.5305059523809524
 2023,17019005800,Urbana — Higher economic stress area,0,random_forest_classifier,0,0.09715476190476192
-2023,17019010902,Census Tract 109.02 — Family-oriented residential area,0,random_forest_classifier,0,0.01708333333333333
-2023,17019010901,Census Tract 109.01 — Family-oriented residential area,0,random_forest_classifier,0,0.0
+2023,17019010902,Sadorus — Family-oriented residential area,0,random_forest_classifier,0,0.01708333333333333
+2023,17019010901,Philo — Family-oriented residential area,0,random_forest_classifier,0,0.0
 2023,17019011001,Champaign — Mixed residential area,0,random_forest_classifier,0,0.02791666666666667
-2023,17019005602,Census Tract 56.02 — Senior-heavy residential area,0,random_forest_classifier,0,0.010833333333333335
+2023,17019005602,Urbana — Senior-heavy residential area,0,random_forest_classifier,0,0.010833333333333335
 2023,17019005902,Urbana — Student-dense area,1,random_forest_classifier,1,0.5034107142857142
-2023,17019010800,Census Tract 108 — Senior-heavy residential area,0,random_forest_classifier,0,0.0
+2023,17019010800,Sidney — Senior-heavy residential area,0,random_forest_classifier,0,0.0
 2023,17019001100,Champaign — Senior-heavy residential area,0,random_forest_classifier,0,0.0025
 2023,17019000401,Champaign — Student-dense area,0,random_forest_classifier,1,0.5169345238095238
-2023,17019001400,Census Tract 14 — Family-oriented residential area,0,random_forest_classifier,0,0.004583333333333333
-2023,17019010400,Census Tract 104 — Senior-heavy residential area,0,random_forest_classifier,0,0.019285714285714285
-2023,17019010702,Census Tract 107.02 — Family-oriented residential area,0,random_forest_classifier,0,0.005952380952380952
+2023,17019001400,Champaign — Family-oriented residential area,0,random_forest_classifier,0,0.004583333333333333
+2023,17019010400,Rantoul — Senior-heavy residential area,0,random_forest_classifier,0,0.019285714285714285
+2023,17019010702,St. Joseph — Family-oriented residential area,0,random_forest_classifier,0,0.005952380952380952
 2023,17019011002,Champaign — Higher-income residential area,0,random_forest_classifier,0,0.02833333333333334
-2023,17019006000,Census Tract 60 — Student-dense area,0,random_forest_classifier,0,0.43645833333333334
-2023,17019010601,Census Tract 106.01 — Family-oriented residential area,0,random_forest_classifier,0,0.003333333333333333
+2023,17019006000,Urbana — Student-dense area,0,random_forest_classifier,0,0.43645833333333334
+2023,17019010601,Mahomet — Family-oriented residential area,0,random_forest_classifier,0,0.003333333333333333
 2023,17019005901,Urbana — Student-dense area,1,random_forest_classifier,1,0.6883571428571428
 2023,17019001203,Champaign — Senior-heavy residential area,0,random_forest_classifier,0,0.0
 2023,17019001302,Savoy — Senior-heavy residential area,0,random_forest_classifier,0,0.0016666666666666666
-2023,17019010604,Census Tract 106.04 — Senior-heavy residential area,0,random_forest_classifier,0,0.0
+2023,17019010604,Champaign — Senior-heavy residential area,0,random_forest_classifier,0,0.0
 2023,17019001204,Champaign — Family-oriented residential area,0,random_forest_classifier,0,0.004166666666666667
 2023,17019010701,St. Joseph — Family-oriented residential area,0,random_forest_classifier,0,0.0
-2023,17019001206,Census Tract 12.06 — Senior-heavy residential area,0,random_forest_classifier,0,0.0016666666666666666
-2023,17019005702,Census Tract 57.02 — Senior-heavy residential area,0,random_forest_classifier,0,0.0029166666666666664
+2023,17019001206,Champaign — Senior-heavy residential area,0,random_forest_classifier,0,0.0016666666666666666
+2023,17019005702,Urbana — Senior-heavy residential area,0,random_forest_classifier,0,0.0029166666666666664
 2023,17019010500,Fisher — Family-oriented residential area,0,random_forest_classifier,0,0.0
 2023,17019000301,Champaign — Student-dense area,1,gradient_boosting_classifier,1,0.9998311614928969
 2023,17019001201,Champaign — Mixed residential area,0,gradient_boosting_classifier,0,0.0002595235464724001
 2023,17019005300,Urbana — Student-dense area,1,gradient_boosting_classifier,1,0.9996341223456803
 2023,17019005701,Urbana — Senior-heavy residential area,0,gradient_boosting_classifier,0,0.0007569322493865168
-2023,17019005401,Census Tract 54.01 — Mixed residential area,1,gradient_boosting_classifier,1,0.9069801780172465
+2023,17019005401,Urbana — Mixed residential area,1,gradient_boosting_classifier,1,0.9069801780172465
 2023,17019000901,Champaign — Family-oriented residential area,1,gradient_boosting_classifier,0,0.30081830548755756
 2023,17019000302,Champaign — Student-dense area,1,gradient_boosting_classifier,1,0.7386189766233222
 2023,17019005601,Urbana — Mixed residential area,0,gradient_boosting_classifier,0,0.00022303359819513793
 2023,17019005500,Urbana — Senior-heavy residential area,0,gradient_boosting_classifier,0,0.00022303359819513793
 2023,17019000800,Champaign — Mixed residential area,0,gradient_boosting_classifier,0,0.00022303359819513793
-2023,17019000902,Census Tract 9.02 — Family-oriented residential area,0,gradient_boosting_classifier,0,0.00028027537486601336
+2023,17019000902,Champaign — Family-oriented residential area,0,gradient_boosting_classifier,0,0.00028027537486601336
 2023,17019000700,Champaign — Mixed residential area,1,gradient_boosting_classifier,0,0.07251166816434805
 2023,17019010300,Rantoul — Family-oriented residential area,1,gradient_boosting_classifier,1,0.9783077756633229
-2023,17019010100,Census Tract 101 — Mixed residential area,0,gradient_boosting_classifier,0,0.001690058685796056
+2023,17019010100,Rantoul — Mixed residential area,0,gradient_boosting_classifier,0,0.001690058685796056
 2023,17019001205,Champaign — Family-oriented residential area,0,gradient_boosting_classifier,0,0.00022303359819513793
 2023,17019010204,Rantoul — Mixed residential area,0,gradient_boosting_classifier,0,0.0002670584988735308
 2023,17019001301,Champaign — Senior-heavy residential area,0,gradient_boosting_classifier,0,0.00023631361445577447
 2023,17019001000,Champaign — Mixed residential area,0,gradient_boosting_classifier,0,0.00022303359819513793
 2023,17019000500,Champaign — Mixed residential area,0,gradient_boosting_classifier,0,0.00034033833761666627
-2023,17019005402,Census Tract 54.02 — Senior-heavy residential area,0,gradient_boosting_classifier,0,0.00030281102551435164
+2023,17019005402,Urbana — Senior-heavy residential area,0,gradient_boosting_classifier,0,0.00030281102551435164
 2023,17019010603,Mahomet — Family-oriented residential area,0,gradient_boosting_classifier,0,0.00022303359819513793
 2023,17019000200,Champaign — Higher economic stress area,1,gradient_boosting_classifier,1,0.9824007258321084
 2023,17019000402,Champaign — Student-dense area,1,gradient_boosting_classifier,1,0.997930084414714
 2023,17019011100,Urbana — Student-dense area,1,gradient_boosting_classifier,1,0.8437749959249816
 2023,17019005800,Urbana — Higher economic stress area,0,gradient_boosting_classifier,0,0.0003401246443262398
-2023,17019010902,Census Tract 109.02 — Family-oriented residential area,0,gradient_boosting_classifier,0,0.00029404315318520147
-2023,17019010901,Census Tract 109.01 — Family-oriented residential area,0,gradient_boosting_classifier,0,0.00022303359819513793
+2023,17019010902,Sadorus — Family-oriented residential area,0,gradient_boosting_classifier,0,0.00029404315318520147
+2023,17019010901,Philo — Family-oriented residential area,0,gradient_boosting_classifier,0,0.00022303359819513793
 2023,17019011001,Champaign — Mixed residential area,0,gradient_boosting_classifier,0,0.0001219783993060345
-2023,17019005602,Census Tract 56.02 — Senior-heavy residential area,0,gradient_boosting_classifier,0,0.00023631361445577447
+2023,17019005602,Urbana — Senior-heavy residential area,0,gradient_boosting_classifier,0,0.00023631361445577447
 2023,17019005902,Urbana — Student-dense area,1,gradient_boosting_classifier,0,0.3100931172871487
-2023,17019010800,Census Tract 108 — Senior-heavy residential area,0,gradient_boosting_classifier,0,0.00022303359819513793
+2023,17019010800,Sidney — Senior-heavy residential area,0,gradient_boosting_classifier,0,0.00022303359819513793
 2023,17019001100,Champaign — Senior-heavy residential area,0,gradient_boosting_classifier,0,0.00023631361445577447
 2023,17019000401,Champaign — Student-dense area,0,gradient_boosting_classifier,0,0.02890622767729222
-2023,17019001400,Census Tract 14 — Family-oriented residential area,0,gradient_boosting_classifier,0,0.00022303359819513793
-2023,17019010400,Census Tract 104 — Senior-heavy residential area,0,gradient_boosting_classifier,0,0.0001732502971566644
-2023,17019010702,Census Tract 107.02 — Family-oriented residential area,0,gradient_boosting_classifier,0,0.0002840572275285846
+2023,17019001400,Champaign — Family-oriented residential area,0,gradient_boosting_classifier,0,0.00022303359819513793
+2023,17019010400,Rantoul — Senior-heavy residential area,0,gradient_boosting_classifier,0,0.0001732502971566644
+2023,17019010702,St. Joseph — Family-oriented residential area,0,gradient_boosting_classifier,0,0.0002840572275285846
 2023,17019011002,Champaign — Higher-income residential area,0,gradient_boosting_classifier,0,0.0002296212107839028
-2023,17019006000,Census Tract 60 — Student-dense area,0,gradient_boosting_classifier,0,0.4744423435360268
-2023,17019010601,Census Tract 106.01 — Family-oriented residential area,0,gradient_boosting_classifier,0,0.00022303359819513793
+2023,17019006000,Urbana — Student-dense area,0,gradient_boosting_classifier,0,0.4744423435360268
+2023,17019010601,Mahomet — Family-oriented residential area,0,gradient_boosting_classifier,0,0.00022303359819513793
 2023,17019005901,Urbana — Student-dense area,1,gradient_boosting_classifier,1,0.9869923326829074
 2023,17019001203,Champaign — Senior-heavy residential area,0,gradient_boosting_classifier,0,0.00022303359819513793
 2023,17019001302,Savoy — Senior-heavy residential area,0,gradient_boosting_classifier,0,0.00022303359819513793
-2023,17019010604,Census Tract 106.04 — Senior-heavy residential area,0,gradient_boosting_classifier,0,0.00022303359819513793
+2023,17019010604,Champaign — Senior-heavy residential area,0,gradient_boosting_classifier,0,0.00022303359819513793
 2023,17019001204,Champaign — Family-oriented residential area,0,gradient_boosting_classifier,0,0.00022303359819513793
 2023,17019010701,St. Joseph — Family-oriented residential area,0,gradient_boosting_classifier,0,0.00022303359819513793
-2023,17019001206,Census Tract 12.06 — Senior-heavy residential area,0,gradient_boosting_classifier,0,0.00022303359819513793
-2023,17019005702,Census Tract 57.02 — Senior-heavy residential area,0,gradient_boosting_classifier,0,0.00022303359819513793
+2023,17019001206,Champaign — Senior-heavy residential area,0,gradient_boosting_classifier,0,0.00022303359819513793
+2023,17019005702,Urbana — Senior-heavy residential area,0,gradient_boosting_classifier,0,0.00022303359819513793
 2023,17019010500,Fisher — Family-oriented residential area,0,gradient_boosting_classifier,0,0.00022303359819513793

@@ -8,37 +8,37 @@ year,tract_geoid,display_area_label,primary_place,primary_zip,landmark_context_n
 2019,17019000700,Champaign — Mixed residential area,Champaign,61820.0,General tract context note not flagged by the current rule set.,7,Census Tract 7,1,0,cluster_0
 2019,17019000800,Champaign — Mixed residential area,Champaign,61822.0,Renter-heavy housing profile.,8,Census Tract 8,1,0,cluster_0
 2019,17019000901,Champaign — Family-oriented residential area,Champaign,61821.0,More very-low-income households; more households with children.,9.01,Census Tract 9.01,1,0,cluster_0
-2019,17019000902,Census Tract 9.02 — Family-oriented residential area,,61822.0,More households with children.,9.02,Census Tract 9.02,1,0,cluster_0
+2019,17019000902,Champaign — Family-oriented residential area,Champaign,61822.0,More households with children.,9.02,Census Tract 9.02,1,0,cluster_0
 2019,17019001000,Champaign — Mixed residential area,Champaign,61821.0,General tract context note not flagged by the current rule set.,10,Census Tract 10,1,0,cluster_0
 2019,17019001100,Champaign — Senior-heavy residential area,Champaign,61821.0,Older age profile.,11,Census Tract 11,1,0,cluster_0
 2019,17019001201,Champaign — Mixed residential area,Champaign,61821.0,General tract context note not flagged by the current rule set.,12.01,Census Tract 12.01,1,0,cluster_0
 2019,17019001203,Champaign — Senior-heavy residential area,Champaign,61821.0,Older age profile.,12.03,Census Tract 12.03,1,0,cluster_0
 2019,17019001204,Champaign — Family-oriented residential area,Champaign,61822.0,More households with children; older age profile.,12.04,Census Tract 12.04,1,0,cluster_0
 2019,17019001205,Champaign — Family-oriented residential area,Champaign,61822.0,More households with children.,12.05,Census Tract 12.05,1,0,cluster_0
-2019,17019001206,Census Tract 12.06 — Senior-heavy residential area,,61822.0,Older age profile.,12.06,Census Tract 12.06,1,0,cluster_0
+2019,17019001206,Champaign — Senior-heavy residential area,Champaign,61822.0,Older age profile.,12.06,Census Tract 12.06,1,0,cluster_0
 2019,17019001301,Champaign — Senior-heavy residential area,Champaign,61821.0,Older age profile.,13.01,Census Tract 13.01,1,0,cluster_0
 2019,17019001302,Savoy — Senior-heavy residential area,Savoy,61822.0,Older age profile.,13.02,Census Tract 13.02,1,0,cluster_0
-2019,17019001400,Census Tract 14 — Family-oriented residential area,,61874.0,Higher student concentration; more households with children.,14,Census Tract 14,1,0,cluster_0
+2019,17019001400,Champaign — Family-oriented residential area,Champaign,61874.0,Higher student concentration; more households with children.,14,Census Tract 14,1,0,cluster_0
 2019,17019005300,Urbana — Student-dense area,Urbana,61801.0,Higher student concentration; renter-heavy housing profile; higher poverty rate; more very-low-income households.,53,Census Tract 53,1,1,cluster_1
-2019,17019005401,Census Tract 54.01 — Mixed residential area,,61802.0,Renter-heavy housing profile; more very-low-income households.,54.01,Census Tract 54.01,1,0,cluster_0
-2019,17019005402,Census Tract 54.02 — Senior-heavy residential area,,61802.0,Older age profile.,54.02,Census Tract 54.02,1,0,cluster_0
+2019,17019005401,Urbana — Mixed residential area,Urbana,61802.0,Renter-heavy housing profile; more very-low-income households.,54.01,Census Tract 54.01,1,0,cluster_0
+2019,17019005402,Urbana — Senior-heavy residential area,Urbana,61802.0,Older age profile.,54.02,Census Tract 54.02,1,0,cluster_0
 2019,17019005500,Urbana — Senior-heavy residential area,Urbana,61802.0,Older age profile.,55,Census Tract 55,1,0,cluster_0
 2019,17019005600,,,,,56,Census Tract 56,0,0,cluster_0
 2019,17019005701,Urbana — Senior-heavy residential area,Urbana,61801.0,Older age profile.,57.01,Census Tract 57.01,1,0,cluster_0
-2019,17019005702,Census Tract 57.02 — Senior-heavy residential area,,61802.0,Older age profile.,57.02,Census Tract 57.02,1,0,cluster_0
+2019,17019005702,Urbana — Senior-heavy residential area,Urbana,61802.0,Older age profile.,57.02,Census Tract 57.02,1,0,cluster_0
 2019,17019005800,Urbana — Higher economic stress area,Urbana,61801.0,Higher poverty rate; more very-low-income households.,58,Census Tract 58,1,0,cluster_0
 2019,17019005900,,,,,59,Census Tract 59,0,1,cluster_1
-2019,17019006000,Census Tract 60 — Student-dense area,,61802.0,Higher student concentration; renter-heavy housing profile; higher poverty rate; more very-low-income households.,60,Census Tract 60,1,1,cluster_1
-2019,17019010100,Census Tract 101 — Mixed residential area,,61866.0,General tract context note not flagged by the current rule set.,101,Census Tract 101,1,0,cluster_0
+2019,17019006000,Urbana — Student-dense area,Urbana,61802.0,Higher student concentration; renter-heavy housing profile; higher poverty rate; more very-low-income households.,60,Census Tract 60,1,1,cluster_1
+2019,17019010100,Rantoul — Mixed residential area,Rantoul,61866.0,General tract context note not flagged by the current rule set.,101,Census Tract 101,1,0,cluster_0
 2019,17019010204,Rantoul — Mixed residential area,Rantoul,61866.0,General tract context note not flagged by the current rule set.,102.04,Census Tract 102.04,1,0,cluster_0
 2019,17019010300,Rantoul — Family-oriented residential area,Rantoul,61866.0,Renter-heavy housing profile; higher poverty rate; more households with children.,103,Census Tract 103,1,0,cluster_0
-2019,17019010400,Census Tract 104 — Senior-heavy residential area,,61866.0,Older age profile.,104,Census Tract 104,1,0,cluster_0
+2019,17019010400,Rantoul — Senior-heavy residential area,Rantoul,61866.0,Older age profile.,104,Census Tract 104,1,0,cluster_0
 2019,17019010500,Fisher — Family-oriented residential area,Fisher,61843.0,More households with children; older age profile.,105,Census Tract 105,1,0,cluster_0
-2019,17019010601,Census Tract 106.01 — Family-oriented residential area,,61853.0,More households with children.,106.01,Census Tract 106.01,1,0,cluster_0
+2019,17019010601,Mahomet — Family-oriented residential area,Mahomet,61853.0,More households with children.,106.01,Census Tract 106.01,1,0,cluster_0
 2019,17019010603,Mahomet — Family-oriented residential area,Mahomet,61853.0,More households with children.,106.03,Census Tract 106.03,1,0,cluster_0
-2019,17019010604,Census Tract 106.04 — Senior-heavy residential area,,61822.0,Older age profile.,106.04,Census Tract 106.04,1,0,cluster_0
+2019,17019010604,Champaign — Senior-heavy residential area,Champaign,61822.0,Older age profile.,106.04,Census Tract 106.04,1,0,cluster_0
 2019,17019010700,,,,,107,Census Tract 107,0,0,cluster_0
-2019,17019010800,Census Tract 108 — Senior-heavy residential area,,61877.0,More households with children; older age profile.,108,Census Tract 108,1,0,cluster_0
+2019,17019010800,Sidney — Senior-heavy residential area,Sidney,61877.0,More households with children; older age profile.,108,Census Tract 108,1,0,cluster_0
 2019,17019010900,,,,,109,Census Tract 109,0,0,cluster_0
 2019,17019011000,,,,,110,Census Tract 110,0,0,cluster_0
 2019,17019011100,Urbana — Student-dense area,Urbana,61801.0,Higher student concentration; renter-heavy housing profile; higher poverty rate; more very-low-income households.,111,Census Tract 111,1,1,cluster_1
@@ -51,42 +51,42 @@ year,tract_geoid,display_area_label,primary_place,primary_zip,landmark_context_n
 2021,17019000700,Champaign — Mixed residential area,Champaign,61820.0,General tract context note not flagged by the current rule set.,7,Census Tract 7,1,0,cluster_0
 2021,17019000800,Champaign — Mixed residential area,Champaign,61822.0,Renter-heavy housing profile.,8,Census Tract 8,1,0,cluster_0
 2021,17019000901,Champaign — Family-oriented residential area,Champaign,61821.0,More very-low-income households; more households with children.,9.01,Census Tract 9.01,1,0,cluster_0
-2021,17019000902,Census Tract 9.02 — Family-oriented residential area,,61822.0,More households with children.,9.02,Census Tract 9.02,1,0,cluster_0
+2021,17019000902,Champaign — Family-oriented residential area,Champaign,61822.0,More households with children.,9.02,Census Tract 9.02,1,0,cluster_0
 2021,17019001000,Champaign — Mixed residential area,Champaign,61821.0,General tract context note not flagged by the current rule set.,10,Census Tract 10,1,0,cluster_0
 2021,17019001100,Champaign — Senior-heavy residential area,Champaign,61821.0,Older age profile.,11,Census Tract 11,1,0,cluster_0
 2021,17019001201,Champaign — Mixed residential area,Champaign,61821.0,General tract context note not flagged by the current rule set.,12.01,Census Tract 12.01,1,0,cluster_0
 2021,17019001203,Champaign — Senior-heavy residential area,Champaign,61821.0,Older age profile.,12.03,Census Tract 12.03,1,0,cluster_0
 2021,17019001204,Champaign — Family-oriented residential area,Champaign,61822.0,More households with children; older age profile.,12.04,Census Tract 12.04,1,0,cluster_0
 2021,17019001205,Champaign — Family-oriented residential area,Champaign,61822.0,More households with children.,12.05,Census Tract 12.05,1,0,cluster_0
-2021,17019001206,Census Tract 12.06 — Senior-heavy residential area,,61822.0,Older age profile.,12.06,Census Tract 12.06,1,0,cluster_0
+2021,17019001206,Champaign — Senior-heavy residential area,Champaign,61822.0,Older age profile.,12.06,Census Tract 12.06,1,0,cluster_0
 2021,17019001301,Champaign — Senior-heavy residential area,Champaign,61821.0,Older age profile.,13.01,Census Tract 13.01,1,0,cluster_0
 2021,17019001302,Savoy — Senior-heavy residential area,Savoy,61822.0,Older age profile.,13.02,Census Tract 13.02,1,0,cluster_0
-2021,17019001400,Census Tract 14 — Family-oriented residential area,,61874.0,Higher student concentration; more households with children.,14,Census Tract 14,1,0,cluster_0
+2021,17019001400,Champaign — Family-oriented residential area,Champaign,61874.0,Higher student concentration; more households with children.,14,Census Tract 14,1,0,cluster_0
 2021,17019005300,Urbana — Student-dense area,Urbana,61801.0,Higher student concentration; renter-heavy housing profile; higher poverty rate; more very-low-income households.,53,Census Tract 53,1,1,cluster_1
-2021,17019005401,Census Tract 54.01 — Mixed residential area,,61802.0,Renter-heavy housing profile; more very-low-income households.,54.01,Census Tract 54.01,1,0,cluster_0
-2021,17019005402,Census Tract 54.02 — Senior-heavy residential area,,61802.0,Older age profile.,54.02,Census Tract 54.02,1,0,cluster_0
+2021,17019005401,Urbana — Mixed residential area,Urbana,61802.0,Renter-heavy housing profile; more very-low-income households.,54.01,Census Tract 54.01,1,0,cluster_0
+2021,17019005402,Urbana — Senior-heavy residential area,Urbana,61802.0,Older age profile.,54.02,Census Tract 54.02,1,0,cluster_0
 2021,17019005500,Urbana — Senior-heavy residential area,Urbana,61802.0,Older age profile.,55,Census Tract 55,1,0,cluster_0
 2021,17019005601,Urbana — Mixed residential area,Urbana,61802.0,General tract context note not flagged by the current rule set.,56.01,Census Tract 56.01,0,0,cluster_0
-2021,17019005602,Census Tract 56.02 — Senior-heavy residential area,,61802.0,Renter-heavy housing profile; older age profile.,56.02,Census Tract 56.02,0,0,cluster_0
+2021,17019005602,Urbana — Senior-heavy residential area,Urbana,61802.0,Renter-heavy housing profile; older age profile.,56.02,Census Tract 56.02,0,0,cluster_0
 2021,17019005701,Urbana — Senior-heavy residential area,Urbana,61801.0,Older age profile.,57.01,Census Tract 57.01,1,0,cluster_0
-2021,17019005702,Census Tract 57.02 — Senior-heavy residential area,,61802.0,Older age profile.,57.02,Census Tract 57.02,1,0,cluster_0
+2021,17019005702,Urbana — Senior-heavy residential area,Urbana,61802.0,Older age profile.,57.02,Census Tract 57.02,1,0,cluster_0
 2021,17019005800,Urbana — Higher economic stress area,Urbana,61801.0,Higher poverty rate; more very-low-income households.,58,Census Tract 58,1,0,cluster_0
 2021,17019005901,Urbana — Student-dense area,Urbana,61801.0,Higher student concentration; renter-heavy housing profile; higher poverty rate; more very-low-income households.,59.01,Census Tract 59.01,0,1,cluster_1
 2021,17019005902,Urbana — Student-dense area,Urbana,61801.0,Higher student concentration; renter-heavy housing profile; higher poverty rate; more very-low-income households.,59.02,Census Tract 59.02,0,1,cluster_1
-2021,17019006000,Census Tract 60 — Student-dense area,,61802.0,Higher student concentration; renter-heavy housing profile; higher poverty rate; more very-low-income households.,60,Census Tract 60,1,1,cluster_1
-2021,17019010100,Census Tract 101 — Mixed residential area,,61866.0,General tract context note not flagged by the current rule set.,101,Census Tract 101,1,0,cluster_0
+2021,17019006000,Urbana — Student-dense area,Urbana,61802.0,Higher student concentration; renter-heavy housing profile; higher poverty rate; more very-low-income households.,60,Census Tract 60,1,1,cluster_1
+2021,17019010100,Rantoul — Mixed residential area,Rantoul,61866.0,General tract context note not flagged by the current rule set.,101,Census Tract 101,1,0,cluster_0
 2021,17019010204,Rantoul — Mixed residential area,Rantoul,61866.0,General tract context note not flagged by the current rule set.,102.04,Census Tract 102.04,1,0,cluster_0
 2021,17019010300,Rantoul — Family-oriented residential area,Rantoul,61866.0,Renter-heavy housing profile; higher poverty rate; more households with children.,103,Census Tract 103,1,0,cluster_0
-2021,17019010400,Census Tract 104 — Senior-heavy residential area,,61866.0,Older age profile.,104,Census Tract 104,1,0,cluster_0
+2021,17019010400,Rantoul — Senior-heavy residential area,Rantoul,61866.0,Older age profile.,104,Census Tract 104,1,0,cluster_0
 2021,17019010500,Fisher — Family-oriented residential area,Fisher,61843.0,More households with children; older age profile.,105,Census Tract 105,1,0,cluster_0
-2021,17019010601,Census Tract 106.01 — Family-oriented residential area,,61853.0,More households with children.,106.01,Census Tract 106.01,1,0,cluster_0
+2021,17019010601,Mahomet — Family-oriented residential area,Mahomet,61853.0,More households with children.,106.01,Census Tract 106.01,1,0,cluster_0
 2021,17019010603,Mahomet — Family-oriented residential area,Mahomet,61853.0,More households with children.,106.03,Census Tract 106.03,1,0,cluster_0
-2021,17019010604,Census Tract 106.04 — Senior-heavy residential area,,61822.0,Older age profile.,106.04,Census Tract 106.04,1,0,cluster_0
+2021,17019010604,Champaign — Senior-heavy residential area,Champaign,61822.0,Older age profile.,106.04,Census Tract 106.04,1,0,cluster_0
 2021,17019010701,St. Joseph — Family-oriented residential area,St. Joseph,61873.0,More households with children.,107.01,Census Tract 107.01,0,0,cluster_0
-2021,17019010702,Census Tract 107.02 — Family-oriented residential area,,61873.0,More households with children.,107.02,Census Tract 107.02,0,0,cluster_0
-2021,17019010800,Census Tract 108 — Senior-heavy residential area,,61877.0,More households with children; older age profile.,108,Census Tract 108,1,0,cluster_0
-2021,17019010901,Census Tract 109.01 — Family-oriented residential area,,61880.0,More households with children.,109.01,Census Tract 109.01,0,0,cluster_0
-2021,17019010902,Census Tract 109.02 — Family-oriented residential area,,61872.0,More households with children; older age profile.,109.02,Census Tract 109.02,0,0,cluster_0
+2021,17019010702,St. Joseph — Family-oriented residential area,St. Joseph,61873.0,More households with children.,107.02,Census Tract 107.02,0,0,cluster_0
+2021,17019010800,Sidney — Senior-heavy residential area,Sidney,61877.0,More households with children; older age profile.,108,Census Tract 108,1,0,cluster_0
+2021,17019010901,Philo — Family-oriented residential area,Philo,61880.0,More households with children.,109.01,Census Tract 109.01,0,0,cluster_0
+2021,17019010902,Sadorus — Family-oriented residential area,Sadorus,61872.0,More households with children; older age profile.,109.02,Census Tract 109.02,0,0,cluster_0
 2021,17019011001,Champaign — Mixed residential area,Champaign,61820.0,Renter-heavy housing profile.,110.01,Census Tract 110.01,0,0,cluster_0
 2021,17019011002,Champaign — Higher-income residential area,Champaign,61820.0,General tract context note not flagged by the current rule set.,110.02,Census Tract 110.02,0,0,cluster_0
 2021,17019011100,Urbana — Student-dense area,Urbana,61801.0,Higher student concentration; renter-heavy housing profile; higher poverty rate; more very-low-income households.,111,Census Tract 111,1,1,cluster_1
@@ -99,42 +99,42 @@ year,tract_geoid,display_area_label,primary_place,primary_zip,landmark_context_n
 2022,17019000700,Champaign — Mixed residential area,Champaign,61820.0,General tract context note not flagged by the current rule set.,7,Census Tract 7,1,0,cluster_0
 2022,17019000800,Champaign — Mixed residential area,Champaign,61822.0,Renter-heavy housing profile.,8,Census Tract 8,1,0,cluster_0
 2022,17019000901,Champaign — Family-oriented residential area,Champaign,61821.0,More very-low-income households; more households with children.,9.01,Census Tract 9.01,1,0,cluster_0
-2022,17019000902,Census Tract 9.02 — Family-oriented residential area,,61822.0,More households with children.,9.02,Census Tract 9.02,1,0,cluster_0
+2022,17019000902,Champaign — Family-oriented residential area,Champaign,61822.0,More households with children.,9.02,Census Tract 9.02,1,0,cluster_0
 2022,17019001000,Champaign — Mixed residential area,Champaign,61821.0,General tract context note not flagged by the current rule set.,10,Census Tract 10,1,0,cluster_0
 2022,17019001100,Champaign — Senior-heavy residential area,Champaign,61821.0,Older age profile.,11,Census Tract 11,1,0,cluster_0
 2022,17019001201,Champaign — Mixed residential area,Champaign,61821.0,General tract context note not flagged by the current rule set.,12.01,Census Tract 12.01,1,0,cluster_0
 2022,17019001203,Champaign — Senior-heavy residential area,Champaign,61821.0,Older age profile.,12.03,Census Tract 12.03,1,0,cluster_0
 2022,17019001204,Champaign — Family-oriented residential area,Champaign,61822.0,More households with children; older age profile.,12.04,Census Tract 12.04,1,0,cluster_0
 2022,17019001205,Champaign — Family-oriented residential area,Champaign,61822.0,More households with children.,12.05,Census Tract 12.05,1,0,cluster_0
-2022,17019001206,Census Tract 12.06 — Senior-heavy residential area,,61822.0,Older age profile.,12.06,Census Tract 12.06,1,0,cluster_0
+2022,17019001206,Champaign — Senior-heavy residential area,Champaign,61822.0,Older age profile.,12.06,Census Tract 12.06,1,0,cluster_0
 2022,17019001301,Champaign — Senior-heavy residential area,Champaign,61821.0,Older age profile.,13.01,Census Tract 13.01,1,0,cluster_0
 2022,17019001302,Savoy — Senior-heavy residential area,Savoy,61822.0,Older age profile.,13.02,Census Tract 13.02,1,0,cluster_0
-2022,17019001400,Census Tract 14 — Family-oriented residential area,,61874.0,Higher student concentration; more households with children.,14,Census Tract 14,1,0,cluster_0
+2022,17019001400,Champaign — Family-oriented residential area,Champaign,61874.0,Higher student concentration; more households with children.,14,Census Tract 14,1,0,cluster_0
 2022,17019005300,Urbana — Student-dense area,Urbana,61801.0,Higher student concentration; renter-heavy housing profile; higher poverty rate; more very-low-income households.,53,Census Tract 53,1,1,cluster_1
-2022,17019005401,Census Tract 54.01 — Mixed residential area,,61802.0,Renter-heavy housing profile; more very-low-income households.,54.01,Census Tract 54.01,1,0,cluster_0
-2022,17019005402,Census Tract 54.02 — Senior-heavy residential area,,61802.0,Older age profile.,54.02,Census Tract 54.02,1,0,cluster_0
+2022,17019005401,Urbana — Mixed residential area,Urbana,61802.0,Renter-heavy housing profile; more very-low-income households.,54.01,Census Tract 54.01,1,0,cluster_0
+2022,17019005402,Urbana — Senior-heavy residential area,Urbana,61802.0,Older age profile.,54.02,Census Tract 54.02,1,0,cluster_0
 2022,17019005500,Urbana — Senior-heavy residential area,Urbana,61802.0,Older age profile.,55,Census Tract 55,1,0,cluster_0
 2022,17019005601,Urbana — Mixed residential area,Urbana,61802.0,General tract context note not flagged by the current rule set.,56.01,Census Tract 56.01,0,0,cluster_0
-2022,17019005602,Census Tract 56.02 — Senior-heavy residential area,,61802.0,Renter-heavy housing profile; older age profile.,56.02,Census Tract 56.02,0,0,cluster_0
+2022,17019005602,Urbana — Senior-heavy residential area,Urbana,61802.0,Renter-heavy housing profile; older age profile.,56.02,Census Tract 56.02,0,0,cluster_0
 2022,17019005701,Urbana — Senior-heavy residential area,Urbana,61801.0,Older age profile.,57.01,Census Tract 57.01,1,0,cluster_0
-2022,17019005702,Census Tract 57.02 — Senior-heavy residential area,,61802.0,Older age profile.,57.02,Census Tract 57.02,1,0,cluster_0
+2022,17019005702,Urbana — Senior-heavy residential area,Urbana,61802.0,Older age profile.,57.02,Census Tract 57.02,1,0,cluster_0
 2022,17019005800,Urbana — Higher economic stress area,Urbana,61801.0,Higher poverty rate; more very-low-income households.,58,Census Tract 58,1,0,cluster_0
 2022,17019005901,Urbana — Student-dense area,Urbana,61801.0,Higher student concentration; renter-heavy housing profile; higher poverty rate; more very-low-income households.,59.01,Census Tract 59.01,0,1,cluster_1
 2022,17019005902,Urbana — Student-dense area,Urbana,61801.0,Higher student concentration; renter-heavy housing profile; higher poverty rate; more very-low-income households.,59.02,Census Tract 59.02,0,1,cluster_1
-2022,17019006000,Census Tract 60 — Student-dense area,,61802.0,Higher student concentration; renter-heavy housing profile; higher poverty rate; more very-low-income households.,60,Census Tract 60,1,1,cluster_1
-2022,17019010100,Census Tract 101 — Mixed residential area,,61866.0,General tract context note not flagged by the current rule set.,101,Census Tract 101,1,0,cluster_0
+2022,17019006000,Urbana — Student-dense area,Urbana,61802.0,Higher student concentration; renter-heavy housing profile; higher poverty rate; more very-low-income households.,60,Census Tract 60,1,1,cluster_1
+2022,17019010100,Rantoul — Mixed residential area,Rantoul,61866.0,General tract context note not flagged by the current rule set.,101,Census Tract 101,1,0,cluster_0
 2022,17019010204,Rantoul — Mixed residential area,Rantoul,61866.0,General tract context note not flagged by the current rule set.,102.04,Census Tract 102.04,1,0,cluster_0
 2022,17019010300,Rantoul — Family-oriented residential area,Rantoul,61866.0,Renter-heavy housing profile; higher poverty rate; more households with children.,103,Census Tract 103,1,0,cluster_0
-2022,17019010400,Census Tract 104 — Senior-heavy residential area,,61866.0,Older age profile.,104,Census Tract 104,1,0,cluster_0
+2022,17019010400,Rantoul — Senior-heavy residential area,Rantoul,61866.0,Older age profile.,104,Census Tract 104,1,0,cluster_0
 2022,17019010500,Fisher — Family-oriented residential area,Fisher,61843.0,More households with children; older age profile.,105,Census Tract 105,1,0,cluster_0
-2022,17019010601,Census Tract 106.01 — Family-oriented residential area,,61853.0,More households with children.,106.01,Census Tract 106.01,1,0,cluster_0
+2022,17019010601,Mahomet — Family-oriented residential area,Mahomet,61853.0,More households with children.,106.01,Census Tract 106.01,1,0,cluster_0
 2022,17019010603,Mahomet — Family-oriented residential area,Mahomet,61853.0,More households with children.,106.03,Census Tract 106.03,1,0,cluster_0
-2022,17019010604,Census Tract 106.04 — Senior-heavy residential area,,61822.0,Older age profile.,106.04,Census Tract 106.04,1,0,cluster_0
+2022,17019010604,Champaign — Senior-heavy residential area,Champaign,61822.0,Older age profile.,106.04,Census Tract 106.04,1,0,cluster_0
 2022,17019010701,St. Joseph — Family-oriented residential area,St. Joseph,61873.0,More households with children.,107.01,Census Tract 107.01,0,0,cluster_0
-2022,17019010702,Census Tract 107.02 — Family-oriented residential area,,61873.0,More households with children.,107.02,Census Tract 107.02,0,0,cluster_0
-2022,17019010800,Census Tract 108 — Senior-heavy residential area,,61877.0,More households with children; older age profile.,108,Census Tract 108,1,0,cluster_0
-2022,17019010901,Census Tract 109.01 — Family-oriented residential area,,61880.0,More households with children.,109.01,Census Tract 109.01,0,0,cluster_0
-2022,17019010902,Census Tract 109.02 — Family-oriented residential area,,61872.0,More households with children; older age profile.,109.02,Census Tract 109.02,0,0,cluster_0
+2022,17019010702,St. Joseph — Family-oriented residential area,St. Joseph,61873.0,More households with children.,107.02,Census Tract 107.02,0,0,cluster_0
+2022,17019010800,Sidney — Senior-heavy residential area,Sidney,61877.0,More households with children; older age profile.,108,Census Tract 108,1,0,cluster_0
+2022,17019010901,Philo — Family-oriented residential area,Philo,61880.0,More households with children.,109.01,Census Tract 109.01,0,0,cluster_0
+2022,17019010902,Sadorus — Family-oriented residential area,Sadorus,61872.0,More households with children; older age profile.,109.02,Census Tract 109.02,0,0,cluster_0
 2022,17019011001,Champaign — Mixed residential area,Champaign,61820.0,Renter-heavy housing profile.,110.01,Census Tract 110.01,0,0,cluster_0
 2022,17019011002,Champaign — Higher-income residential area,Champaign,61820.0,General tract context note not flagged by the current rule set.,110.02,Census Tract 110.02,0,0,cluster_0
 2022,17019011100,Urbana — Student-dense area,Urbana,61801.0,Higher student concentration; renter-heavy housing profile; higher poverty rate; more very-low-income households.,111,Census Tract 111,1,1,cluster_1
@@ -147,42 +147,42 @@ year,tract_geoid,display_area_label,primary_place,primary_zip,landmark_context_n
 2023,17019000700,Champaign — Mixed residential area,Champaign,61820.0,General tract context note not flagged by the current rule set.,7,Census Tract 7,1,0,cluster_0
 2023,17019000800,Champaign — Mixed residential area,Champaign,61822.0,Renter-heavy housing profile.,8,Census Tract 8,1,0,cluster_0
 2023,17019000901,Champaign — Family-oriented residential area,Champaign,61821.0,More very-low-income households; more households with children.,9.01,Census Tract 9.01,1,0,cluster_0
-2023,17019000902,Census Tract 9.02 — Family-oriented residential area,,61822.0,More households with children.,9.02,Census Tract 9.02,1,0,cluster_0
+2023,17019000902,Champaign — Family-oriented residential area,Champaign,61822.0,More households with children.,9.02,Census Tract 9.02,1,0,cluster_0
 2023,17019001000,Champaign — Mixed residential area,Champaign,61821.0,General tract context note not flagged by the current rule set.,10,Census Tract 10,1,0,cluster_0
 2023,17019001100,Champaign — Senior-heavy residential area,Champaign,61821.0,Older age profile.,11,Census Tract 11,1,0,cluster_0
 2023,17019001201,Champaign — Mixed residential area,Champaign,61821.0,General tract context note not flagged by the current rule set.,12.01,Census Tract 12.01,1,0,cluster_0
 2023,17019001203,Champaign — Senior-heavy residential area,Champaign,61821.0,Older age profile.,12.03,Census Tract 12.03,1,0,cluster_0
 2023,17019001204,Champaign — Family-oriented residential area,Champaign,61822.0,More households with children; older age profile.,12.04,Census Tract 12.04,1,0,cluster_0
 2023,17019001205,Champaign — Family-oriented residential area,Champaign,61822.0,More households with children.,12.05,Census Tract 12.05,1,0,cluster_0
-2023,17019001206,Census Tract 12.06 — Senior-heavy residential area,,61822.0,Older age profile.,12.06,Census Tract 12.06,1,0,cluster_0
+2023,17019001206,Champaign — Senior-heavy residential area,Champaign,61822.0,Older age profile.,12.06,Census Tract 12.06,1,0,cluster_0
 2023,17019001301,Champaign — Senior-heavy residential area,Champaign,61821.0,Older age profile.,13.01,Census Tract 13.01,1,0,cluster_0
 2023,17019001302,Savoy — Senior-heavy residential area,Savoy,61822.0,Older age profile.,13.02,Census Tract 13.02,1,0,cluster_0
-2023,17019001400,Census Tract 14 — Family-oriented residential area,,61874.0,Higher student concentration; more households with children.,14,Census Tract 14,1,0,cluster_0
+2023,17019001400,Champaign — Family-oriented residential area,Champaign,61874.0,Higher student concentration; more households with children.,14,Census Tract 14,1,0,cluster_0
 2023,17019005300,Urbana — Student-dense area,Urbana,61801.0,Higher student concentration; renter-heavy housing profile; higher poverty rate; more very-low-income households.,53,Census Tract 53,1,1,cluster_1
-2023,17019005401,Census Tract 54.01 — Mixed residential area,,61802.0,Renter-heavy housing profile; more very-low-income households.,54.01,Census Tract 54.01,1,0,cluster_0
-2023,17019005402,Census Tract 54.02 — Senior-heavy residential area,,61802.0,Older age profile.,54.02,Census Tract 54.02,1,0,cluster_0
+2023,17019005401,Urbana — Mixed residential area,Urbana,61802.0,Renter-heavy housing profile; more very-low-income households.,54.01,Census Tract 54.01,1,0,cluster_0
+2023,17019005402,Urbana — Senior-heavy residential area,Urbana,61802.0,Older age profile.,54.02,Census Tract 54.02,1,0,cluster_0
 2023,17019005500,Urbana — Senior-heavy residential area,Urbana,61802.0,Older age profile.,55,Census Tract 55,1,0,cluster_0
 2023,17019005601,Urbana — Mixed residential area,Urbana,61802.0,General tract context note not flagged by the current rule set.,56.01,Census Tract 56.01,0,0,cluster_0
-2023,17019005602,Census Tract 56.02 — Senior-heavy residential area,,61802.0,Renter-heavy housing profile; older age profile.,56.02,Census Tract 56.02,0,0,cluster_0
+2023,17019005602,Urbana — Senior-heavy residential area,Urbana,61802.0,Renter-heavy housing profile; older age profile.,56.02,Census Tract 56.02,0,0,cluster_0
 2023,17019005701,Urbana — Senior-heavy residential area,Urbana,61801.0,Older age profile.,57.01,Census Tract 57.01,1,0,cluster_0
-2023,17019005702,Census Tract 57.02 — Senior-heavy residential area,,61802.0,Older age profile.,57.02,Census Tract 57.02,1,0,cluster_0
+2023,17019005702,Urbana — Senior-heavy residential area,Urbana,61802.0,Older age profile.,57.02,Census Tract 57.02,1,0,cluster_0
 2023,17019005800,Urbana — Higher economic stress area,Urbana,61801.0,Higher poverty rate; more very-low-income households.,58,Census Tract 58,1,0,cluster_0
 2023,17019005901,Urbana — Student-dense area,Urbana,61801.0,Higher student concentration; renter-heavy housing profile; higher poverty rate; more very-low-income households.,59.01,Census Tract 59.01,0,1,cluster_1
 2023,17019005902,Urbana — Student-dense area,Urbana,61801.0,Higher student concentration; renter-heavy housing profile; higher poverty rate; more very-low-income households.,59.02,Census Tract 59.02,0,1,cluster_1
-2023,17019006000,Census Tract 60 — Student-dense area,,61802.0,Higher student concentration; renter-heavy housing profile; higher poverty rate; more very-low-income households.,60,Census Tract 60,1,1,cluster_1
-2023,17019010100,Census Tract 101 — Mixed residential area,,61866.0,General tract context note not flagged by the current rule set.,101,Census Tract 101,1,0,cluster_0
+2023,17019006000,Urbana — Student-dense area,Urbana,61802.0,Higher student concentration; renter-heavy housing profile; higher poverty rate; more very-low-income households.,60,Census Tract 60,1,1,cluster_1
+2023,17019010100,Rantoul — Mixed residential area,Rantoul,61866.0,General tract context note not flagged by the current rule set.,101,Census Tract 101,1,0,cluster_0
 2023,17019010204,Rantoul — Mixed residential area,Rantoul,61866.0,General tract context note not flagged by the current rule set.,102.04,Census Tract 102.04,1,0,cluster_0
 2023,17019010300,Rantoul — Family-oriented residential area,Rantoul,61866.0,Renter-heavy housing profile; higher poverty rate; more households with children.,103,Census Tract 103,1,0,cluster_0
-2023,17019010400,Census Tract 104 — Senior-heavy residential area,,61866.0,Older age profile.,104,Census Tract 104,1,0,cluster_0
+2023,17019010400,Rantoul — Senior-heavy residential area,Rantoul,61866.0,Older age profile.,104,Census Tract 104,1,0,cluster_0
 2023,17019010500,Fisher — Family-oriented residential area,Fisher,61843.0,More households with children; older age profile.,105,Census Tract 105,1,0,cluster_0
-2023,17019010601,Census Tract 106.01 — Family-oriented residential area,,61853.0,More households with children.,106.01,Census Tract 106.01,1,0,cluster_0
+2023,17019010601,Mahomet — Family-oriented residential area,Mahomet,61853.0,More households with children.,106.01,Census Tract 106.01,1,0,cluster_0
 2023,17019010603,Mahomet — Family-oriented residential area,Mahomet,61853.0,More households with children.,106.03,Census Tract 106.03,1,0,cluster_0
-2023,17019010604,Census Tract 106.04 — Senior-heavy residential area,,61822.0,Older age profile.,106.04,Census Tract 106.04,1,0,cluster_0
+2023,17019010604,Champaign — Senior-heavy residential area,Champaign,61822.0,Older age profile.,106.04,Census Tract 106.04,1,0,cluster_0
 2023,17019010701,St. Joseph — Family-oriented residential area,St. Joseph,61873.0,More households with children.,107.01,Census Tract 107.01,0,0,cluster_0
-2023,17019010702,Census Tract 107.02 — Family-oriented residential area,,61873.0,More households with children.,107.02,Census Tract 107.02,0,0,cluster_0
-2023,17019010800,Census Tract 108 — Senior-heavy residential area,,61877.0,More households with children; older age profile.,108,Census Tract 108,1,0,cluster_0
-2023,17019010901,Census Tract 109.01 — Family-oriented residential area,,61880.0,More households with children.,109.01,Census Tract 109.01,0,0,cluster_0
-2023,17019010902,Census Tract 109.02 — Family-oriented residential area,,61872.0,More households with children; older age profile.,109.02,Census Tract 109.02,0,0,cluster_0
+2023,17019010702,St. Joseph — Family-oriented residential area,St. Joseph,61873.0,More households with children.,107.02,Census Tract 107.02,0,0,cluster_0
+2023,17019010800,Sidney — Senior-heavy residential area,Sidney,61877.0,More households with children; older age profile.,108,Census Tract 108,1,0,cluster_0
+2023,17019010901,Philo — Family-oriented residential area,Philo,61880.0,More households with children.,109.01,Census Tract 109.01,0,0,cluster_0
+2023,17019010902,Sadorus — Family-oriented residential area,Sadorus,61872.0,More households with children; older age profile.,109.02,Census Tract 109.02,0,0,cluster_0
 2023,17019011001,Champaign — Mixed residential area,Champaign,61820.0,Renter-heavy housing profile.,110.01,Census Tract 110.01,0,0,cluster_0
 2023,17019011002,Champaign — Higher-income residential area,Champaign,61820.0,General tract context note not flagged by the current rule set.,110.02,Census Tract 110.02,0,0,cluster_0
 2023,17019011100,Urbana — Student-dense area,Urbana,61801.0,Higher student concentration; renter-heavy housing profile; higher poverty rate; more very-low-income households.,111,Census Tract 111,1,1,cluster_1
